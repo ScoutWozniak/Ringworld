@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace MyGame;
 
-public partial class Pistol : Weapon
+public partial class SMG : Weapon
 {
 	public override string ModelPath => "weapons/rust_pistol/rust_pistol.vmdl";
 	public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
@@ -39,7 +39,7 @@ public partial class Pistol : Weapon
 	public override void PrimaryAttack()
 	{
 		ShootEffects();
-		Pawn.PlaySound( "rust_pistol.shoot" );
+		Pawn.PlaySound( "smg.fire" );
 		if (IsAiming) 
 			ShootBullet( ADSSpread, 100, 20, 1 );
 		else

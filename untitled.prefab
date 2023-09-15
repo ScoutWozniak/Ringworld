@@ -6,49 +6,42 @@
     "Guid": "7234c09d-c76f-45fc-be40-f7dd5742472d",
     "Entities": [
       {
-        "Guid": "48140774-9b69-4ce8-940a-167cf088c60c",
-        "Class": "animated_entity",
+        "Guid": "84159c23-53e2-494e-b284-e684bb95b9d3",
         "Entities": [],
         "Components": [],
         "Keys": {
-          "Model": {
-            "Type": "Model",
-            "Value": "\u0022models/citizen/citizen.vmdl\u0022"
-          },
           "_name": {
-            "Value": "\u0022Untitled Entity\u0022"
+            "JsonValue": "Untitled Entity"
           },
           "_localposition": {
-            "Value": "\u00220,0,0\u0022"
+            "JsonValue": "0,0,0"
           },
           "_localrotation": {
-            "Value": "\u00220,0,0\u0022"
+            "JsonValue": "0,0,0"
           },
           "_scale": {
-            "Value": "1"
+            "JsonValue": 1
           },
-          "_tags": {
-            "Value": "\u0022\u0022"
-          }
+          "_tags": {}
         }
       }
     ],
     "Components": [],
     "Keys": {
       "_name": {
-        "Value": "\u0022Root Entity\u0022"
+        "JsonValue": "Root Entity"
       },
       "_localposition": {
-        "Value": "\u00220,0,0\u0022"
+        "JsonValue": "0,0,0"
       },
       "_localrotation": {
-        "Value": "\u00220,0,0\u0022"
+        "JsonValue": "0,0,0"
       },
       "_scale": {
-        "Value": "1"
+        "JsonValue": 1
       },
       "_tags": {
-        "Value": "\u0022\u0022"
+        "JsonValue": ""
       }
     }
   }

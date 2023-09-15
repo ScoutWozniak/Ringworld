@@ -43,7 +43,7 @@ public partial class Weapon : AnimatedEntity
 
 		if ( ModelPath != null )
 		{
-			SetModel( ModelPath );
+			Model = Cloud.Model( "facepunch.w_mp5" );
 		}
 	}
 
@@ -82,7 +82,12 @@ public partial class Weapon : AnimatedEntity
 			{
 				TimeSincePrimaryAttack = 0;
 				PrimaryAttack();
+				ViewModelEntity?.SetAnimParameter( "attack_hold", 1 );
 			}
+		}
+		else
+		{
+			ViewModelEntity?.SetAnimParameter( "attack_hold", 0 );
 		}
 
 		if ( Input.Down( "attack2" ) )

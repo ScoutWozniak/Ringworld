@@ -14,6 +14,8 @@ public partial class Pawn : AnimatedEntity
 	[ClientInput]
 	public Angles ViewAngles { get; set; }
 
+	public float fov = 90.0f;
+
 	/// <summary>
 	/// Position a player should be looking from in world space.
 	/// </summary>
@@ -84,7 +86,8 @@ public partial class Pawn : AnimatedEntity
 		Components.Create<PawnController>();
 		Components.Create<PawnAnimator>();
 
-		SetActiveWeapon( new Pistol() );
+		SetActiveWeapon( new SMG() );
+		Health = 100;
 	}
 
 	public void DressFromClient( IClient cl )
@@ -101,11 +104,6 @@ public partial class Pawn : AnimatedEntity
 		Animator?.Simulate();
 		ActiveWeapon?.Simulate( cl );
 		EyeLocalPosition = Vector3.Up * (64f * Scale);
-
-		if (Game.IsServer && Input.Pressed("jump"))
-		{
-			Health -= 10;
-		}
 	}
 
 	public override void BuildInput()
@@ -136,7 +134,7 @@ public partial class Pawn : AnimatedEntity
 		SimulateRotation();
 
 		Camera.Rotation = ViewAngles.ToRotation();
-		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Game.Preferences.FieldOfView );
+		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( fov );
 
 		if ( Input.Pressed( "view" ) )
 		{

@@ -18,7 +18,8 @@
       "PackageReferences": [],
       "EditorReferences": [
         "facepunch.metal_painted_grey_a_hs#28954",
-        "degg.base_mat_lred#10129"
+        "degg.base_mat_lred#10129",
+        "local.johnhalo#local"
       ],
       "Metadata": {
         "SingleAssetSource": "maps/guardian.vmap"
