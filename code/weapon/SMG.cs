@@ -12,9 +12,6 @@ public partial class SMG : Weapon
 	float Spread => 0.3f;
 	float ADSSpread => 0.1f;
 
-	[Net]
-	public bool IsAiming { set; get; } = false;
-
 	public override void Spawn()
 	{
 		base.Spawn();
@@ -47,9 +44,9 @@ public partial class SMG : Weapon
 			ShootEffects();
 		
 		if (IsAiming) 
-			ShootBullet( ADSSpread, 100, 20, 10.0f );
+			ShootBullet( ADSSpread, 100, 5, 10.0f );
 		else
-			ShootBullet( Spread, 100, 20, 10.0f );
+			ShootBullet( Spread, 100, 5, 10.0f );
 	}
 
 	public override void SecondaryAttack()

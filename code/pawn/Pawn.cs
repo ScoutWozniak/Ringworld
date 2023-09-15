@@ -236,10 +236,6 @@ public partial class Pawn : AnimatedEntity
 
 	public override void TakeDamage( DamageInfo info )
 	{
-		if ( info.Hitbox.HasTag( "head" ) )
-		{
-			info.Damage *= 10.0f;
-		}
 
 		base.TakeDamage( info );
 	}

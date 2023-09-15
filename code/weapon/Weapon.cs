@@ -36,6 +36,9 @@ public partial class Weapon : AnimatedEntity
 	[Net, Predicted] public TimeSince TimeSincePrimaryAttack { get; set; }
 	[Net, Predicted] public TimeSince TimeSinceSecondaryAttack { get; set; }
 
+	[Net]
+	public bool IsAiming { set; get; } = false;
+
 	public override void Spawn()
 	{
 		base.Spawn();
@@ -84,22 +87,6 @@ public partial class Weapon : AnimatedEntity
 			{
 				TimeSincePrimaryAttack = 0;
 				PrimaryAttack();
-			}
-		}
-
-		if ( Input.Down( "attack2" ) )
-		{
-			using ( LagCompensation() )
-			{
-				SecondaryAttack();
-			}
-		}
-
-		if ( Input.Released( "attack2" ) )
-		{
-			using ( LagCompensation() )
-			{
-				SecondaryAttackRelease();
 			}
 		}
 	}
