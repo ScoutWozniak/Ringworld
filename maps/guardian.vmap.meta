@@ -1,0 +1,28 @@
+{
+  "publish": {
+    "Allowed": true,
+    "Enabled": false,
+    "ProjectConfig": {
+      "Title": "guardian",
+      "Type": "map",
+      "Org": "local",
+      "Ident": "guardian",
+      "Tags": null,
+      "Schema": 0,
+      "HasAssets": false,
+      "AssetsPath": null,
+      "Resources": null,
+      "MenuResources": null,
+      "HasCode": false,
+      "CodePath": null,
+      "PackageReferences": [],
+      "EditorReferences": [
+        "facepunch.metal_painted_grey_a_hs#28954",
+        "degg.base_mat_lred#10129"
+      ],
+      "Metadata": {
+        "SingleAssetSource": "maps/guardian.vmap"
+      }
+    }
+  }
+}
