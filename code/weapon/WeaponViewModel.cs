@@ -24,13 +24,17 @@ public class WeaponViewModel : BaseViewModel
 	public float YawInertia { get; private set; }
 	public float PitchInertia { get; private set; }
 
-	protected Weapon Weapon { get; init; }
+	public static WeaponViewModel Current;
 
-	public WeaponViewModel(Weapon weapon)
+
+	public WeaponViewModel()
 	{
+		if (Current.IsValid())
+			Current.Delete();
+
+		Current = this;
 		EnableShadowCasting = false;
 		EnableViewmodelRendering = true;
-		Weapon = weapon;
 	}
 
 	public override void PlaceViewmodel()
@@ -75,15 +79,6 @@ public class WeaponViewModel : BaseViewModel
 		if ( EnableSwingAndBob )
 		{
 			var playerVelocity = Game.LocalPawn.Velocity;
-
-			if ( Game.LocalPawn is Player player )
-			{
-				var controller = player.GetActiveController();
-				if ( controller != null && controller.HasTag( "noclip" ) )
-				{
-					playerVelocity = Vector3.Zero;
-				}
-			}
 
 			var verticalDelta = playerVelocity.z * Time.Delta;
 			var viewDown = Rotation.FromPitch( newPitch ).Up * -1.0f;

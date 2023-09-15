@@ -23,6 +23,9 @@ public partial class SMG : Weapon
 	public override void Simulate( IClient player )
 	{
 		base.Simulate( player );
+		var attack_hold = Input.Down( "attack1" ) ? 1.0f : 0.0f;
+		(Owner as AnimatedEntity)?.SetAnimParameter( "attack_hold", attack_hold );
+		ViewModelEntity?.SetAnimParameter( "attack_hold", attack_hold );
 	}
 
 	[ClientRpc]
@@ -34,12 +37,15 @@ public partial class SMG : Weapon
 
 		Pawn.SetAnimParameter( "b_attack", true );
 		ViewModelEntity?.SetAnimParameter( "b_attack", true );
+		Pawn.PlaySound( "riflefire" );
 	}
 
 	public override void PrimaryAttack()
 	{
-		ShootEffects();
-		Pawn.PlaySound( "rifle.fire" );
+		
+		if (Game.IsServer)
+			ShootEffects();
+		
 		if (IsAiming) 
 			ShootBullet( ADSSpread, 100, 20, 10.0f );
 		else

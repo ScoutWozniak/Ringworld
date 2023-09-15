@@ -1,5 +1,6 @@
 using Sandbox;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace MyGame;
 
@@ -37,14 +38,12 @@ public partial class Weapon : AnimatedEntity
 
 	public override void Spawn()
 	{
+		base.Spawn();
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = true;
 		EnableDrawing = false;
 
-		if ( ModelPath != null )
-		{
-			Model = Cloud.Model( "facepunch.w_mp5" );
-		}
+		Model = Cloud.Model( "facepunch.w_mp5" );
 	}
 
 	/// <summary>
@@ -56,7 +55,8 @@ public partial class Weapon : AnimatedEntity
 		Owner = pawn;
 		SetParent( pawn, true );
 		EnableDrawing = true;
-		CreateViewModel( To.Single( pawn ) );
+		if ( Game.IsServer )
+			CreateViewModel( To.Single( Owner ) );
 	}
 
 	/// <summary>
@@ -65,7 +65,9 @@ public partial class Weapon : AnimatedEntity
 	public void OnHolster()
 	{
 		EnableDrawing = false;
-		DestroyViewModel( To.Single( Owner ) );
+		Delete();
+		if ( Game.IsServer )
+			DestroyViewModel( To.Single( Owner ) );
 	}
 
 	/// <summary>
@@ -82,12 +84,7 @@ public partial class Weapon : AnimatedEntity
 			{
 				TimeSincePrimaryAttack = 0;
 				PrimaryAttack();
-				ViewModelEntity?.SetAnimParameter( "attack_hold", 1 );
 			}
-		}
-		else
-		{
-			ViewModelEntity?.SetAnimParameter( "attack_hold", 0 );
 		}
 
 		if ( Input.Down( "attack2" ) )
@@ -225,11 +222,13 @@ public partial class Weapon : AnimatedEntity
 	[ClientRpc]
 	public void CreateViewModel()
 	{
+		Game.AssertClient();
+
 		if ( ViewModelPath == null ) return;
 
-		var vm = new WeaponViewModel( this );
-		//vm.Model = Model.Load( ViewModelPath );
+		var vm = new WeaponViewModel();
 		vm.Model = Cloud.Model( "facepunch.v_mp5" );
+		vm.Owner = Owner;
 		ViewModelEntity = vm;
 
 		var arms = new AnimatedEntity( "models/first_person/first_person_arms_citizen_4fingers.vmdl" );

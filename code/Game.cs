@@ -41,5 +41,12 @@ public partial class MyGame : Sandbox.GameManager
 		pawn.Respawn();
 		//pawn.DressFromClient( client );
 	}
+
+	[ConCmd.Admin("kill")]
+	public static void KillCmd()
+	{
+		if ( ConsoleSystem.Caller.Pawn is Pawn player )
+			player.TakeDamage( new DamageInfo { Damage = 1000.0f } );
+	}
 }
 

@@ -21,7 +21,7 @@ public partial class Pawn : AnimatedEntity
 	private DamageInfo lastDamage;
 
 	[Net]
-	float nextRespawn { set; get; };
+	float nextRespawn { set; get; }
 
 	/// <summary>
 	/// Position a player should be looking from in world space.
@@ -83,16 +83,17 @@ public partial class Pawn : AnimatedEntity
 
 	public void SetActiveWeapon( Weapon weapon )
 	{
-		ActiveWeapon?.OnHolster();
 		ActiveWeapon = weapon;
 		ActiveWeapon.OnEquip( this );
 	}
 
 	public void Respawn()
 	{
+		Components.RemoveAll();
 		Components.Create<PawnController>();
 		Components.Create<PawnAnimator>();
 
+		ActiveWeapon?.Delete();
 		SetActiveWeapon( new SMG() );
 		Health = 100;
 
@@ -130,9 +131,12 @@ public partial class Pawn : AnimatedEntity
 	public override void Simulate( IClient cl )
 	{
 		SimulateRotation();
-		Controller?.Simulate( cl );
-		Animator?.Simulate();
-		ActiveWeapon?.Simulate( cl );
+		if ( LifeState != LifeState.Dead )
+		{
+			Controller?.Simulate( cl );
+			Animator?.Simulate();
+			ActiveWeapon?.Simulate( cl );
+		}
 		EyeLocalPosition = Vector3.Up * (64f * Scale);
 
 		if (Time.Now > nextRespawn && LifeState == LifeState.Dead)
@@ -249,8 +253,10 @@ public partial class Pawn : AnimatedEntity
 		EnableAllCollisions = false;
 		EnableDrawing = false;
 
-		nextRespawn = Time.Now + 10.0f;
+		nextRespawn = Time.Now + 5.0f;
 		LifeState = LifeState.Dead;
+
+		ActiveWeapon?.OnHolster();
 	}
 
 	[ClientRpc]
@@ -274,6 +280,7 @@ public partial class Pawn : AnimatedEntity
 		ent.RenderColor = RenderColor;
 		//ent.PhysicsGroup.Velocity = velocity;
 		ent.PhysicsEnabled = true;
+		ent.EnableHitboxes = true;
 
 		foreach ( var child in Children )
 		{
@@ -314,6 +321,6 @@ public partial class Pawn : AnimatedEntity
 			}
 		}
 
-		ent.DeleteAsync( 10.0f );
+		ent.DeleteAsync( 30.0f );
 	}
 }
