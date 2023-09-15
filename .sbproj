@@ -37,7 +37,7 @@
         "Name": "My New Config",
         "GameIdent": "local.johnhalo#local",
         "MapName": "guardian.vmap",
-        "MaxPlayers": 1,
+        "MaxPlayers": 8,
         "GameSettings": {},
         "Addons": "",
         "PreLaunchCommand": "",

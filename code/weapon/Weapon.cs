@@ -188,7 +188,7 @@ public partial class Weapon : AnimatedEntity
 		// ShootBullet is coded in a way where we can have bullets pass through shit
 		// or bounce off shit, in which case it'll return multiple results
 		//
-		foreach ( var tr in TraceBullet( pos, pos + forward * 5000, bulletSize ) )
+		foreach (var tr in TraceBullet( pos, pos + forward * 1000, bulletSize ) )
 		{
 			tr.Surface.DoBulletImpact( tr );
 
@@ -207,6 +207,7 @@ public partial class Weapon : AnimatedEntity
 
 				tr.Entity.TakeDamage( damageInfo );
 			}
+	
 		}
 	}
 

@@ -39,11 +39,11 @@ public partial class SMG : Weapon
 	public override void PrimaryAttack()
 	{
 		ShootEffects();
-		Pawn.PlaySound( "smg.fire" );
+		Pawn.PlaySound( "rifle.fire" );
 		if (IsAiming) 
-			ShootBullet( ADSSpread, 100, 20, 1 );
+			ShootBullet( ADSSpread, 100, 20, 10.0f );
 		else
-			ShootBullet( Spread, 100, 20, 1 );
+			ShootBullet( Spread, 100, 20, 10.0f );
 	}
 
 	public override void SecondaryAttack()
