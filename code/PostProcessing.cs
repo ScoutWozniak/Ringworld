@@ -27,7 +27,7 @@ public partial class MyPostProcessEffect : ScreenEffects
 			else
 				vignetteTarget = 0f;
 
-			vignetteState = MathX.Lerp( vignetteState, vignetteTarget, 0.05f );
+			vignetteState = vignetteTarget;
 			Vignette.Intensity = vignetteState;
 
 			Pixelation = 0.0f;
