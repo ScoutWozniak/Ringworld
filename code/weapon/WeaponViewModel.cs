@@ -24,6 +24,8 @@ public class WeaponViewModel : BaseViewModel
 	public float YawInertia { get; private set; }
 	public float PitchInertia { get; private set; }
 
+	float viewmodelFOVmult = 1.0f;
+
 	public static WeaponViewModel Current;
 
 
@@ -106,7 +108,7 @@ public class WeaponViewModel : BaseViewModel
 		YawInertia = YawInertia.LerpTo( 0, Time.Delta * InertiaDamping );
 		PitchInertia = PitchInertia.LerpTo( 0, Time.Delta * InertiaDamping );
 
-		Camera.Main.SetViewModelCamera( 80f, 1, 500 );
+		Camera.Main.SetViewModelCamera( 90f, 1, 500 );
 	}
 
 	protected Vector3 CalcSwingOffset( float pitchDelta, float yawDelta )

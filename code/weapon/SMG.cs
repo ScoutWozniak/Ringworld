@@ -5,15 +5,15 @@ namespace MyGame;
 public partial class SMG : Weapon
 {
 	public override string ModelPath => "weapons/rust_pistol/rust_pistol.vmdl";
-	public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
 
 	public override float PrimaryRate => 10.0f;
 
-	float Spread => 0.3f;
-	float ADSSpread => 0.1f;
+	float Spread => 0.1f;
+
 
 	public override void Spawn()
 	{
+		LoadWeaponInfo( "rifle" );
 		base.Spawn();
 	}
 
@@ -23,6 +23,7 @@ public partial class SMG : Weapon
 		var attack_hold = Input.Down( "attack1" ) ? 1.0f : 0.0f;
 		(Owner as AnimatedEntity)?.SetAnimParameter( "attack_hold", attack_hold );
 		ViewModelEntity?.SetAnimParameter( "attack_hold", attack_hold );
+
 	}
 
 	[ClientRpc]
@@ -34,7 +35,7 @@ public partial class SMG : Weapon
 
 		Pawn.SetAnimParameter( "b_attack", true );
 		ViewModelEntity?.SetAnimParameter( "b_attack", true );
-		Pawn.PlaySound( "riflefire" );
+		Pawn.PlaySound( "smg.fire" );
 	}
 
 	public override void PrimaryAttack()
@@ -43,24 +44,25 @@ public partial class SMG : Weapon
 		if (Game.IsServer)
 			ShootEffects();
 		
-		if (IsAiming) 
-			ShootBullet( ADSSpread, 100, 5, 10.0f );
-		else
-			ShootBullet( Spread, 100, 5, 10.0f );
+
+		ShootBullet( Spread, 100, 5, 10.0f );
+		ammoInClip -= 1;
 	}
 
 	public override void SecondaryAttack()
 	{
-		base.SecondaryAttack();
-		ViewModelEntity?.SetAnimParameter( "ironsights", 2 );
+		Pawn.fovZoomMult = 1.5f;
 		IsAiming = true;
+		if ( Game.IsClient )
+			ViewModelEntity.EnableDrawing = false;
 	}
 
 	public override void SecondaryAttackRelease()
 	{
-		base.SecondaryAttackRelease();
-		ViewModelEntity?.SetAnimParameter( "ironsights", 0 );
+		Pawn.fovZoomMult = 1.0f;
 		IsAiming = false;
+		if ( Game.IsClient )
+			ViewModelEntity.EnableDrawing = true;
 	}
 
 	protected override void Animate()

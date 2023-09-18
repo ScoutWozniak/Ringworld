@@ -8,8 +8,10 @@ public class PawnController : EntityComponent<Pawn>
 {
 	public int StepSize => 12;
 	public int GroundAngle => 45;
-	public int JumpSpeed => 400;
-	public float Gravity => 800.0f;
+	public int JumpSpeed => 225;
+	public float Gravity => 300.0f;
+
+	public float airMovementMult = 0.05f;
 
 	HashSet<string> ControllerEvents = new( StringComparer.OrdinalIgnoreCase );
 
@@ -32,12 +34,12 @@ public class PawnController : EntityComponent<Pawn>
 				AddEvent( "grounded" );
 			}
 
-			Entity.Velocity = Accelerate( Entity.Velocity, moveVector.Normal, moveVector.Length, 200.0f, 7.5f );
+			Entity.Velocity = Accelerate( Entity.Velocity, moveVector.Normal, 200.0f, 200.0f, 4.5f );
 			Entity.Velocity = ApplyFriction( Entity.Velocity, 4.0f );
 		}
 		else
 		{
-			Entity.Velocity = Accelerate( Entity.Velocity, moveVector.Normal, moveVector.Length, 100, 20f );
+			Entity.Velocity = Accelerate( Entity.Velocity, moveVector.Normal, moveVector.Length * airMovementMult, 100, 20f );
 			Entity.Velocity += Vector3.Down * Gravity * Time.Delta;
 		}
 
@@ -61,10 +63,6 @@ public class PawnController : EntityComponent<Pawn>
 
 		Entity.GroundEntity = groundEntity;
 
-
-		Entity.ActiveWeapon.ViewModelEntity?.SetAnimParameter( "b_jump", !Grounded );
-		if (Entity.Velocity.x != 0.0f)
-			Entity.ActiveWeapon.ViewModelEntity?.SetAnimParameter( "move_y", 100);
 	}
 
 	public void DoJump()

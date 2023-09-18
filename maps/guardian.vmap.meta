@@ -19,7 +19,8 @@
       "EditorReferences": [
         "facepunch.metal_painted_grey_a_hs#28954",
         "degg.base_mat_lred#10129",
-        "local.johnhalo#local"
+        "local.johnhalo#local",
+        "facepunch.wood_a_hs#28970"
       ],
       "Metadata": {
         "SingleAssetSource": "maps/guardian.vmap"

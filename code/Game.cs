@@ -48,5 +48,14 @@ public partial class MyGame : Sandbox.GameManager
 		if ( ConsoleSystem.Caller.Pawn is Pawn player )
 			player.TakeDamage( new DamageInfo { Damage = 1000.0f } );
 	}
+
+	[ConCmd.Admin("hurt")]
+	public static void HurtCmd()
+	{
+		if ( ConsoleSystem.Caller.Pawn is Pawn player )
+			player.TakeDamage( new DamageInfo { Damage = 10.0f } );
+	}
+
+
 }
 

@@ -1,0 +1,7 @@
+{
+  "Name": "Magnum",
+  "clipSize": 12,
+  "reloadLength": 1.2,
+  "deployTime": 1,
+  "primaryFireRate": 10
+}

@@ -1,0 +1,38 @@
+{
+  "publish": {
+    "Allowed": true,
+    "Enabled": false,
+    "ProjectConfig": {
+      "Title": "flatpunch",
+      "Type": "map",
+      "Org": "local",
+      "Ident": "flatpunch",
+      "Tags": null,
+      "Schema": 0,
+      "HasAssets": false,
+      "AssetsPath": null,
+      "Resources": null,
+      "MenuResources": null,
+      "HasCode": false,
+      "CodePath": null,
+      "PackageReferences": [],
+      "EditorReferences": [
+        "facepunch.floor_grass_wetdirt_blend_a#18652",
+        "mufamoof.dev_grass#12401",
+        "rust.shipping_container_900_a#23717",
+        "rust.shipping_container_300_a#25289",
+        "rust.shipping_container_900_b#23718",
+        "saandy.caged_light01_wall#35996",
+        "facepunch.concrete_a_hs#28938",
+        "gkaf.door_1#26044",
+        "gkaf.door_frame#27898",
+        "tfassets.window009#20653",
+        "facepunch.concrete_c_hs#28941",
+        "pcjr.dangersign#18928"
+      ],
+      "Metadata": {
+        "SingleAssetSource": "maps/flatpunch.vmap"
+      }
+    }
+  }
+}

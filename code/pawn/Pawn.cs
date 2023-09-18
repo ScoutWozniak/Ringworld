@@ -10,6 +10,11 @@ public partial class Pawn : AnimatedEntity
 	[Net, Predicted]
 	public Weapon ActiveWeapon { get; set; }
 
+	[Net, Predicted]
+	public Weapon weapon1 { get; set; }
+	[Net, Predicted]
+	public Weapon weapon2 { get; set; }
+
 	[ClientInput]
 	public Vector3 InputDirection { get; set; }
 	
@@ -17,8 +22,16 @@ public partial class Pawn : AnimatedEntity
 	public Angles ViewAngles { get; set; }
 
 	public float fov = 90.0f;
+	public float fovZoomMult = 1.0f;
+	float curFov = 90.0f;
 
 	private DamageInfo lastDamage;
+
+	[Net, Predicted]
+	public TimeSince lastHurtTime {get; set; }
+
+	[Net, Predicted]
+	public float Shields { get; set; } = 100.0f;
 
 	[Net]
 	float nextRespawn { set; get; }
@@ -94,8 +107,12 @@ public partial class Pawn : AnimatedEntity
 		Components.Create<PawnAnimator>();
 
 		ActiveWeapon?.Delete();
-		SetActiveWeapon( new SMG() );
-		Health = 100;
+		weapon1 = new Pistol();
+		weapon2 = new SMG();
+		//weapon.LoadWeaponData( ResourceLibrary.Get<WeaponData>( "data/weapons/rifle.weapon" ) ) ;
+		SetActiveWeapon( weapon2 );
+		Health = 10;
+		Shields = 100.0f;
 
 		// Get all of the spawnpoints
 		var spawnpoints = Entity.All.OfType<SpawnPoint>();
@@ -143,6 +160,19 @@ public partial class Pawn : AnimatedEntity
 		{
 			Respawn();
 		}
+
+		if (Input.Pressed("slot1"))
+		{
+			if ( ActiveWeapon == weapon1 )
+				SetActiveWeapon( weapon2 );
+			else
+				SetActiveWeapon( weapon1 );
+		}
+
+		if (lastHurtTime > 10.0f && Shields != 100.0f)
+		{
+			Shields = MathX.Lerp( Shields, 100.0f, 0.05f );
+		}
 	}
 
 	public override void BuildInput()
@@ -172,8 +202,10 @@ public partial class Pawn : AnimatedEntity
 	{
 		SimulateRotation();
 
+		curFov = MathX.Lerp( curFov, fov / fovZoomMult, 0.05f );
+
 		Camera.Rotation = ViewAngles.ToRotation();
-		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( fov );
+		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( curFov );
 
 		if ( Input.Pressed( "view" ) )
 		{
@@ -236,8 +268,18 @@ public partial class Pawn : AnimatedEntity
 
 	public override void TakeDamage( DamageInfo info )
 	{
-
-		base.TakeDamage( info );
+		if ( Shields < 0 )
+			base.TakeDamage( info );
+		else
+		{
+			Shields -= info.Damage;
+			if ( Shields < 0 )
+			{
+				info.Damage = -Shields;
+				base.TakeDamage( info );
+			}
+		}
+		lastHurtTime = 0;
 	}
 
 	public override void OnKilled()

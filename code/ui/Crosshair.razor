@@ -1,0 +1,25 @@
+﻿@inherits Sandbox.UI.Panel
+@using Sandbox
+
+<style>
+	Crosshair {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.middle-dot {
+		width: 128px;
+		height: 128px;
+		background-image: url("images/reticle1.png");
+		background-size: cover;
+		transform: translate(-50%, -50%);
+	}
+</style>
+
+<root class="Crosshair">
+	<div class="middle-dot"/>
+</root>

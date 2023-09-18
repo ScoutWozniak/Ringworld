@@ -21,7 +21,7 @@ public partial class Weapon : AnimatedEntity
 	/// </summary>
 	public AnimatedEntity EffectEntity => Camera.FirstPersonViewer == Owner ? ViewModelEntity : this;
 
-	public virtual string ViewModelPath => null;
+	public string ViewModelPath;
 	public virtual string ModelPath => null;
 
 	/// <summary>
@@ -39,6 +39,31 @@ public partial class Weapon : AnimatedEntity
 	[Net]
 	public bool IsAiming { set; get; } = false;
 
+
+	public float primaryDamage = 1.0f;
+
+	[Net, Predicted] public TimeSince deployTime { get; set; }
+
+	[Net]
+	public bool deploying { get; set; }
+
+	public float deployDelay = 1.0f;
+
+	[Net,Predicted]
+	public int ammoInClip { get; set; }
+
+	public int MaxAmmo;
+
+	[Net, Predicted]
+	public TimeSince reloadTime { get; set; } = 0;
+	[Net]
+	public bool reloading { get; set; } = false;
+
+	public float reloadLength = 1.0f;
+
+	[Net]
+	public WeaponData weaponInfo { get; set; }
+
 	public override void Spawn()
 	{
 		base.Spawn();
@@ -47,6 +72,17 @@ public partial class Weapon : AnimatedEntity
 		EnableDrawing = false;
 
 		Model = Cloud.Model( "facepunch.w_mp5" );
+
+		ammoInClip = weaponInfo.clipSize;
+	}
+
+	public void LoadWeaponInfo( string weaponName )
+	{
+		if ( ResourceLibrary.TryGet<WeaponData>( "data/weapons/" + weaponName + ".weapon", out var data ) )
+			weaponInfo = data;
+		else if ( ResourceLibrary.TryGet<WeaponData>( "/data/weapons/" + weaponName + ".weapon", out var data2 ) )
+			weaponInfo = data2;
+
 	}
 
 	/// <summary>
@@ -60,6 +96,9 @@ public partial class Weapon : AnimatedEntity
 		EnableDrawing = true;
 		if ( Game.IsServer )
 			CreateViewModel( To.Single( Owner ) );
+
+		deploying = true;
+		deployTime = 0;
 	}
 
 	/// <summary>
@@ -89,6 +128,30 @@ public partial class Weapon : AnimatedEntity
 				PrimaryAttack();
 			}
 		}
+
+		if ( Input.Down("attack2") ) {
+			SecondaryAttack();
+		}
+		else if (Input.Released("attack2"))
+		{
+			SecondaryAttackRelease();
+		}
+
+		if (deploying )
+		{
+			if ( weaponInfo?.deployTime <  deployTime)
+				deploying = false;
+		}
+
+		if ( Input.Pressed( "reload" ))
+		{
+			Reload();
+		}
+
+		if ( reloading )
+			if ( reloadTime > weaponInfo?.reloadLength )
+				reloading = false;
+
 	}
 
 	/// <summary>
@@ -97,9 +160,11 @@ public partial class Weapon : AnimatedEntity
 	/// <returns></returns>
 	public virtual bool CanPrimaryAttack()
 	{
-		if ( !Owner.IsValid() || !Input.Down( "attack1" ) ) return false;
+		if ( !Owner.IsValid() || !Input.Down( "attack1" ) || deploying || reloading) return false;
 
-		var rate = PrimaryRate;
+		if ( ammoInClip <= 0 ) return false;
+
+		var rate = weaponInfo?.primaryFireRate;
 		if ( rate <= 0 ) return true;
 
 		return TimeSincePrimaryAttack > (1 / rate);
@@ -124,7 +189,17 @@ public partial class Weapon : AnimatedEntity
 	}
 
 	public virtual void SecondaryAttackRelease()
-	{}
+	{
+	}
+
+	public virtual void Reload()
+	{
+		reloadTime = 0;
+		reloading = true;
+		ViewModelEntity?.SetAnimParameter( "b_reload", true );
+		if (weaponInfo != null)
+			ammoInClip = weaponInfo.clipSize;
+	}
 
 	/// <summary>
 	/// Useful for setting anim parameters based off the current weapon.
@@ -207,14 +282,12 @@ public partial class Weapon : AnimatedEntity
 	}
 
 	[ClientRpc]
-	public void CreateViewModel()
+	public virtual void CreateViewModel()
 	{
 		Game.AssertClient();
 
-		if ( ViewModelPath == null ) return;
-
 		var vm = new WeaponViewModel();
-		vm.Model = Cloud.Model( "facepunch.v_mp5" );
+		vm.Model = Cloud.Model("facepunch.v_mp5");
 		vm.Owner = Owner;
 		ViewModelEntity = vm;
 
