@@ -13,10 +13,14 @@ public partial class WorldWeaponSpawn : AnimatedEntity, IUse
 	[Net]
 	public Weapon weaponToGive { get; set; }
 
+	[Property(Title = "Weapon Data")]
+	public WeaponData weaponSpawn { get;set; }
+
 	public override void Spawn()
 	{
 		base.Spawn();
-		Model = Cloud.Model( "https://asset.party/facepunch/wooden_crate" );
+		Log.Info( weaponSpawn?.WorldModel );
+		SetModel( weaponSpawn?.WorldModel);
 
 		UsePhysicsCollision = true;
 		PhysicsEnabled = true;
@@ -40,7 +44,9 @@ public partial class WorldWeaponSpawn : AnimatedEntity, IUse
 
 		if (user is Pawn player)
 		{
-			player.AddWeapon( new SMG());
+			Weapon newWeapon = new Weapon();
+			newWeapon.weaponInfo = weaponSpawn;
+			player.AddWeapon( newWeapon);
 		}
 
 		return false;

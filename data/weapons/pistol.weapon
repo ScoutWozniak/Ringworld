@@ -4,6 +4,8 @@
   "reloadLength": 1.2,
   "deployTime": 1,
   "primaryFireRate": 10,
+  "canZoom": true,
+  "zoomMult": 2,
   "ViewModel": "models/weapons/sbox_pistol_usp/v_usp.vmdl",
   "WorldModel": "models/weapons/sbox_pistol_usp/w_usp.vmdl",
   "fireMode": "SemiAuto",

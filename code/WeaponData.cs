@@ -19,6 +19,9 @@ namespace Sandbox
 
 		public float primaryFireRate { get; set; }
 
+		public bool canZoom { get; set; }
+		public float zoomMult { get; set; }
+
 		[ResourceType( "vmdl" )]
 		public string ViewModel { get; set; }
 
