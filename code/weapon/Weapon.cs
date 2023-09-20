@@ -159,13 +159,35 @@ public partial class Weapon : AnimatedEntity
 
 	}
 
+	[ClientRpc]
+	protected virtual void ShootEffects()
+	{
+
+		Particles.Create( "particles/pistol_muzzleflash.vpcf", EffectEntity, "muzzle" );
+
+		Pawn.SetAnimParameter( "b_attack", true );
+		ViewModelEntity?.SetAnimParameter( "b_attack", true );
+		Pawn.PlaySound( "smg.fire" );
+	}
+
 	/// <summary>
 	/// Called every <see cref="Simulate(IClient)"/> to see if we can shoot our gun.
 	/// </summary>
 	/// <returns></returns>
 	public virtual bool CanPrimaryAttack()
 	{
-		if ( !Owner.IsValid() || !Input.Down( "attack1" ) || deploying || reloading) return false;
+		if ( !Owner.IsValid() || deploying || reloading) return false;
+
+			if (weaponInfo.fireMode == WeaponData.FireType.FullAuto )
+			{
+				if ( !Input.Down( "attack1" ) )
+					return false;
+			}
+			else
+			{
+				if ( !Input.Pressed( "attack1" ) )
+					return false;
+			}
 
 		if ( ammoInClip <= 0 ) return false;
 
@@ -177,7 +199,7 @@ public partial class Weapon : AnimatedEntity
 
 	public virtual bool CanSecondaryAttack()
 	{
-		if ( !Owner.IsValid() || (!Input.Down( "attack2" ) || !Input.Released( "attack2" )) ) return false;
+		if ( !Owner.IsValid() || (!Input.Down( "attack2" ) || !Input.Released( "attack2" )) || !weaponInfo.canZoom ) return false;
 
 		return true;
 	}
@@ -187,14 +209,29 @@ public partial class Weapon : AnimatedEntity
 	/// </summary>
 	public virtual void PrimaryAttack()
 	{
+
+		if ( Game.IsServer )
+			ShootEffects();
+
+		ShootBullet( 0.005f, 100, primaryDamage, 10.0f );
+
+		ammoInClip -= 1;
 	}
 
 	public virtual void SecondaryAttack()
 	{
+		Pawn.fovZoomMult = weaponInfo.zoomMult;
+		IsAiming = true;
+		if ( Game.IsClient )
+			ViewModelEntity.EnableDrawing = false;
 	}
 
 	public virtual void SecondaryAttackRelease()
 	{
+		Pawn.fovZoomMult = 1.0f;
+		IsAiming = false;
+		if ( Game.IsClient )
+			ViewModelEntity.EnableDrawing = true;
 	}
 
 	public virtual void Reload()
@@ -292,7 +329,7 @@ public partial class Weapon : AnimatedEntity
 		Game.AssertClient();
 
 		var vm = new WeaponViewModel();
-		vm.Model = Cloud.Model("facepunch.v_mp5");
+		vm.SetModel( weaponInfo.ViewModel );
 		vm.Owner = Owner;
 		ViewModelEntity = vm;
 

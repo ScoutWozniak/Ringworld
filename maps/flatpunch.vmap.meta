@@ -30,7 +30,10 @@
         "facepunch.concrete_c_hs#28941",
         "pcjr.dangersign#18928",
         "droppod.ringworld",
-        "facepunch.w_usp#33631"
+        "facepunch.w_usp#33631",
+        "facepunch.v_usp#38520",
+        "facepunch.v_mp5#38620",
+        "facepunch.w_mp5#33703"
       ],
       "Metadata": {
         "SingleAssetSource": "maps/flatpunch.vmap"

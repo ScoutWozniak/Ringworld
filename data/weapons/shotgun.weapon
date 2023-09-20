@@ -1,0 +1,13 @@
+{
+  "weaponName": "Shotgun",
+  "clipSize": 8,
+  "reloadLength": 3,
+  "deployTime": 1,
+  "primaryFireRate": 1,
+  "canZoom": false,
+  "zoomMult": 0,
+  "ViewModel": "models/weapons/sbox_pistol_usp/v_usp.vmdl",
+  "WorldModel": "weapon/assets/content/weapons/m870/m870.vmdl",
+  "fireMode": "SemiAuto",
+  "fireSound": "sounds/pistol.fire.sound"
+}
