@@ -199,7 +199,7 @@ public partial class Weapon : AnimatedEntity
 
 	public virtual bool CanSecondaryAttack()
 	{
-		if ( !Owner.IsValid() || (!Input.Down( "attack2" ) || !Input.Released( "attack2" )) ) return false;
+		if ( !Owner.IsValid() || (!Input.Down( "attack2" ) || !Input.Released( "attack2" )) || !weaponInfo.canZoom ) return false;
 
 		return true;
 	}
@@ -329,7 +329,7 @@ public partial class Weapon : AnimatedEntity
 		Game.AssertClient();
 
 		var vm = new WeaponViewModel();
-		vm.Model = Cloud.Model("facepunch.v_mp5");
+		vm.SetModel( weaponInfo.ViewModel );
 		vm.Owner = Owner;
 		ViewModelEntity = vm;
 

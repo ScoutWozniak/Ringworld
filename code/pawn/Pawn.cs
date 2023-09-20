@@ -110,7 +110,8 @@ public partial class Pawn : AnimatedEntity
 		Components.Create<PawnAnimator>();
 
 		ActiveWeapon?.Delete();
-		weapon1 = new Pistol();
+		weapon1 = new Weapon();
+		weapon1.LoadWeaponInfo( "pistol" );
 		//weapon.LoadWeaponData( ResourceLibrary.Get<WeaponData>( "data/weapons/rifle.weapon" ) ) ;
 		SetActiveWeapon( weapon1 );
 		Health = 10;
