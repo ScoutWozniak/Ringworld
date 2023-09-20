@@ -96,8 +96,11 @@ public partial class Pawn : AnimatedEntity
 
 	public void SetActiveWeapon( Weapon weapon )
 	{
-		ActiveWeapon = weapon;
-		ActiveWeapon.OnEquip( this );
+		if ( weapon != null )
+		{
+			ActiveWeapon = weapon;
+			ActiveWeapon.OnEquip( this );
+		}
 	}
 
 	public void Respawn()
@@ -108,9 +111,8 @@ public partial class Pawn : AnimatedEntity
 
 		ActiveWeapon?.Delete();
 		weapon1 = new Pistol();
-		weapon2 = new SMG();
 		//weapon.LoadWeaponData( ResourceLibrary.Get<WeaponData>( "data/weapons/rifle.weapon" ) ) ;
-		SetActiveWeapon( weapon2 );
+		SetActiveWeapon( weapon1 );
 		Health = 10;
 		Shields = 100.0f;
 
@@ -136,6 +138,8 @@ public partial class Pawn : AnimatedEntity
 		Tags.Add( "player" );
 
 		LifeState = LifeState.Alive;
+
+		GivePropPusher();
 	}
 
 	public void DressFromClient( IClient cl )
@@ -173,6 +177,8 @@ public partial class Pawn : AnimatedEntity
 		{
 			Shields = MathX.Lerp( Shields, 100.0f, 0.05f );
 		}
+
+		TickPlayerUse();
 	}
 
 	public override void BuildInput()
@@ -209,7 +215,7 @@ public partial class Pawn : AnimatedEntity
 
 		if ( Input.Pressed( "view" ) )
 		{
-			IsThirdPerson = !IsThirdPerson;
+			//IsThirdPerson = !IsThirdPerson;
 		}
 
 		if ( IsThirdPerson )
@@ -360,5 +366,54 @@ public partial class Pawn : AnimatedEntity
 		}
 
 		ent.DeleteAsync( 30.0f );
+	}
+
+	public void GivePropPusher()
+	{
+		Pawn_PropPusher propPusher = new Pawn_PropPusher();
+		propPusher.Position = Position;
+		propPusher.Parent = this;
+	}
+
+	public void AddWeapon( Weapon weapon )
+	{
+		if ( weapon1 == null || weapon2 == null )
+		{
+			if ( weapon1 == null )
+			{
+				weapon1 = weapon;
+			}
+			else if ( weapon2 == null )
+			{
+				weapon2 = weapon;
+				
+			}
+			SetActiveWeapon( weapon );
+		}
+		else
+		{
+			if (ActiveWeapon == weapon1)
+			{
+				weapon1 = weapon;
+			}
+			else
+			{
+				weapon2 = weapon;
+			}
+			SetActiveWeapon( weapon );
+		}
+	}
+}
+
+public class Pawn_PropPusher : AnimatedEntity
+{
+	public override void Spawn()
+	{
+		SetupPhysicsFromOBB( PhysicsMotionType.Keyframed, new Vector3( -22, -22, 4 ), new Vector3( 22, 22, 72 ) );
+
+		EnableDrawing = false;
+		EnableHideInFirstPerson = true;
+		EnableShadowInFirstPerson = false;
+		EnableTraceAndQueries = false;
 	}
 }

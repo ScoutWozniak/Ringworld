@@ -11,7 +11,7 @@ public class PawnController : EntityComponent<Pawn>
 	public int JumpSpeed => 225;
 	public float Gravity => 300.0f;
 
-	public float airMovementMult = 0.05f;
+	public float airMovementMult = 0.1f;
 
 	HashSet<string> ControllerEvents = new( StringComparer.OrdinalIgnoreCase );
 

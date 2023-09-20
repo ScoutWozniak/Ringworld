@@ -11,8 +11,7 @@ namespace MyGame;
 [SceneCamera.AutomaticRenderHook]
 public partial class MyPostProcessEffect : ScreenEffects
 {
-	RenderAttributes attributes = new RenderAttributes();
-	Material effectMaterial = Material.Load( "materials/my_awesome_material.vmat" );
+
 
 	float vignetteState = 0f;
 	float vignetteTarget = 0f;
@@ -26,6 +25,7 @@ public partial class MyPostProcessEffect : ScreenEffects
 				vignetteTarget = 0.5f;
 			else
 				vignetteTarget = 0f;
+
 
 			vignetteState = vignetteTarget;
 			Vignette.Intensity = vignetteState;

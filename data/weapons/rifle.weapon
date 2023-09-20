@@ -3,5 +3,6 @@
   "clipSize": 30,
   "reloadLength": 1.8,
   "deployTime": 0.75,
-  "primaryFireRate": 10
+  "primaryFireRate": 10,
+  "weaponName": "SMG"
 }

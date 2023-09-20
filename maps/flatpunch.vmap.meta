@@ -28,7 +28,9 @@
         "gkaf.door_frame#27898",
         "tfassets.window009#20653",
         "facepunch.concrete_c_hs#28941",
-        "pcjr.dangersign#18928"
+        "pcjr.dangersign#18928",
+        "droppod.ringworld",
+        "facepunch.w_usp#33631"
       ],
       "Metadata": {
         "SingleAssetSource": "maps/flatpunch.vmap"

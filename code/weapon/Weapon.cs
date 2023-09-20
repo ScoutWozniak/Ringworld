@@ -61,6 +61,8 @@ public partial class Weapon : AnimatedEntity
 
 	public float reloadLength = 1.0f;
 
+	public string name;
+
 	[Net]
 	public WeaponData weaponInfo { get; set; }
 
@@ -73,7 +75,10 @@ public partial class Weapon : AnimatedEntity
 
 		Model = Cloud.Model( "facepunch.w_mp5" );
 
-		ammoInClip = weaponInfo.clipSize;
+		if ( weaponInfo != null )
+		{
+			ammoInClip = weaponInfo.clipSize;
+		}
 	}
 
 	public void LoadWeaponInfo( string weaponName )

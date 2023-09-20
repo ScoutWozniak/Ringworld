@@ -18,5 +18,7 @@ namespace Sandbox
 		public float deployTime { get; set; }
 
 		public float primaryFireRate { get; set; }
+
+		public string weaponName { get;set; }
 	}
 }
