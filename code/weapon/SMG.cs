@@ -13,7 +13,7 @@ public partial class SMG : Weapon
 
 	public override void Spawn()
 	{
-		LoadWeaponInfo( "rifle" );
+		
 		base.Spawn();
 	}
 
