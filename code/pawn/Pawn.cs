@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using System;
+using System.Numerics;
 
 namespace MyGame;
 
@@ -92,12 +93,15 @@ public partial class Pawn : AnimatedEntity
 		EnableDrawing = true;
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = true;
+
+		SetupPhysicsFromOBB( PhysicsMotionType.Keyframed, new Vector3( -22, -22, 4 ), new Vector3( 22, 22, 72 ) );
 	}
 
 	public void SetActiveWeapon( Weapon weapon )
 	{
 		if ( weapon != null )
 		{
+			ActiveWeapon?.OnHolster();
 			ActiveWeapon = weapon;
 			ActiveWeapon.OnEquip( this );
 		}
@@ -109,9 +113,11 @@ public partial class Pawn : AnimatedEntity
 		Components.Create<PawnController>();
 		Components.Create<PawnAnimator>();
 
-		ActiveWeapon?.Delete();
+		weapon1?.Delete();
+		weapon2?.Delete();
 		weapon1 = new Weapon();
-		weapon1.LoadWeaponInfo( "pistol" );
+		weapon1.SetWeaponInfo( Weapon.LoadWeaponInfo( "rifle" ));
+
 		//weapon.LoadWeaponData( ResourceLibrary.Get<WeaponData>( "data/weapons/rifle.weapon" ) ) ;
 		SetActiveWeapon( weapon1 );
 		Health = 10;
@@ -140,7 +146,9 @@ public partial class Pawn : AnimatedEntity
 
 		LifeState = LifeState.Alive;
 
-		GivePropPusher();
+		//GivePropPusher();
+
+		Input.ClearActions();
 	}
 
 	public void DressFromClient( IClient cl )
@@ -158,28 +166,36 @@ public partial class Pawn : AnimatedEntity
 			Controller?.Simulate( cl );
 			Animator?.Simulate();
 			ActiveWeapon?.Simulate( cl );
+
+			if ( Input.Pressed( "slot1" ) )
+			{
+				if ( ActiveWeapon == weapon1 )
+					SetActiveWeapon( weapon2 );
+				else
+					SetActiveWeapon( weapon1 );
+			}
+
+			if ( lastHurtTime > 10.0f && Shields != 100.0f )
+			{
+				Shields = MathX.Lerp( Shields, 100.0f, 0.05f );
+			}
+
+			TickPlayerUse();
+		}
+		else
+		{
+			if ( Time.Now > nextRespawn)
+			{
+				Respawn();
+			}
 		}
 		EyeLocalPosition = Vector3.Up * (64f * Scale);
 
-		if (Time.Now > nextRespawn && LifeState == LifeState.Dead)
-		{
-			Respawn();
-		}
+		
 
-		if (Input.Pressed("slot1"))
-		{
-			if ( ActiveWeapon == weapon1 )
-				SetActiveWeapon( weapon2 );
-			else
-				SetActiveWeapon( weapon1 );
-		}
+		
 
-		if (lastHurtTime > 10.0f && Shields != 100.0f)
-		{
-			Shields = MathX.Lerp( Shields, 100.0f, 0.05f );
-		}
-
-		TickPlayerUse();
+		
 	}
 
 	public override void BuildInput()
@@ -276,24 +292,35 @@ public partial class Pawn : AnimatedEntity
 	public override void TakeDamage( DamageInfo info )
 	{
 		if ( Shields < 0 )
-			base.TakeDamage( info );
+		{
+			Health -= info.Damage;
+			if ( Health <= 0 )
+			{
+				OnKilledInfo( info );
+			}
+		}
 		else
 		{
 			Shields -= info.Damage;
 			if ( Shields < 0 )
 			{
 				info.Damage = -Shields;
-				base.TakeDamage( info );
+				Health -= info.Damage;
+				if ( Health <= 0 )
+				{
+					OnKilledInfo( info );
+				}
 			}
 		}
 		lastHurtTime = 0;
 	}
 
-	public override void OnKilled()
+	public void OnKilledInfo(DamageInfo info)
 	{
 		//base.OnKilled();
 
-		BecomeRagdollOnClient( Velocity, lastDamage.Position, lastDamage.Force, lastDamage.BoneIndex, true, true );
+		if (Game.IsServer)
+			BecomeRagdollOnClient( lastDamage.Force, lastDamage.BoneIndex );
 
 		EnableAllCollisions = false;
 		EnableDrawing = false;
@@ -301,72 +328,13 @@ public partial class Pawn : AnimatedEntity
 		nextRespawn = Time.Now + 5.0f;
 		LifeState = LifeState.Dead;
 
-		ActiveWeapon?.OnHolster();
-	}
+		ActiveWeapon?.OnDeath();
 
-	[ClientRpc]
-	private void BecomeRagdollOnClient( Vector3 velocity, Vector3 forcePos, Vector3 force, int bone, bool impulse, bool blast )
-	{
-		var ent = new ModelEntity();
-		ent.Tags.Add( "ragdoll", "solid", "debris" );
-		ent.Position = Position;
-		ent.Rotation = Rotation;
-		ent.Scale = Scale;
-		ent.UsePhysicsCollision = true;
-		ent.EnableAllCollisions = true;
-		ent.SetModel( GetModelName() );
-		ent.CopyBonesFrom( this );
-		ent.CopyBodyGroups( this );
-		ent.CopyMaterialGroup( this );
-		ent.CopyMaterialOverrides( this );
-		ent.TakeDecalsFrom( this );
-		ent.EnableAllCollisions = true;
-		ent.SurroundingBoundsMode = SurroundingBoundsType.Physics;
-		ent.RenderColor = RenderColor;
-		//ent.PhysicsGroup.Velocity = velocity;
-		ent.PhysicsEnabled = true;
-		ent.EnableHitboxes = true;
+		if ( weapon1 != null ) LaunchWeapon( weapon1 );
+		if ( weapon2 != null ) LaunchWeapon( weapon2 );
 
-		foreach ( var child in Children )
-		{
-			if ( !child.Tags.Has( "clothes" ) ) continue;
-			if ( child is not ModelEntity e ) continue;
-
-			var model = e.GetModelName();
-
-			var clothing = new ModelEntity();
-			clothing.SetModel( model );
-			clothing.SetParent( ent, true );
-			clothing.RenderColor = e.RenderColor;
-			clothing.CopyBodyGroups( e );
-			clothing.CopyMaterialGroup( e );
-		}
-
-		if ( impulse )
-		{
-			PhysicsBody body = bone > 0 ? ent.GetBonePhysicsBody( bone ) : null;
-
-			if ( body != null )
-			{
-				body.ApplyImpulseAt( forcePos, force * body.Mass );
-			}
-			else
-			{
-				ent.PhysicsGroup.ApplyImpulse( force );
-			}
-		}
-
-		if ( blast )
-		{
-			if ( ent.PhysicsGroup != null )
-			{
-				ent.PhysicsGroup.AddVelocity( (Position - (forcePos + Vector3.Down * 100.0f)).Normal * (force.Length * 0.2f) );
-				var angularDir = (Rotation.FromYaw( 90 ) * force.WithZ( 0 ).Normal).Normal;
-				ent.PhysicsGroup.AddAngularVelocity( angularDir * (force.Length * 0.02f) );
-			}
-		}
-
-		ent.DeleteAsync( 30.0f );
+		if (info.Attacker != null)
+			info.Attacker.Client.AddInt( "kills" );
 	}
 
 	public void GivePropPusher()
@@ -378,6 +346,7 @@ public partial class Pawn : AnimatedEntity
 
 	public void AddWeapon( Weapon weapon )
 	{
+
 		if ( weapon1 == null || weapon2 == null )
 		{
 			if ( weapon1 == null )
@@ -395,14 +364,33 @@ public partial class Pawn : AnimatedEntity
 		{
 			if (ActiveWeapon == weapon1)
 			{
+				LaunchWeapon( weapon1 );
 				weapon1 = weapon;
 			}
 			else
 			{
+				LaunchWeapon( weapon2 );
 				weapon2 = weapon;
 			}
 			SetActiveWeapon( weapon );
 		}
+	}
+
+	void LaunchWeapon(Weapon weapon)
+	{
+		DroppedWeapon oldSpawn = new DroppedWeapon();
+		oldSpawn.SetData( weapon.weaponInfo );
+		oldSpawn.Position = AimRay.Position;
+		oldSpawn.ammoInClip = weapon.ammoInClip;
+		oldSpawn.ammoInReserve = weapon.reserveAmmo;
+		weapon.Delete();
+	}
+
+	public Weapon CheckDuplicateWeapon(WeaponData weapon)
+	{
+		if ( (weapon1 != null && weapon1.weaponInfo.weaponName == weapon.weaponName) ) return weapon1;
+		if ( (weapon2 != null && weapon2.weaponInfo.weaponName == weapon.weaponName) ) return weapon2;
+		return null;
 	}
 }
 
@@ -410,11 +398,13 @@ public class Pawn_PropPusher : AnimatedEntity
 {
 	public override void Spawn()
 	{
-		SetupPhysicsFromOBB( PhysicsMotionType.Keyframed, new Vector3( -22, -22, 4 ), new Vector3( 22, 22, 72 ) );
+		
 
 		EnableDrawing = false;
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = false;
 		EnableTraceAndQueries = false;
+
+		Tags.Add( "player" );
 	}
 }

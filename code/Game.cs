@@ -2,6 +2,7 @@
 using Sandbox;
 using System;
 using System.Linq;
+using System.Threading;
 
 //
 // You don't need to put things in a namespace, but it doesn't hurt.
@@ -26,7 +27,33 @@ public partial class MyGame : Sandbox.GameManager
 		{
 			Game.RootPanel = new Hud();
 		}
+
+		if (Game.IsServer)
+		{
+			cancellationTokenSource = new CancellationTokenSource();
+			_ = GameLoopAsync(cancellationTokenSource.Token);
+
+			if ( Game.Server.MapIdent == "sugmagaming.lockout" )
+			{
+				Vector3[] positions = { new Vector3( 910.29f, -1800.74f, 7731.85f ), new Vector3( 912.90f, - 1841.59f, 7273.20f ) };
+				var weaponSpawn = new WorldWeaponSpawn("pistol");
+				weaponSpawn.Position = positions[0];
+				weaponSpawn = new WorldWeaponSpawn( "shotgun" );
+				weaponSpawn.Position = positions[1];
+			}
+
+			
+		}
+
+		_ = new BulletManager();
 	}
+
+	CancellationTokenSource cancellationTokenSource;
+
+	[Net]
+	public TimeSince gameStateTimer { get; set; }
+
+	public int MaxKills = 10;
 
 	/// <summary>
 	/// A client has joined the server. Make them a pawn to play with
@@ -54,6 +81,25 @@ public partial class MyGame : Sandbox.GameManager
 	{
 		if ( ConsoleSystem.Caller.Pawn is Pawn player )
 			player.TakeDamage( new DamageInfo { Damage = 10.0f } );
+	}
+
+	[ConCmd.Admin( "setkill" )]
+	public static void AddKill(int killNum)
+	{
+		ConsoleSystem.Caller.Client.SetInt( "kills", killNum);
+	}
+
+	public override void Simulate( IClient cl )
+	{
+		base.Simulate( cl );
+		if ( Game.IsClient ) return;
+		foreach (var client in Game.Clients)
+		{
+			if (client.GetInt("kills") >= 25 && CurrentState == GameStates.Live)
+			{
+				cancellationTokenSource.Cancel();
+			}
+		}
 	}
 
 

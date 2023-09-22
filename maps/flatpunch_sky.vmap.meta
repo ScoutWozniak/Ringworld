@@ -1,0 +1,28 @@
+{
+  "publish": {
+    "Allowed": true,
+    "Enabled": false,
+    "ProjectConfig": {
+      "Title": "flatpunch_sky",
+      "Type": "map",
+      "Org": "local",
+      "Ident": "flatpunch_sky",
+      "Tags": null,
+      "Schema": 0,
+      "HasAssets": false,
+      "AssetsPath": null,
+      "Resources": null,
+      "MenuResources": null,
+      "HasCode": false,
+      "CodePath": null,
+      "PackageReferences": [],
+      "EditorReferences": [
+        "rust.shipping_container_300_a#25289",
+        "mapperskai.m870#27060"
+      ],
+      "Metadata": {
+        "SingleAssetSource": "maps/flatpunch_sky.vmap"
+      }
+    }
+  }
+}

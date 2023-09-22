@@ -34,11 +34,5 @@ public partial class MyPostProcessEffect : ScreenEffects
 
 			RenderEffect( target );
 		}
-		if (renderStage == Stage.AfterPostProcess)
-		{
-			Pixelation = 0.01f;
-
-			RenderEffect( target );
-		}
 	}
 }

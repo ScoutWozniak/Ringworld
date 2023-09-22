@@ -1,0 +1,66 @@
+﻿@inherits Sandbox.UI.Panel
+@using Sandbox
+@using System
+@namespace MyGame
+
+<style>
+	pickupdialouge {
+		position: absolute;
+		left: 75%;
+		top: 50%;
+		width: 512px;
+		height: 256px;
+		transform: rotate(5deg);
+	}
+	.pickup-test {
+		
+		left:0%;
+		center: 0%;
+		text-align:center;
+		color:dodgerblue;
+		font-size: 60px;
+		font-weight: normal;
+		padding: 5px;
+		word-spacing: 50px;
+	}
+	.pickup-keybind {
+		left: 0%;
+		center: 0%;
+		text-align: center;
+		color: dodgerblue;
+		font-size: 70px;
+		font-weight: bold;
+		padding: 5px;
+		word-spacing: 50px;
+	}
+</style>
+
+<root class="pickupdialouge">
+	@if (GetEntityLookingAt() != "")
+	{
+		<div class="pickup-keybind">[E]</div>
+		<div class="pickup-test">@(GetEntityLookingAt())</div>
+	}
+</root>
+
+@code {
+
+	public string GetEntityLookingAt()
+	{
+		Pawn player = Game.LocalPawn as Pawn;
+		if (player.LookingAt == null) return "";
+
+		if (player.LookingAt is DroppedWeapon weapon)
+		{
+			if (player.CheckDuplicateWeapon(weapon.weaponSpawn) == null)
+				return weapon.weaponSpawn.weaponName;
+		}
+
+		return "";
+	}
+
+	protected override int BuildHash()
+	{
+		return HashCode.Combine(GetEntityLookingAt().GetHashCode());
+	}
+}

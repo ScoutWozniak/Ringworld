@@ -12,6 +12,9 @@ public partial class Pawn
 	/// </summary>
 	public Entity Using { get; protected set; }
 
+	[Net]
+	public Entity LookingAt { get; protected set; }
+
 	/// <summary>
 	/// This should be called somewhere in your player's tick to allow them to use entities,
 	/// for example the Simulate callback method of the player pawn entity.
@@ -24,10 +27,11 @@ public partial class Pawn
 		// Turn prediction off
 		using ( Prediction.Off() )
 		{
+			LookingAt = FindUsable();
 			if ( Input.Pressed( InputButton.Use ) )
 			{
-				Using = FindUsable();
 
+				Using = LookingAt;
 				if ( Using == null )
 				{
 					UseFail();

@@ -60,7 +60,7 @@
         MaxPlayersSupported = Game.Menu.Package.GetMeta<int>( "MaxPlayers", 1 );
         MaxPlayers = MaxPlayersSupported;
 
-        MapPackage = await Package.FetchAsync( "facepunch.square", false );
+        MapPackage = await Package.FetchAsync( "droppod.rwtesting", false );
         StateHasChanged();
     }
 

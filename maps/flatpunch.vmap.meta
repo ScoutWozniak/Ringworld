@@ -1,12 +1,12 @@
 {
   "publish": {
     "Allowed": true,
-    "Enabled": false,
+    "Enabled": true,
     "ProjectConfig": {
-      "Title": "flatpunch",
+      "Title": "Ringworld Testing",
       "Type": "map",
-      "Org": "local",
-      "Ident": "flatpunch",
+      "Org": "droppod",
+      "Ident": "rwtesting",
       "Tags": null,
       "Schema": 0,
       "HasAssets": false,
@@ -33,10 +33,14 @@
         "facepunch.w_usp#33631",
         "facepunch.v_usp#38520",
         "facepunch.v_mp5#38620",
-        "facepunch.w_mp5#33703"
+        "facepunch.w_mp5#33703",
+        "mapperskai.m870#27060"
       ],
       "Metadata": {
-        "SingleAssetSource": "maps/flatpunch.vmap"
+        "SingleAssetSource": "maps/flatpunch.vmap",
+        "GameSupport": [
+          "droppod.ringworld"
+        ]
       }
     }
   }

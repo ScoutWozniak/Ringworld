@@ -66,6 +66,9 @@ public partial class Weapon : AnimatedEntity
 	[Net]
 	public WeaponData weaponInfo { get; set; }
 
+	[Net]
+	public int reserveAmmo { get; set; }
+
 	public override void Spawn()
 	{
 		base.Spawn();
@@ -74,20 +77,25 @@ public partial class Weapon : AnimatedEntity
 		EnableDrawing = false;
 
 		Model = Cloud.Model( "facepunch.w_mp5" );
+	}
 
+	public static WeaponData LoadWeaponInfo( string weaponName )
+	{
+		if ( ResourceLibrary.TryGet<WeaponData>( "data/weapons/" + weaponName + ".weapon", out var data ) )
+			return data;
+		else if ( ResourceLibrary.TryGet<WeaponData>( "/data/weapons/" + weaponName + ".weapon", out var data2 ) )
+			return data2;
+		return null;
+	}
+
+	public void SetWeaponInfo(WeaponData data)
+	{
+		weaponInfo = data;
 		if ( weaponInfo != null )
 		{
 			ammoInClip = weaponInfo.clipSize;
+			reserveAmmo = weaponInfo.maxReserveAmmo;
 		}
-	}
-
-	public void LoadWeaponInfo( string weaponName )
-	{
-		if ( ResourceLibrary.TryGet<WeaponData>( "data/weapons/" + weaponName + ".weapon", out var data ) )
-			weaponInfo = data;
-		else if ( ResourceLibrary.TryGet<WeaponData>( "/data/weapons/" + weaponName + ".weapon", out var data2 ) )
-			weaponInfo = data2;
-
 	}
 
 	/// <summary>
@@ -112,7 +120,13 @@ public partial class Weapon : AnimatedEntity
 	public void OnHolster()
 	{
 		EnableDrawing = false;
-		Delete();
+		reloading = false;
+	}
+
+	public void OnDeath()
+	{
+		EnableDrawing = false;
+		reloading = false;
 		if ( Game.IsServer )
 			DestroyViewModel( To.Single( Owner ) );
 	}
@@ -134,12 +148,16 @@ public partial class Weapon : AnimatedEntity
 			}
 		}
 
-		if ( Input.Down("attack2") ) {
-			SecondaryAttack();
-		}
-		else if (Input.Released("attack2"))
+		if ( weaponInfo.canZoom && !deploying )
 		{
-			SecondaryAttackRelease();
+			if ( Input.Down( "attack2" ) )
+			{
+				SecondaryAttack();
+			}
+			else if ( Input.Released( "attack2" ) )
+			{
+				SecondaryAttackRelease();
+			}
 		}
 
 		if (deploying )
@@ -148,14 +166,20 @@ public partial class Weapon : AnimatedEntity
 				deploying = false;
 		}
 
-		if ( Input.Pressed( "reload" ))
+		if ( Input.Pressed( "reload" ) && !reloading && ammoInClip != weaponInfo.clipSize && reserveAmmo != 0)
 		{
 			Reload();
 		}
 
 		if ( reloading )
 			if ( reloadTime > weaponInfo?.reloadLength )
+			{
+				int ammoToAdd = weaponInfo.clipSize - ammoInClip;
+				ammoToAdd = ammoToAdd.Clamp( 0, reserveAmmo );
+				ammoInClip += ammoToAdd;
+				reserveAmmo -= ammoToAdd;
 				reloading = false;
+			}
 
 	}
 
@@ -167,7 +191,7 @@ public partial class Weapon : AnimatedEntity
 
 		Pawn.SetAnimParameter( "b_attack", true );
 		ViewModelEntity?.SetAnimParameter( "b_attack", true );
-		Pawn.PlaySound( "smg.fire" );
+		Pawn.PlaySound( weaponInfo.fireSound );
 	}
 
 	/// <summary>
@@ -197,13 +221,6 @@ public partial class Weapon : AnimatedEntity
 		return TimeSincePrimaryAttack > (1 / rate);
 	}
 
-	public virtual bool CanSecondaryAttack()
-	{
-		if ( !Owner.IsValid() || (!Input.Down( "attack2" ) || !Input.Released( "attack2" )) || !weaponInfo.canZoom ) return false;
-
-		return true;
-	}
-
 	/// <summary>
 	/// Called when your gun shoots.
 	/// </summary>
@@ -213,14 +230,15 @@ public partial class Weapon : AnimatedEntity
 		if ( Game.IsServer )
 			ShootEffects();
 
-		ShootBullet( 0.005f, 100, primaryDamage, 10.0f );
+		ShootBullet( weaponInfo.spread, 100, 10.0f, 10.0f );
 
 		ammoInClip -= 1;
 	}
 
 	public virtual void SecondaryAttack()
 	{
-		Pawn.fovZoomMult = weaponInfo.zoomMult;
+		if (weaponInfo != null)
+			Pawn.fovZoomMult = weaponInfo.zoomMult;
 		IsAiming = true;
 		if ( Game.IsClient )
 			ViewModelEntity.EnableDrawing = false;
@@ -239,8 +257,6 @@ public partial class Weapon : AnimatedEntity
 		reloadTime = 0;
 		reloading = true;
 		ViewModelEntity?.SetAnimParameter( "b_reload", true );
-		if (weaponInfo != null)
-			ammoInClip = weaponInfo.clipSize;
 	}
 
 	/// <summary>
@@ -281,36 +297,53 @@ public partial class Weapon : AnimatedEntity
 	/// </summary>
 	public virtual void ShootBullet( Vector3 pos, Vector3 dir, float spread, float force, float damage, float bulletSize )
 	{
-		var forward = dir;
-		forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
-		forward = forward.Normal;
+		
 
 		//
 		// ShootBullet is coded in a way where we can have bullets pass through shit
 		// or bounce off shit, in which case it'll return multiple results
 		//
-		foreach (var tr in TraceBullet( pos, pos + forward * 1000, bulletSize ) )
+		for ( var i = 0; i < weaponInfo.numberOfBullets; i++ )
 		{
-			tr.Surface.DoBulletImpact( tr );
+			var forward = dir;
+			forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
+			forward = forward.Normal;
 
-			if ( !Game.IsServer ) continue;
-			if ( !tr.Entity.IsValid() ) continue;
-
-			//
-			// We turn predictiuon off for this, so any exploding effects don't get culled etc
-			//
-			using ( Prediction.Off() )
+			var bullet = Bullet.Create( pos,forward, 4000.0f, Owner, this, 10.0f, 10.0f, true );
+			using ( LagCompensation() )
 			{
-				var damageInfo = DamageInfo.FromBullet( tr.EndPosition, forward * 100 * force, damage )
-					.UsingTraceResult( tr )
-					.WithAttacker( Owner )
-					.WithWeapon( this );
-
-				tr.Entity.TakeDamage( damageInfo );
+				if ( bullet.Update() )
+					continue;
 			}
-	
+			BulletManager.Instance.AddBullet( bullet );
+
+				/*
+				foreach ( TraceResult tr in TraceBullet( pos, pos + forward * 1000, bulletSize ) )
+				{
+					tr.Surface.DoBulletImpact( tr );
+
+					if ( !Game.IsServer ) continue;
+					if ( !tr.Entity.IsValid() ) continue;
+
+					//
+					// We turn predictiuon off for this, so any exploding effects don't get culled etc
+					//
+					using ( Prediction.Off() )
+					{
+						var damageInfo = DamageInfo.FromBullet( tr.EndPosition, forward * 100 * force, damage )
+							.UsingTraceResult( tr )
+							.WithAttacker( Owner )
+							.WithWeapon( this );
+
+						tr.Entity.TakeDamage( damageInfo );
+
+						//DebugOverlay.TraceResult( tr, 10.0f );
+					}
+
+				}
+				*/
+			}
 		}
-	}
 
 	/// <summary>
 	/// Shoot a single bullet from owners view point
@@ -320,6 +353,7 @@ public partial class Weapon : AnimatedEntity
 		Game.SetRandomSeed( Time.Tick );
 
 		var ray = Owner.AimRay;
+
 		ShootBullet( ray.Position, ray.Forward, spread, force, damage, bulletSize );
 	}
 

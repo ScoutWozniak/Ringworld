@@ -1,0 +1,31 @@
+{
+  "publish": {
+    "Allowed": true,
+    "Enabled": false,
+    "ProjectConfig": {
+      "Title": "ringworldfiringrange",
+      "Type": "map",
+      "Org": "local",
+      "Ident": "ringworldfiringrange",
+      "Tags": null,
+      "Schema": 0,
+      "HasAssets": false,
+      "AssetsPath": null,
+      "Resources": null,
+      "MenuResources": null,
+      "HasCode": false,
+      "CodePath": null,
+      "PackageReferences": [],
+      "EditorReferences": [
+        "facepunch.v_mp5#38620",
+        "facepunch.w_mp5#33703",
+        "facepunch.w_usp#33631",
+        "mapperskai.m870#27060",
+        "droppod.ringworld"
+      ],
+      "Metadata": {
+        "SingleAssetSource": "maps/ringworldfiringrange.vmap"
+      }
+    }
+  }
+}

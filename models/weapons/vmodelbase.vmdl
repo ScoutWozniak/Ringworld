@@ -11,45 +11,44 @@
 				[
 					{
 						_class = "DefaultMaterialGroup"
-						remaps = [  ]
+						remaps = 
+						[
+							{
+								from = "arms.vmat"
+								to = "materials/gameplay/weaponcolours/cyan.vmat"
+							},
+						]
 						use_global_default = false
 						global_default_material = ""
 					},
 				]
 			},
 			{
-				_class = "AnimationList"
+				_class = "RenderMeshList"
 				children = 
 				[
 					{
-						_class = "AnimFile"
-						name = "anim1test"
-						activity_name = ""
-						activity_weight = 1
-						weight_list_name = ""
-						fade_in_time = 0.2
-						fade_out_time = 0.2
-						looping = false
-						delta = false
-						worldSpace = false
-						hidden = false
-						anim_markup_ordered = false
-						disable_compression = false
-						enable_scale = false
-						source_filename = "models/weapons/anim1test.fbx"
-						start_frame = -1
-						end_frame = -1
-						framerate = -1.0
-						take = 0
-						reverse = false
+						_class = "RenderMeshFile"
+						filename = "models/weapons/vmodelbase.fbx"
+						import_translation = [ 0.0, 0.0, 0.0 ]
+						import_rotation = [ 0.0, 0.0, 0.0 ]
+						import_scale = 1.0
+						align_origin_x_type = "None"
+						align_origin_y_type = "None"
+						align_origin_z_type = "None"
+						parent_bone = ""
+						import_filter = 
+						{
+							exclude_by_default = false
+							exception_list = [  ]
+						}
 					},
 				]
-				default_root_bone_name = ""
 			},
 		]
 		model_archetype = ""
 		primary_associated_entity = ""
 		anim_graph_name = ""
-		base_model_name = "models/first_person/first_person_arms.vmdl"
+		base_model_name = ""
 	}
 }
