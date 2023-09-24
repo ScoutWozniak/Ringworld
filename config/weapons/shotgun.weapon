@@ -3,6 +3,7 @@
   "clipSize": 8,
   "maxReserveAmmo": 16,
   "reloadLength": 3,
+  "weaponDamage": 100,
   "deployTime": 1,
   "primaryFireRate": 1,
   "canZoom": false,
@@ -12,5 +13,6 @@
   "spread": 0.25,
   "fireMode": "SemiAuto",
   "fireSound": "sounds/pistol.fire.sound",
-  "numberOfBullets": 8
+  "numberOfBullets": 8,
+  "test": {}
 }

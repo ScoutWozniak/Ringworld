@@ -81,9 +81,9 @@ public partial class Weapon : AnimatedEntity
 
 	public static WeaponData LoadWeaponInfo( string weaponName )
 	{
-		if ( ResourceLibrary.TryGet<WeaponData>( "data/weapons/" + weaponName + ".weapon", out var data ) )
+		if ( ResourceLibrary.TryGet<WeaponData>( "config/weapons/" + weaponName + ".weapon", out var data ) )
 			return data;
-		else if ( ResourceLibrary.TryGet<WeaponData>( "/data/weapons/" + weaponName + ".weapon", out var data2 ) )
+		else if ( ResourceLibrary.TryGet<WeaponData>( "/config/weapons/" + weaponName + ".weapon", out var data2 ) )
 			return data2;
 		return null;
 	}
@@ -230,7 +230,7 @@ public partial class Weapon : AnimatedEntity
 		if ( Game.IsServer )
 			ShootEffects();
 
-		ShootBullet( weaponInfo.spread, 100, 10.0f, 10.0f );
+		ShootBullet( weaponInfo.spread, 100, weaponInfo.weaponDamage, 10.0f );
 
 		ammoInClip -= 1;
 	}
@@ -309,7 +309,7 @@ public partial class Weapon : AnimatedEntity
 			forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
 			forward = forward.Normal;
 
-			var bullet = Bullet.Create( pos,forward, 4000.0f, Owner, this, 10.0f, 10.0f, true );
+			var bullet = Bullet.Create( pos,forward, 4000.0f, Owner, this, 10.0f, damage, true );
 			using ( LagCompensation() )
 			{
 				if ( bullet.Update() )

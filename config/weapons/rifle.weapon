@@ -3,8 +3,9 @@
   "clipSize": 30,
   "maxReserveAmmo": 120,
   "reloadLength": 1.8,
+  "weaponDamage": 10,
   "deployTime": 0.75,
-  "primaryFireRate": 10,
+  "primaryFireRate": 12,
   "canZoom": true,
   "zoomMult": 1.5,
   "ViewModel": "models/weapons/sbox_smg_mp5/v_mp5.vmdl",
@@ -12,5 +13,6 @@
   "spread": 0.1,
   "fireMode": "FullAuto",
   "fireSound": "sounds/smg.fire.sound",
-  "numberOfBullets": 1
+  "numberOfBullets": 1,
+  "test": {}
 }

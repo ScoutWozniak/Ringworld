@@ -28,7 +28,7 @@ public partial class DroppedWeapon : AnimatedEntity, IUse
 		PhysicsEnabled = true;
 		SetData( weaponSpawn );
 		EnableTouch = true;
-		Scale = 2f;
+		Scale = 1.5f;
 	}
 
 	public void SetData( WeaponData weapon )

@@ -7,9 +7,12 @@
 
 		public int clipSize { get; set; }
 
+
 		public int maxReserveAmmo { get; set; }
 
 		public float reloadLength { get; set; }
+
+		public int weaponDamage { get; set; }
 
 		public float deployTime { get; set; }
 
@@ -39,5 +42,13 @@
 
 		public int numberOfBullets { get; set; }
 
+		public testCategory test { get; set; }
+
 	}
+}
+
+public struct testCategory
+{
+	public int num1 { get; set; }
+	public int num2 { get; set; }
 }

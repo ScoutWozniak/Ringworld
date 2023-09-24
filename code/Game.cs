@@ -35,25 +35,32 @@ public partial class MyGame : Sandbox.GameManager
 
 			if ( Game.Server.MapIdent == "sugmagaming.lockout" )
 			{
-				Vector3[] positions = { new Vector3( 910.29f, -1800.74f, 7731.85f ), new Vector3( 912.90f, - 1841.59f, 7273.20f ) };
+				Vector3[] positions = { new Vector3( 910.29f, -1800.74f, 7731.85f ), new Vector3( 912.90f, - 1841.59f, 7273.20f ), new Vector3( 534.68f, - 2025.41f, 7908.40f ) };
 				var weaponSpawn = new WorldWeaponSpawn("pistol");
 				weaponSpawn.Position = positions[0];
 				weaponSpawn = new WorldWeaponSpawn( "shotgun" );
 				weaponSpawn.Position = positions[1];
+				weaponSpawn = new WorldWeaponSpawn( "sniper" );
+				weaponSpawn.Position = positions[2];
 			}
 
+			gameMode = new Slayer();
+			gameMode.game = this;
 			
 		}
 
 		_ = new BulletManager();
 	}
 
-	CancellationTokenSource cancellationTokenSource;
+	public CancellationTokenSource cancellationTokenSource;
 
 	[Net]
 	public TimeSince gameStateTimer { get; set; }
 
 	public int MaxKills = 10;
+
+	[Net]
+	public BaseGamemode gameMode { get; set; }
 
 	/// <summary>
 	/// A client has joined the server. Make them a pawn to play with
@@ -86,20 +93,32 @@ public partial class MyGame : Sandbox.GameManager
 	[ConCmd.Admin( "setkill" )]
 	public static void AddKill(int killNum)
 	{
-		ConsoleSystem.Caller.Client.SetInt( "kills", killNum);
+		ConsoleSystem.Caller.Client.SetInt( "points", killNum);
 	}
 
 	public override void Simulate( IClient cl )
 	{
 		base.Simulate( cl );
 		if ( Game.IsClient ) return;
+		gameMode.Tick();
+	}
+
+	public static IClient GetHighestScore(IClient toIgnore)
+	{
+		IClient highestClient = null;
 		foreach (var client in Game.Clients)
 		{
-			if (client.GetInt("kills") >= 25 && CurrentState == GameStates.Live)
+			if (highestClient != null)
 			{
-				cancellationTokenSource.Cancel();
+				if ( client.GetInt( "points" ) > highestClient.GetInt( "points" ) && client != toIgnore )
+					highestClient = client;
+			}
+			else
+			{
+				highestClient = client;
 			}
 		}
+		return highestClient;
 	}
 
 

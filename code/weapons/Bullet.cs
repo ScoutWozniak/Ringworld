@@ -167,8 +167,7 @@ public class Bullet
 			.WithForce( tr.Direction * force )
 			.UsingTraceResult( tr )
 			.WithAttacker( owner )
-			.WithWeapon( weapon )
-			.WithDamage(10.0f);
+			.WithWeapon( weapon );
 
 		damageInfo.Damage = damage;
 

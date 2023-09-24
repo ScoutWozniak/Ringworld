@@ -16,6 +16,8 @@ public class PawnAnimator : EntityComponent<Pawn>, ISingletonComponent
 		helper.HoldType = CitizenAnimationHelper.HoldTypes.Rifle;
 		helper.Handedness = CitizenAnimationHelper.Hand.Both;
 
+		helper.DuckLevel = Entity.Controller.ducking ? 0.75f : 0;
+
 		if ( Entity.Controller.HasEvent( "jump" ) )
 		{
 			helper.TriggerJump();

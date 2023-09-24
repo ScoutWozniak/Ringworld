@@ -21,6 +21,11 @@ partial class MyGame
 	[Net]
 	public string NextMap { get; set; } = "facepunch.datacore";
 
+	public void GameModeRespawn(Pawn pawn)
+	{
+		if (pawn != null || gameMode != null)
+			gameMode.PlayerRespawn(pawn);
+	}
 
 	private async Task WaitStateTimer(CancellationToken token, bool ignorecancel = false)
 	{
@@ -47,7 +52,7 @@ partial class MyGame
 
 		GameState = GameStates.Live;
 		Log.Info( GameState );
-		OnGameStart();
+		gameMode.GameStart();
 		StateTimer = 10 * 60;
 		FreshStart();
 		await WaitStateTimer( token );
@@ -55,7 +60,7 @@ partial class MyGame
 		GameState = GameStates.GameEnd;
 		Log.Info( GameState );
 		StateTimer = 10.0f;
-		OnGameEnd();
+		gameMode.GameEnd();
 		await WaitStateTimer( token, true );
 
 		Game.ChangeLevel( Game.Server.MapIdent );
@@ -73,7 +78,7 @@ partial class MyGame
 	{
 		foreach ( var cl in Game.Clients )
 		{
-			cl.SetInt( "kills", 0 );
+			cl.SetInt( "points", 0 );
 			cl.SetInt( "deaths", 0 );
 		}
 
@@ -84,7 +89,6 @@ partial class MyGame
 
 		foreach (var weapon in All.OfType<DroppedWeapon>())
 		{
-			Log.Info( "ayyy" );
 			weapon.Delete();
 		}
 		foreach (var spawner in All.OfType<WorldWeaponSpawn>().ToArray())
@@ -92,16 +96,11 @@ partial class MyGame
 			spawner.taken = false;
 			spawner.SpawnWeapon();
 		}
-	}
 
-	void OnGameStart()
-	{
-		Sound.FromScreen( "anouncer.slayer" );
-	}
-
-	void OnGameEnd()
-	{
-		Sound.FromScreen( "anouncer.gameover" );
+		foreach ( var spawner in All.OfType<Grenade>().ToArray() )
+		{
+			spawner.Delete();
+		}
 	}
 
 	public enum GameStates

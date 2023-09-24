@@ -1,0 +1,18 @@
+{
+  "weaponName": "Sniper",
+  "clipSize": 4,
+  "maxReserveAmmo": 8,
+  "reloadLength": 2,
+  "weaponDamage": 101,
+  "deployTime": 2,
+  "primaryFireRate": 1,
+  "canZoom": true,
+  "zoomMult": 4,
+  "ViewModel": "models/weapons/sbox_pistol_usp/v_usp.vmdl",
+  "WorldModel": "models/sniper/sniper.vmdl",
+  "spread": 0.001,
+  "fireMode": "SemiAuto",
+  "fireSound": "sounds/smg.fire.sound",
+  "numberOfBullets": 1,
+  "test": {}
+}

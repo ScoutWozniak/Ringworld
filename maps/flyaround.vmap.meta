@@ -3,10 +3,10 @@
     "Allowed": true,
     "Enabled": false,
     "ProjectConfig": {
-      "Title": "ringworldfiringrange",
+      "Title": "flyaround",
       "Type": "map",
       "Org": "local",
-      "Ident": "ringworldfiringrange",
+      "Ident": "flyaround",
       "Tags": null,
       "Schema": 0,
       "HasAssets": false,
@@ -17,16 +17,20 @@
       "CodePath": null,
       "PackageReferences": [],
       "EditorReferences": [
-        "facepunch.v_mp5#38620",
-        "facepunch.w_mp5#33703",
-        "facepunch.w_usp#33631",
         "mapperskai.m870#27060",
-        "droppod.ringworld",
         "facepunch.v_usp#38520",
-        "marsgames.sniper#5901"
+        "droppod.ringworld",
+        "zhaohua.fence2k-png#30684",
+        "brax.fence_128#32335",
+        "brax.fence_door#32338",
+        "brax.fence_64#32337",
+        "brax.fence_32#32336",
+        "facepunch.wooden_crate#29138",
+        "marsgames.sniper#5901",
+        "facepunch.w_usp#33631"
       ],
       "Metadata": {
-        "SingleAssetSource": "maps/ringworldfiringrange.vmap"
+        "SingleAssetSource": "maps/flyaround.vmap"
       }
     }
   }

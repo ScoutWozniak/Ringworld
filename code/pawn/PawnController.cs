@@ -6,12 +6,14 @@ namespace MyGame;
 
 public class PawnController : EntityComponent<Pawn>
 {
-	public int StepSize => 12;
+	public int StepSize => 24;
 	public int GroundAngle => 45;
 	public int JumpSpeed => 225;
 	public float Gravity => 300.0f;
 
 	public float airMovementMult = 0.1f;
+
+	public bool ducking = false;
 
 	HashSet<string> ControllerEvents = new( StringComparer.OrdinalIgnoreCase );
 
@@ -36,6 +38,7 @@ public class PawnController : EntityComponent<Pawn>
 
 			Entity.Velocity = Accelerate( Entity.Velocity, moveVector.Normal, 200.0f, 200.0f, 4.5f );
 			Entity.Velocity = ApplyFriction( Entity.Velocity, 4.0f );
+			
 		}
 		else
 		{
@@ -47,6 +50,8 @@ public class PawnController : EntityComponent<Pawn>
 		{
 			DoJump();
 		}
+
+		ducking = Input.Down( "duck" );
 
 		var mh = new MoveHelper( Entity.Position, Entity.Velocity );
 		mh.Trace = mh.Trace.Size( Entity.Hull ).Ignore( Entity );

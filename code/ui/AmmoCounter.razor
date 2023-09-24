@@ -12,27 +12,32 @@
 		justify-content: center;
 		align-items: center;
 		text-shadow: 5px 5px black;
+		transform: rotate(5deg);
 	}
 	.AmmoBg {
-		width: 150px;
+		width: 200px;
 		height: 80px;
 		opacity: 1;
-		transform: rotate(5deg);
+		
 	}
 	.AmmoCurrent {
 		font-size:70px;
 		font-weight: bold;
 		color:white;
+		right:0%;
 	}
 
 	.AmmoReserve {
 		font-size: 50px;
 		color: white;
+		right: 0%;
 	}
 </style>
 
 <root class="AmmoCounter">
+	<div class="AmmoReserve">@(GetWeaponName())</div>
 	<div class="AmmoBg">
+		
 		<div class="AmmoCurrent">@(GetAmmo())</div>
 		<div class="AmmoReserve">/</div>
 		<div class="AmmoReserve">@(GetReserveAmmo())</div>
@@ -46,7 +51,7 @@
 
 		if (player == null) return 0;
 		if (player.ActiveWeapon == null) return 0;
-		return player.ActiveWeapon.ammoInClip;
+		return (int)player.ActiveWeapon.ammoInClip;
 	}
 
 	public int GetReserveAmmo()
@@ -56,6 +61,14 @@
 		if (player == null) return 0;
 		if (player.ActiveWeapon == null) return 0;
 		return player.ActiveWeapon.reserveAmmo;
+	}
+
+	public string GetWeaponName()
+	{
+		var player = Game.LocalPawn as Pawn;
+		if (player == null) return "";
+		if (player.ActiveWeapon == null) return "";
+		return player.ActiveWeapon.weaponInfo.weaponName;
 	}
 
 	protected override int BuildHash()

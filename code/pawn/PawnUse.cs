@@ -64,6 +64,7 @@ public partial class Pawn
 	/// Player tried to use something but there was nothing there.
 	/// Tradition is to give a disappointed boop.
 	/// </summary>
+	[ClientRpc]
 	protected virtual void UseFail()
 	{
 		PlaySound( "player_use_fail" );

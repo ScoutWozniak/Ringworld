@@ -11,9 +11,9 @@ public partial class Pawn : AnimatedEntity
 	[Net, Predicted]
 	public Weapon ActiveWeapon { get; set; }
 
-	[Net, Predicted]
+	[Net]
 	public Weapon weapon1 { get; set; }
-	[Net, Predicted]
+	[Net]
 	public Weapon weapon2 { get; set; }
 
 	[ClientInput]
@@ -37,10 +37,13 @@ public partial class Pawn : AnimatedEntity
 	[Net]
 	float nextRespawn { set; get; }
 
+	[Net]
+	public int currentFragGrenades { get; set; } = 2;
+
 	/// <summary>
 	/// Position a player should be looking from in world space.
 	/// </summary>
-	[Browsable( false )]
+	[Browsable( true )]
 	public Vector3 EyePosition
 	{
 		get => Transform.PointToWorld( EyeLocalPosition );
@@ -94,7 +97,7 @@ public partial class Pawn : AnimatedEntity
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = true;
 
-		SetupPhysicsFromOBB( PhysicsMotionType.Keyframed, new Vector3( -22, -22, 4 ), new Vector3( 22, 22, 72 ) );
+		SetupPhysicsFromOBB( PhysicsMotionType.Keyframed, new Vector3( -10, -10, 0 ), new Vector3( 10, 10, 72 ) );
 	}
 
 	public void SetActiveWeapon( Weapon weapon )
@@ -115,27 +118,12 @@ public partial class Pawn : AnimatedEntity
 
 		weapon1?.Delete();
 		weapon2?.Delete();
-		weapon1 = new Weapon();
-		weapon1.SetWeaponInfo( Weapon.LoadWeaponInfo( "rifle" ));
 
-		//weapon.LoadWeaponData( ResourceLibrary.Get<WeaponData>( "data/weapons/rifle.weapon" ) ) ;
-		SetActiveWeapon( weapon1 );
-		Health = 10;
-		Shields = 100.0f;
+		// We move the majority of respawn code to the gamemode so we can customise more
+		var game = MyGame.Current as MyGame;
+		
+		game.gameMode.PlayerRespawn( this );
 
-		// Get all of the spawnpoints
-		var spawnpoints = Entity.All.OfType<SpawnPoint>();
-
-		// chose a random one
-		var randomSpawnPoint = spawnpoints.OrderBy( x => Guid.NewGuid() ).FirstOrDefault();
-
-		// if it exists, place the pawn there
-		if ( randomSpawnPoint != null )
-		{
-			var tx = randomSpawnPoint.Transform;
-			tx.Position = tx.Position + Vector3.Up * 50.0f; // raise it up
-			Transform = tx;
-		}
 
 		UsePhysicsCollision = true;
 		EnableAllCollisions = true;
@@ -149,6 +137,8 @@ public partial class Pawn : AnimatedEntity
 		//GivePropPusher();
 
 		Input.ClearActions();
+
+		currentFragGrenades = 2;
 	}
 
 	public void DressFromClient( IClient cl )
@@ -175,12 +165,26 @@ public partial class Pawn : AnimatedEntity
 					SetActiveWeapon( weapon1 );
 			}
 
+			if (Game.IsClient)
+				Input.GetBindingForButton( "grenade" );
+			if ( Input.Pressed( "grenade" ) && currentFragGrenades > 0 )
+			{
+				if ( Game.IsServer )
+				{
+					ThrowGrenade();
+					currentFragGrenades--;
+				}
+
+			}
+
 			if ( lastHurtTime > 10.0f && Shields != 100.0f )
 			{
 				Shields = MathX.Lerp( Shields, 100.0f, 0.05f );
 			}
 
 			TickPlayerUse();
+
+			
 		}
 		else
 		{
@@ -189,17 +193,12 @@ public partial class Pawn : AnimatedEntity
 				Respawn();
 			}
 		}
-		EyeLocalPosition = Vector3.Up * (64f * Scale);
-
-		
-
-		
-
-		
+		EyeLocalPosition = Vector3.Up * (Controller.ducking ? 52.0f : 64.0f * Scale);
 	}
 
 	public override void BuildInput()
 	{
+		base.BuildInput();
 		InputDirection = Input.AnalogMove;
 
 		if ( Input.StopProcessing )
@@ -259,6 +258,16 @@ public partial class Pawn : AnimatedEntity
 			Camera.FirstPersonViewer = this;
 			Camera.Position = EyePosition;
 		}
+
+	}
+
+	void ThrowGrenade()
+	{
+		var grenade = new FragGrenade();
+		grenade.Position = AimRay.Position + AimRay.Forward;
+		grenade.Velocity = AimRay.Forward * 750.0f;
+		grenade.Velocity += Vector3.Up * 100.0f;
+		grenade.Owner = this;
 	}
 
 	public TraceResult TraceBBox( Vector3 start, Vector3 end, float liftFeet = 0.0f )
@@ -291,20 +300,33 @@ public partial class Pawn : AnimatedEntity
 
 	public override void TakeDamage( DamageInfo info )
 	{
-		if ( Shields < 0 )
+		var isHeadshot = info.Hitbox.HasTag( "head" );
+		if ( Shields <= 0 )
 		{
+			if ( isHeadshot )
+			{
+				info.Damage *= 10.0f;
+			}
 			Health -= info.Damage;
+			
 			if ( Health <= 0 )
 			{
 				OnKilledInfo( info );
 			}
+
 		}
 		else
 		{
+			var leftOverDamage = -(Shields - info.Damage);
 			Shields -= info.Damage;
-			if ( Shields < 0 )
+			if ( Shields <= 0 )
 			{
-				info.Damage = -Shields;
+				OnShieldBreak();
+				if ( isHeadshot )
+				{
+					leftOverDamage *= 10.0f;
+				}
+				info.Damage = leftOverDamage;
 				Health -= info.Damage;
 				if ( Health <= 0 )
 				{
@@ -313,6 +335,13 @@ public partial class Pawn : AnimatedEntity
 			}
 		}
 		lastHurtTime = 0;
+	}
+
+	public void OnShieldBreak()
+	{
+		var particles = Particles.Create( Cloud.ParticleSystem( "garry.spark_burst" ).Name.ToString());
+		particles?.SetPosition( 0, Position );
+		particles?.Destroy();
 	}
 
 	public void OnKilledInfo(DamageInfo info)
@@ -333,8 +362,15 @@ public partial class Pawn : AnimatedEntity
 		if ( weapon1 != null ) LaunchWeapon( weapon1 );
 		if ( weapon2 != null ) LaunchWeapon( weapon2 );
 
-		if (info.Attacker != null)
-			info.Attacker.Client.AddInt( "kills" );
+		for ( int i = 0; i < currentFragGrenades; i++ )
+		{
+			Log.Info( "a" );
+			LaunchGrenade();
+		}
+		currentFragGrenades = 0;
+
+		var game = MyGame.Current as MyGame;
+		game.gameMode.PlayerDeath( this, info );
 	}
 
 	public void GivePropPusher()
@@ -380,10 +416,18 @@ public partial class Pawn : AnimatedEntity
 	{
 		DroppedWeapon oldSpawn = new DroppedWeapon();
 		oldSpawn.SetData( weapon.weaponInfo );
-		oldSpawn.Position = AimRay.Position;
+		oldSpawn.Position = AimRay.Position + AimRay.Forward * 10.0f;
 		oldSpawn.ammoInClip = weapon.ammoInClip;
 		oldSpawn.ammoInReserve = weapon.reserveAmmo;
-		weapon.Delete();
+		oldSpawn.DeleteAsync( 30.0f );
+		weapon?.Delete();
+	}
+
+	void LaunchGrenade()
+	{
+		DroppedGrenade droppedGrenade = new DroppedGrenade();
+		droppedGrenade.Position = AimRay.Position + AimRay.Forward * 10.0f;
+		droppedGrenade.DeleteAsync( 30.0f );
 	}
 
 	public Weapon CheckDuplicateWeapon(WeaponData weapon)
