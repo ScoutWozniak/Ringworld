@@ -7,6 +7,11 @@ namespace MyGame;
 
 public class Slayer : BaseGamemode
 {
+	public Slayer()
+	{
+		gameModeName = "FFA Slayer";
+	}
+
 
 	public override void GameStart() {
 		base.GameStart();

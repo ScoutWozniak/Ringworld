@@ -7,6 +7,8 @@ namespace MyGame;
 public class BaseGamemode : BaseNetworkable
 {
 
+	public string gameModeName = "";
+
 	public virtual MyGame game { get; set; }
 
 	public virtual void GameStart() {}
