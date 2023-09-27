@@ -1,7 +1,7 @@
 ﻿@inherits Sandbox.UI.Panel
 @using Sandbox
 @using System
-@namespace MyGame
+@namespace Ringworld
 
 <style>
 	GameState {
@@ -65,6 +65,25 @@
 		margin-left: 10px;
 	}
 
+	.red-kill-bar {
+		background-color: indianred;
+		opacity: 5;
+		left: 0%;
+		width: 95%;
+		height: 100%;
+	}
+
+	.red-kill-bar-bg {
+		background-color: red;
+		opacity: 1;
+		left: -10%;
+		width: 50%;
+		height: 50%;
+		box-shadow: 5px 5px black;
+		border: 5px solid black;
+		margin-left: 10px;
+	}
+
 </style>
 
 <root class="GameState">
@@ -72,18 +91,37 @@
 		<div class="game-timer">@(GetGameTime())</div>
 		<div class="game-timer">&nbsp;| @(GetGameModeName())</div>
 	</div>
-	<div class="kills-info">
-		<div class="kills">@(GetPlayerKills())</div>
-		<div class="kill-bar-bg">
-			<div class="kill-bar" style="width: @(KillBarPercentage(GetPlayerKills()))%"></div>
+	@if (!(MyGame.Current as MyGame).gameMode.isTeamGame)
+	{
+		<div class="kills-info">
+			<div class="kills">@(GetPlayerKills())</div>
+			<div class="kill-bar-bg">
+				<div class="kill-bar" style="width: @(KillBarPercentage(GetPlayerKills()))%"></div>
+			</div>
 		</div>
-	</div>
-	<div class="kills-info">
-		<div class="kills">@(GetHigherPlayerKills())</div>
-		<div class="kill-bar-bg">
-			<div class="kill-bar" style="width: @(KillBarPercentage(GetHigherPlayerKills()))%"></div>
+		<div class="kills-info">
+			<div class="kills">@(GetHigherPlayerKills())</div>
+		<div class="red-kill-bar-bg">
+			<div class="red-kill-bar" style="width: @(KillBarPercentage(GetHigherPlayerKills()))%"></div>
 		</div>
-	</div>
+		</div>
+	}
+	else
+	{
+		
+		<div class="kills-info">
+			<div class="kills">@(GetBlueKills())</div>
+			<div class="kill-bar-bg">
+				<div class="kill-bar" style="width: @(KillBarPercentage(GetBlueKills()))%"></div>
+			</div>
+		</div>
+		<div class="kills-info">
+			<div class="kills">@(GetRedKills())</div>
+			<div class="red-kill-bar-bg">
+				<div class="red-kill-bar" style="width: @(KillBarPercentage(GetRedKills()))%"></div>
+			</div>
+		</div>
+	}
 </root>
 
 @code {
@@ -97,7 +135,7 @@
 
 	public float KillBarPercentage(int kills)
 	{
-		return ((float)kills / 25) * 100.0f;
+		return ((float)kills / ConsoleSystem.GetValue("gm_maxpoints").ToInt()) * 100.0f;
 	}
 
 	public int GetPlayerKills()
@@ -121,8 +159,21 @@
 		return gamemode;
 	}
 
+	public int GetRedKills()
+	{
+		int gamemode = (MyGame.Current as MyGame).gameMode.redScore;
+		return gamemode;
+	}
+
+	public int GetBlueKills()
+	{
+		int gamemode = (MyGame.Current as MyGame).gameMode.blueScore;
+		return gamemode;
+	}
+
 	protected override int BuildHash()
 	{
-		return HashCode.Combine(GetGameTime().GetHashCode(), GetPlayerKills().GetHashCode(), GetHigherPlayerKills().GetHashCode());
+		return HashCode.Combine(GetGameTime().GetHashCode(), GetPlayerKills().GetHashCode(), GetHigherPlayerKills().GetHashCode(),
+		GetBlueKills().GetHashCode(),GetRedKills().GetHashCode());
 	}
 }

@@ -4,9 +4,9 @@ using System.Linq;
 using System;
 using System.Numerics;
 
-namespace MyGame;
+namespace Ringworld;
 
-public partial class Pawn : AnimatedEntity
+public partial class Pawn : AnimatedEntity, ITeam
 {
 	[Net, Predicted]
 	public Weapon ActiveWeapon { get; set; }
@@ -39,6 +39,9 @@ public partial class Pawn : AnimatedEntity
 
 	[Net]
 	public int currentFragGrenades { get; set; } = 2;
+
+	[Net]
+	public int teamValue { get; set; } = 0;
 
 	/// <summary>
 	/// Position a player should be looking from in world space.
@@ -83,6 +86,7 @@ public partial class Pawn : AnimatedEntity
 
 	[BindComponent] public PawnController Controller { get; }
 	[BindComponent] public PawnAnimator Animator { get; }
+	[BindComponent] public PawnTeam team { get; }
 
 	public override Ray AimRay => new Ray( EyePosition, EyeRotation.Forward );
 
@@ -165,11 +169,11 @@ public partial class Pawn : AnimatedEntity
 					SetActiveWeapon( weapon1 );
 			}
 
-			if (Game.IsClient)
+			if ( Sandbox.Game.IsClient)
 				Input.GetBindingForButton( "grenade" );
 			if ( Input.Pressed( "grenade" ) && currentFragGrenades > 0 )
 			{
-				if ( Game.IsServer )
+				if ( Sandbox.Game.IsServer )
 				{
 					ThrowGrenade();
 					currentFragGrenades--;
@@ -261,14 +265,7 @@ public partial class Pawn : AnimatedEntity
 
 	}
 
-	void ThrowGrenade()
-	{
-		var grenade = new FragGrenade();
-		grenade.Position = AimRay.Position + AimRay.Forward;
-		grenade.Velocity = AimRay.Forward * 750.0f;
-		grenade.Velocity += Vector3.Up * 100.0f;
-		grenade.Owner = this;
-	}
+
 
 	public TraceResult TraceBBox( Vector3 start, Vector3 end, float liftFeet = 0.0f )
 	{
@@ -300,6 +297,8 @@ public partial class Pawn : AnimatedEntity
 
 	public override void TakeDamage( DamageInfo info )
 	{
+		if ( (info.Attacker as Pawn) != null && (info.Attacker as Pawn).teamID == teamID && teamID != 0 && !(info.Attacker == this)) return;
+
 		var isHeadshot = info.Hitbox.HasTag( "head" );
 		if ( Shields <= 0 )
 		{
@@ -348,7 +347,7 @@ public partial class Pawn : AnimatedEntity
 	{
 		//base.OnKilled();
 
-		if (Game.IsServer)
+		if ( Sandbox.Game.IsServer)
 			BecomeRagdollOnClient( lastDamage.Force, lastDamage.BoneIndex );
 
 		EnableAllCollisions = false;
@@ -364,7 +363,6 @@ public partial class Pawn : AnimatedEntity
 
 		for ( int i = 0; i < currentFragGrenades; i++ )
 		{
-			Log.Info( "a" );
 			LaunchGrenade();
 		}
 		currentFragGrenades = 0;
@@ -416,7 +414,8 @@ public partial class Pawn : AnimatedEntity
 	{
 		DroppedWeapon oldSpawn = new DroppedWeapon();
 		oldSpawn.SetData( weapon.weaponInfo );
-		oldSpawn.Position = AimRay.Position + AimRay.Forward * 10.0f;
+		oldSpawn.Position = AimRay.Position;
+		oldSpawn.Velocity = AimRay.Forward * 10.0f;
 		oldSpawn.ammoInClip = weapon.ammoInClip;
 		oldSpawn.ammoInReserve = weapon.reserveAmmo;
 		oldSpawn.DeleteAsync( 30.0f );
@@ -430,11 +429,37 @@ public partial class Pawn : AnimatedEntity
 		droppedGrenade.DeleteAsync( 30.0f );
 	}
 
+	void ThrowGrenade()
+	{
+		var grenade = new FragGrenade();
+		grenade.Position = AimRay.Position;
+		grenade.Velocity = AimRay.Forward * 750.0f;
+		grenade.Velocity += Vector3.Up * 100.0f;
+		grenade.Owner = this;
+	}
+
 	public Weapon CheckDuplicateWeapon(WeaponData weapon)
 	{
 		if ( (weapon1 != null && weapon1.weaponInfo.weaponName == weapon.weaponName) ) return weapon1;
 		if ( (weapon2 != null && weapon2.weaponInfo.weaponName == weapon.weaponName) ) return weapon2;
 		return null;
+	}
+
+	[Net]
+	public int teamID { get; set; }
+	public string teamName { get; set; }
+
+	public void SetupTeam( int id ) {
+		Log.Info( "test" );
+		teamID = id;
+		if (id == 1)
+		{
+			RenderColor = Color.Blue;
+		}
+		else if (id == 2)
+		{
+			RenderColor = Color.Red;
+		}
 	}
 }
 

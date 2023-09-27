@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 //
 // You don't need to put things in a namespace, but it doesn't hurt.
 //
-namespace MyGame;
+namespace Ringworld;
 
 partial class MyGame
 {
@@ -63,7 +63,7 @@ partial class MyGame
 		gameMode.GameEnd();
 		await WaitStateTimer( token, true );
 
-		Game.ChangeLevel( Game.Server.MapIdent );
+		Sandbox.Game.ChangeLevel( Sandbox.Game.Server.MapIdent );
 	}
 
 	private bool HasEnoughPlayers()
@@ -76,7 +76,7 @@ partial class MyGame
 
 	private void FreshStart()
 	{
-		foreach ( var cl in Game.Clients )
+		foreach ( var cl in Sandbox.Game.Clients )
 		{
 			cl.SetInt( "points", 0 );
 			cl.SetInt( "deaths", 0 );

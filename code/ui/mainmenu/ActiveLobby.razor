@@ -5,9 +5,29 @@
 @using Sandbox.Menu;
 @using Sandbox.UI;
 
+@namespace Ringworld
+
+<style>
+    checkbox {
+        width: 100%;
+        flex-direction: row;
+        margin-bottom: 10px;
+        cursor: pointer;
+        &.checked {
+        color: white;
+    }
+    }
+
+    convartoggle {
+        width: 100%;
+        height: 50px;
+    }
+
+</style>
+
 <root>
     <label class="game-title">
-        @Game.Menu.Package.Title
+        @Sandbox.Game.Menu.Package.Title
     </label>
 
     @if ( Lobby == null ) 
@@ -52,15 +72,30 @@
                             <SlimPackageCard OnLaunch=@OnMapClicked Package=@MapPackage />
                         </Control>
                     </FormGroup>
+
+                    <FormGroup class="form-group">
+                        <Label>Team Game</Label>
+                        <Control>
+                            <button onclick=@buttonClicked>@IsTeamGame</button>
+                        </Control>
+                    </FormGroup>
+
+                    <FormGroup class="form-group">
+                            <Label>Max Frags</Label>
+                            <Control>
+                                <SliderControl ShowRange=@true Min=@(1f) Max=@(50f) Value:bind=@maxFrags/>
+                            </Control>
+                        </FormGroup>
                 </div>
+
+
             }
 
-           <div class="spacer" />
-
+           <div class="spacer"/>
 
             <a class="button" @onclick=@LeaveLobby>Leave Lobby</a>
 
-            <a class="button" @onclick=@Start>Start</a>
+            <a class="button" @onclick=@StartGame>Start</a>
 
             <a class="button" href="/lobby/list">Return</a>
         </div>
@@ -69,50 +104,5 @@
 
 @code
 {
-    Friend Owner => Lobby.Owner;
-    ILobby Lobby => Game.Menu.Lobby;
-
-    int MaxPlayersSupported { get; set; } = 1;
-    Package MapPackage { get; set; }
-
-    void OnMapClicked()
-    {
-        Game.Overlay.ShowPackageSelector( "type:map sort:popular", OnMapSelected );
-        StateHasChanged();
-    }
-
-    void OnMapSelected( Package map )
-    {
-        MapPackage = map;
-        Game.Menu.Lobby.Map = map.FullIdent;
-
-        StateHasChanged();
-    }
-
-    public void LeaveLobby()
-    {
-        Lobby?.Leave();
-
-        this.Navigate( "/lobby/list" );
-    }
-
-    async Task Start()
-    {
-        await Game.Menu.StartServerAsync( Game.Menu.Lobby.MaxMembers, $"{Game.Menu.Lobby.Owner.Name}'s game", Game.Menu.Lobby.Map );
-    }
-
-    async void FetchPackage()
-    {
-        MapPackage = await Package.FetchAsync( Game.Menu.Lobby?.Map ?? "facepunch.square", true );
-    }
-
-    protected override void OnAfterTreeRender( bool firstTime )
-    {
-       FetchPackage();
-    }
-
-    protected override void OnParametersSet()
-    {
-        MaxPlayersSupported = Game.Menu.Package.GetMeta<int>( "MaxPlayers", 1 );
-    }
+    
 }

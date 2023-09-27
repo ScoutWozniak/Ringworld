@@ -3,6 +3,7 @@
 @using System.Threading.Tasks;
 @using Sandbox.Menu;
 @using Sandbox.UI;
+@namespace Ringworld
 
 <root>
     <div class="game-title">
@@ -16,9 +17,8 @@
         }
         else
         {
-            <a class="button" href="/setup">Play</a>
 
-            <a class="button" href="/lobby/list">Lobbies</a>
+            <a class="button" href="/lobby/list">Browse Lobbies</a>
 
             @if ( Game.Menu.Package.SupportsSavedGames && Game.Menu.SavedGames.Any())
             {

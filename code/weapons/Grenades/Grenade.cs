@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 
-namespace MyGame;
+namespace Ringworld;
 
 public partial class Grenade : AnimatedEntity
 {
@@ -12,6 +12,8 @@ public partial class Grenade : AnimatedEntity
 	public bool timerStart = false;
 
 	const int grenadeRange = 125;
+
+	public Pawn thrower { get; set; }
 
 	public override void Spawn()
 	{
@@ -38,7 +40,7 @@ public partial class Grenade : AnimatedEntity
 			var particle = Particles.Create( "particles/explosion.vpcf" );
 			particle.SetPosition( 0, Position );
 			Explosion();
-			if (Game.IsServer) Delete();
+			if ( Sandbox.Game.IsServer) Delete();
 		}
 	}
 
@@ -53,7 +55,8 @@ public partial class Grenade : AnimatedEntity
 		foreach ( Entity ent in Entity.FindInSphere( Position, grenadeRange ) )
 		{
 			ent.TakeDamage( new DamageInfo()
-			.WithDamage( 100.0f ) );
+			.WithDamage( 100.0f ) 
+			.WithAttacker( Owner ));
 		}
 		Sound.FromWorld( "frag.explode", Position );
 		//DebugOverlay.Sphere( Position, grenadeRange, Color.White, 10.0f );

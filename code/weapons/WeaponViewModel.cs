@@ -1,6 +1,6 @@
 using Sandbox;
 
-namespace MyGame;
+namespace Ringworld;
 
 public class WeaponViewModel : BaseViewModel
 {
@@ -41,7 +41,7 @@ public class WeaponViewModel : BaseViewModel
 
 	public override void PlaceViewmodel()
 	{
-		if ( !Game.LocalPawn.IsValid() )
+		if ( !Sandbox.Game.LocalPawn.IsValid() )
 			return;
 
 		var inPos = Camera.Position;
@@ -80,7 +80,7 @@ public class WeaponViewModel : BaseViewModel
 
 		if ( EnableSwingAndBob )
 		{
-			var playerVelocity = Game.LocalPawn.Velocity;
+			var playerVelocity = Sandbox.Game.LocalPawn.Velocity;
 
 			var verticalDelta = playerVelocity.z * Time.Delta;
 			var viewDown = Rotation.FromPitch( newPitch ).Up * -1.0f;

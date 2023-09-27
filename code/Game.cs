@@ -7,7 +7,7 @@ using System.Threading;
 //
 // You don't need to put things in a namespace, but it doesn't hurt.
 //
-namespace MyGame;
+namespace Ringworld;
 
 /// <summary>
 /// This is your game class. This is an entity that is created serverside when
@@ -25,18 +25,18 @@ public partial class MyGame : Sandbox.GameManager
 	{
 		if ( Game.IsClient )
 		{
-			Game.RootPanel = new Hud();
+			Sandbox.Game.RootPanel = new Hud();
 		}
 
-		if (Game.IsServer)
+		if ( Game.IsServer)
 		{
 			cancellationTokenSource = new CancellationTokenSource();
-			_ = GameLoopAsync(cancellationTokenSource.Token);
+			_ = GameLoopAsync( cancellationTokenSource.Token);
 
 			if ( Game.Server.MapIdent == "sugmagaming.lockout" )
 			{
 				Vector3[] positions = { new Vector3( 910.29f, -1800.74f, 7731.85f ), new Vector3( 912.90f, - 1841.59f, 7273.20f ), new Vector3( 534.68f, - 2025.41f, 7908.40f ) };
-				var weaponSpawn = new WorldWeaponSpawn("pistol");
+				var weaponSpawn = new WorldWeaponSpawn( "pistol");
 				weaponSpawn.Position = positions[0];
 				weaponSpawn = new WorldWeaponSpawn( "shotgun" );
 				weaponSpawn.Position = positions[1];
@@ -44,10 +44,16 @@ public partial class MyGame : Sandbox.GameManager
 				weaponSpawn.Position = positions[2];
 			}
 
-			gameMode = new Slayer();
-			gameMode.game = this;
-			
 		}
+
+		Log.Info( Game.IsClient );
+		base.Spawn();
+		gameMode = new Slayer();
+		gameMode.game = this;
+		gameMode.isTeamGame = ConsoleSystem.GetValue( "gm_teamgame" ).ToBool();
+		Log.Info( ConsoleSystem.GetValue( "gm_maxpoints" ) );
+
+
 
 		_ = new BulletManager();
 	}
@@ -74,6 +80,8 @@ public partial class MyGame : Sandbox.GameManager
 		client.Pawn = pawn;
 		pawn.Respawn();
 		//pawn.DressFromClient( client );
+		//pawn.team.SetupTeam(0);
+		gameMode.OnPlayerJoin(pawn );
 	}
 
 	[ConCmd.Admin("kill")]
@@ -103,12 +111,17 @@ public partial class MyGame : Sandbox.GameManager
 		gameMode.Tick();
 	}
 
+	public override void Spawn()
+	{
+		
+	}
+
 	public static IClient GetHighestScore(IClient toIgnore)
 	{
 		IClient highestClient = null;
-		foreach (var client in Game.Clients)
+		foreach (var client in Sandbox.Game.Clients)
 		{
-			if (highestClient != null)
+			if ( highestClient != null)
 			{
 				if ( client.GetInt( "points" ) > highestClient.GetInt( "points" ) && client != toIgnore )
 					highestClient = client;

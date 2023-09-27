@@ -1,5 +1,6 @@
 {
   "weaponName": "Pistol",
+  "engineClassName": "rw_weapon_pistol",
   "clipSize": 12,
   "maxReserveAmmo": 32,
   "reloadLength": 1.2,

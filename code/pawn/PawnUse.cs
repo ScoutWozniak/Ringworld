@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System;
 
-namespace MyGame;
+namespace Ringworld;
 
 public partial class Pawn
 {
@@ -22,7 +22,7 @@ public partial class Pawn
 	protected virtual void TickPlayerUse()
 	{
 		// This is serverside only
-		if ( !Game.IsServer ) return;
+		if ( !Sandbox.Game.IsServer ) return;
 
 		// Turn prediction off
 		using ( Prediction.Off() )

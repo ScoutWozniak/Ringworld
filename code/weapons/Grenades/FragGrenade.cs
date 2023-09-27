@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 
-namespace MyGame;
+namespace Ringworld;
 
 public partial class FragGrenade : Grenade
 {

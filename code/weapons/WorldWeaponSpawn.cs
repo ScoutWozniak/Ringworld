@@ -1,6 +1,6 @@
 ﻿using Sandbox;
 using Editor;
-using MyGame;
+using Ringworld;
 
 /// <summary>
 /// This entity defines the spawn point of the player in first person shooter gamemodes.
@@ -51,7 +51,7 @@ public partial class WorldWeaponSpawn : Entity
 	[GameEvent.Tick]
 	public void Tick()
 	{
-		if ( Game.IsClient ) return;
+		if ( Sandbox.Game.IsClient ) return;
 		if (taken)
 		{
 			if (lastWeaponSpawn.Relative > 10.0f)

@@ -2,7 +2,7 @@ using Sandbox;
 using System.Collections.Generic;
 using System.Numerics;
 
-namespace MyGame;
+namespace Ringworld;
 
 public partial class Weapon : AnimatedEntity
 {
@@ -107,8 +107,8 @@ public partial class Weapon : AnimatedEntity
 		Owner = pawn;
 		SetParent( pawn, true );
 		EnableDrawing = true;
-		if ( Game.IsServer )
-			CreateViewModel( To.Single( Owner ) );
+		if ( Sandbox.Game.IsServer )
+			CreateViewModel( To.Single( base.Owner ) );
 
 		deploying = true;
 		deployTime = 0;
@@ -127,8 +127,8 @@ public partial class Weapon : AnimatedEntity
 	{
 		EnableDrawing = false;
 		reloading = false;
-		if ( Game.IsServer )
-			DestroyViewModel( To.Single( Owner ) );
+		if ( Sandbox.Game.IsServer )
+			DestroyViewModel( To.Single( base.Owner ) );
 	}
 
 	/// <summary>
@@ -227,7 +227,7 @@ public partial class Weapon : AnimatedEntity
 	public virtual void PrimaryAttack()
 	{
 
-		if ( Game.IsServer )
+		if ( Sandbox.Game.IsServer )
 			ShootEffects();
 
 		ShootBullet( weaponInfo.spread, 100, weaponInfo.weaponDamage, 10.0f );
@@ -240,7 +240,7 @@ public partial class Weapon : AnimatedEntity
 		if (weaponInfo != null)
 			Pawn.fovZoomMult = weaponInfo.zoomMult;
 		IsAiming = true;
-		if ( Game.IsClient )
+		if ( Sandbox.Game.IsClient )
 			ViewModelEntity.EnableDrawing = false;
 	}
 
@@ -248,7 +248,7 @@ public partial class Weapon : AnimatedEntity
 	{
 		Pawn.fovZoomMult = 1.0f;
 		IsAiming = false;
-		if ( Game.IsClient )
+		if ( Sandbox.Game.IsClient )
 			ViewModelEntity.EnableDrawing = true;
 	}
 
@@ -309,7 +309,7 @@ public partial class Weapon : AnimatedEntity
 			forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
 			forward = forward.Normal;
 
-			var bullet = Bullet.Create( pos,forward, 4000.0f, Owner, this, 10.0f, damage, true );
+			var bullet = Bullet.Create( pos,forward, 10000.0f, Owner, this, 10.0f, damage, true );
 			using ( LagCompensation() )
 			{
 				if ( bullet.Update() )
@@ -350,7 +350,7 @@ public partial class Weapon : AnimatedEntity
 	/// </summary>
 	public virtual void ShootBullet( float spread, float force, float damage, float bulletSize )
 	{
-		Game.SetRandomSeed( Time.Tick );
+		Sandbox.Game.SetRandomSeed( Time.Tick );
 
 		var ray = Owner.AimRay;
 
@@ -360,7 +360,7 @@ public partial class Weapon : AnimatedEntity
 	[ClientRpc]
 	public virtual void CreateViewModel()
 	{
-		Game.AssertClient();
+		Sandbox.Game.AssertClient();
 
 		var vm = new WeaponViewModel();
 		vm.SetModel( weaponInfo.ViewModel );
@@ -370,6 +370,8 @@ public partial class Weapon : AnimatedEntity
 		var arms = new AnimatedEntity( "models/first_person/first_person_arms_citizen_4fingers.vmdl" );
 		arms.SetParent( ViewModelEntity, true );
 		arms.EnableViewmodelRendering = true;
+		if ( Pawn.teamID == 1 ) arms.RenderColor = Color.Blue;
+		else if ( Pawn.teamID == 2 ) arms.RenderColor = Color.Red;
 	}
 
 	[ClientRpc]

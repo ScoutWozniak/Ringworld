@@ -2,6 +2,7 @@
 @using Sandbox;
 @using Sandbox.UI;
 
+@namespace Ringworld
 @inherits Sandbox.UI.NavHostPanel
 @implements Sandbox.Menu.IGameMenuPanel
 @attribute [StyleSheet]
@@ -18,7 +19,7 @@
         DefaultUrl = "/";
 
         AddDestination( "/", typeof( FrontPage ) );
-        AddDestination( "/setup", typeof( SetupGame ) );
+        //AddDestination( "/setup", typeof( SetupGame ) );
 
         AddDestination( "/lobby/list", typeof( LobbyBrowser ) );
         AddDestination( "/lobby/active", typeof( ActiveLobby ) );

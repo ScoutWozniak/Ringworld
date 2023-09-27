@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System;
 
-namespace MyGame;
+namespace Ringworld;
 
 public partial class Pawn
 {

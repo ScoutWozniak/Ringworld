@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Sandbox;
 using Sandbox.Effects;
 
-namespace MyGame;
+namespace Ringworld;
 
 [SceneCamera.AutomaticRenderHook]
 public partial class MyPostProcessEffect : ScreenEffects
@@ -21,7 +21,7 @@ public partial class MyPostProcessEffect : ScreenEffects
 
 		if ( renderStage == Stage.AfterUI )
 		{
-			if ( Game.LocalPawn is Pawn pawn && pawn.fovZoomMult > 1.0f )
+			if ( Sandbox.Game.LocalPawn is Pawn pawn && pawn.fovZoomMult > 1.0f )
 				vignetteTarget = 0.5f;
 			else
 				vignetteTarget = 0f;

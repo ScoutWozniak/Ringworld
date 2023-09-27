@@ -1,5 +1,6 @@
 {
   "weaponName": "SMG",
+  "engineClassName": "rw_weapon_smg",
   "clipSize": 30,
   "maxReserveAmmo": 120,
   "reloadLength": 1.8,

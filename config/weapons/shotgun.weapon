@@ -1,5 +1,6 @@
 {
   "weaponName": "Shotgun",
+  "engineClassName": "rw_weapon_shotgun",
   "clipSize": 8,
   "maxReserveAmmo": 16,
   "reloadLength": 3,

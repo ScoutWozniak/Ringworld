@@ -1,9 +1,13 @@
-﻿namespace Sandbox
+﻿using Ringworld;
+
+namespace Sandbox
 {
 	[GameResource("Weapon Data", "weapon", "Data for a weapon")]
 	public partial class WeaponData : GameResource
 	{
 		public string weaponName { get; set; }
+
+		public string engineClassName { get; set; }
 
 		public int clipSize { get; set; }
 
@@ -44,6 +48,20 @@
 
 		public testCategory test { get; set; }
 
+
+		public Weapon CreateInstance()
+		{
+			if ( string.IsNullOrEmpty( engineClassName ) )
+				return null;
+
+			var type = TypeLibrary.GetType<Weapon>( engineClassName ).TargetType;
+			if ( type == null )
+				return null;
+
+			Weapon weapon = TypeLibrary.Create<Weapon>( engineClassName );
+			weapon.SetWeaponInfo( this );
+			return weapon;
+		}
 	}
 }
 

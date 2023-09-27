@@ -1,8 +1,8 @@
 ﻿using Editor;
-using MyGame;
+using Ringworld;
 using Sandbox;
 using System.Linq;
-namespace MyGame;
+namespace Ringworld;
 
 [EditorModel( "models/citizen/citizen.vmdl" )]
 [Library( "evil_melon" ), HammerEntity]

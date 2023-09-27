@@ -34,7 +34,7 @@
     "TickRate": 50,
     "LaunchConfigs": [
       {
-        "Name": "Untitled Config",
+        "Name": "Flatpunch",
         "GameIdent": "droppod.ringworld#local",
         "MapName": "flatpunch.vmap",
         "MaxPlayers": 8,
@@ -72,6 +72,16 @@
         "Addons": "",
         "PreLaunchCommand": "",
         "PostLaunchCommand": ""
+      },
+      {
+        "Name": "FlyAround FFA",
+        "GameIdent": "droppod.ringworld#local",
+        "MapName": "flyaround.vmap",
+        "MaxPlayers": 8,
+        "GameSettings": {},
+        "Addons": "",
+        "PreLaunchCommand": "",
+        "PostLaunchCommand": "gm_teamgame \u0022False\u0022;"
       }
     ],
     "Collision": {
@@ -127,7 +137,8 @@
         },
         {
           "a": "player",
-          "b": "grenade"
+          "b": "grenade",
+          "r": "Ignore"
         }
       ]
     },
@@ -306,6 +317,28 @@
           "GroupName": "Actions"
         }
       ]
-    }
+    },
+    "PackageSettings": [
+      {
+        "DisplayType": "Boolean",
+        "Choices": [],
+        "ConVarName": "gm_teamgame",
+        "DisplayName": "Teams Enabled",
+        "DefaultValue": "true",
+        "Description": "",
+        "Group": "General"
+      },
+      {
+        "DisplayType": "Integer",
+        "Choices": [],
+        "ConVarName": "gm_maxpoints",
+        "DisplayName": "Max Points",
+        "DefaultValue": "25.272625",
+        "Description": "",
+        "Group": "",
+        "Minimum": 1,
+        "Maximum": 500
+      }
+    ]
   }
 }

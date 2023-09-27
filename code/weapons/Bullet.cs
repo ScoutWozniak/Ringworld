@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyGame;
+namespace Ringworld;
 
 public class Bullet
 {
@@ -28,12 +28,12 @@ public class Bullet
 
 	public Bullet()
 	{
-		var currentGravity = Game.PhysicsWorld.Gravity;
+		var currentGravity = Sandbox.Game.PhysicsWorld.Gravity;
 		var gravityRatio = BulletManager.TargetGravity / currentGravity.Length;
 
 		gravScale = gravityRatio;
 
-		if ( Game.IsClient )
+		if ( Sandbox.Game.IsClient )
 		{
 			bulletTracer = Particles.Create( "particles/bullettracer.vpcf" );
 			bulletTracer.SetPosition( 0, position );
@@ -64,7 +64,7 @@ public class Bullet
 	}
 	public static Bullet CreateClientBullet( Vector3 position, Vector3 direction, float speed, Entity owner, Entity weapon, float force, Vector3 particlePosition )
 	{
-		Game.AssertClient();
+		Sandbox.Game.AssertClient();
 
 		var bullet = new Bullet
 		{
@@ -103,7 +103,7 @@ public class Bullet
 
 
 		//bulletTracer?.SetPosition( 0, position );
-		bulletTracer?.SetPosition( 0, velocity );
+		bulletTracer?.SetPosition( 0, position );
 
 		return DoTraceCheck();
 	}
@@ -149,9 +149,8 @@ public class Bullet
 	private void BulletHit( TraceResult tr )
 	{
 
-		if ( Game.IsClient )
+		if ( Sandbox.Game.IsClient )
 		{
-			bulletTracer?.SetPosition( 1, 0 );
 			bulletTracer?.Destroy();
 			tr.Surface.DoBulletImpact( tr );
 			return;

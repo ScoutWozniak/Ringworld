@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 
-namespace MyGame;
+namespace Ringworld;
 
 public partial class PlasmaGrenade : Grenade
 {
@@ -34,8 +34,8 @@ public partial class PlasmaGrenade : Grenade
 		}
 		else bounces -= 1;
 		
-		if (Game.IsServer)
-			Velocity = Velocity / 2;
+		if ( Sandbox.Game.IsServer)
+			base.Velocity = base.Velocity / 2;
 	}
 
 	[GameEvent.Tick]
@@ -46,7 +46,7 @@ public partial class PlasmaGrenade : Grenade
 			var particle = Particles.Create( "particles/explosion.vpcf" );
 			particle.SetPosition( 0, Position );
 			Explosion();
-			if ( Game.IsServer ) Delete();
+			if ( Sandbox.Game.IsServer ) Delete();
 		}
 	}
 

@@ -1,21 +1,23 @@
 ﻿using Sandbox;
 using System;
-using static MyGame.MyGame;
+using static Ringworld.MyGame;
 using System.Threading;
 
-namespace MyGame;
+namespace Ringworld;
 
 public class Slayer : BaseGamemode
 {
 	public Slayer()
 	{
-		gameModeName = "FFA Slayer";
+		gameModeName = "Slayer";
 	}
 
 
 	public override void GameStart() {
 		base.GameStart();
 		Sound.FromScreen( "anouncer.slayer" );
+		blueScore = 0;
+		redScore = 0;
 	}
 
 	public override void GameEnd() {
@@ -25,8 +27,8 @@ public class Slayer : BaseGamemode
 
 	public override void PlayerRespawn( Pawn pawn ) {
 		base.PlayerRespawn( pawn );
-		pawn.weapon1 = new Weapon();
-		pawn.weapon1?.SetWeaponInfo( Weapon.LoadWeaponInfo( "rifle" ) );
+		var weapon = Weapon.LoadWeaponInfo( "rifle" ).CreateInstance();
+		pawn.weapon1 = weapon;
 		pawn.SetActiveWeapon( pawn.weapon1 );
 		pawn.Health = 10;
 		pawn.Shields = 100.0f;
@@ -34,18 +36,28 @@ public class Slayer : BaseGamemode
 
 	public override void ScorePoint( Pawn pawn , int count) {
 		base.ScorePoint( pawn , count );
-		pawn.Client.AddInt( "points", count );
 	}
 
 	public override void Tick(){
 		base.Tick();
-		foreach ( var client in Game.Clients )
+		foreach ( var client in Sandbox.Game.Clients )
 		{
-			// Win condition
-			if ( client.GetInt( "points" ) >= 25 && CurrentState == GameStates.Live )
+			int maxPoints = ConsoleSystem.GetValue( "gm_maxpoints" ).ToInt();
+			if ( teamGame )
 			{
-				// Temp game over, will be changed later
-				game.cancellationTokenSource.Cancel();
+				if (redScore >= maxPoints || blueScore >= maxPoints && CurrentState == GameStates.Live)
+				{
+					base.game.cancellationTokenSource.Cancel();
+				}
+			}
+			else
+			{
+				// Win condition
+				if ( client.GetInt( "points" ) >= maxPoints && CurrentState == GameStates.Live )
+				{
+					// Temp game over, will be changed later
+					base.game.cancellationTokenSource.Cancel();
+				}
 			}
 		}
 	}

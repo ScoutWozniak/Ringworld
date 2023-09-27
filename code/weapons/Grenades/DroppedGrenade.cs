@@ -1,6 +1,6 @@
 ﻿using Sandbox;
 using Editor;
-using MyGame;
+using Ringworld;
 
 /// <summary>
 /// This entity defines the spawn point of the player in first person shooter gamemodes.
@@ -29,7 +29,7 @@ public partial class DroppedGrenade : AnimatedEntity
 
 	public override void Touch( Entity other )
 	{
-		if ( Game.IsClient ) return;
+		if ( Sandbox.Game.IsClient ) return;
 		if ( other is Pawn player )
 		{
 			if ( player.currentFragGrenades < 2 )
