@@ -16,3 +16,6 @@ public class Pistol : Weapon {}
 
 [Library( "rw_weapon_shotgun", Title = "Shotgun" )]
 public class Shotgun : Weapon {}
+
+[Library( "rw_weapon_sniper", Title = "Sniper" )]
+public class Sniper : Weapon {}

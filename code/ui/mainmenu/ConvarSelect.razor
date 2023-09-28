@@ -1,0 +1,55 @@
+﻿@using Sandbox;
+@using Sandbox.UI;
+@using System.Collections.Generic;
+@using System;
+
+@namespace Ringworld
+
+<root class="ConvarSelect">
+	<DropDown icon="" Options=@(GetOptions()) ValueChanged=@((string s) => OnValueChange(s))></DropDown>
+</root>
+
+@code {
+	public string cvarName { get; set; }
+
+	public string value = "";
+	public ConvarDefinition cvar { get; set; }
+
+	public List<string> cvarsettings { get; set; } 
+
+	public int cvarindex { get; set; }
+
+	public List<Option> GetOptions()
+	{
+		Log.Info("Value in the settings");
+		Log.Info(cvarsettings);
+
+		// MEGA HACK WTF
+
+		GameSetting.GameSettingChoice[] choices = null;
+		foreach (var setting in Game.Menu.Package.PackageSettings)
+		{
+			if (setting.ConVarName == cvarName)
+			{
+				choices = setting.Choices;
+			}
+		}
+
+		var options = new List<Option>();
+
+		foreach (var choice in choices)
+		{
+			Option newoption = new Option();
+			newoption.Value = choice.Value;
+			newoption.Title = choice.Name;
+			options.Add(newoption);
+		}
+		return options;
+	}
+
+	public void OnValueChange(string s)
+	{
+		value = s;
+		Game.Menu.Lobby.SetData("convar." + cvarName, value.ToString());
+	}
+}

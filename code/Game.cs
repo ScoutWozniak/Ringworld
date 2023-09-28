@@ -46,12 +46,10 @@ public partial class MyGame : Sandbox.GameManager
 
 		}
 
-		Log.Info( Game.IsClient );
 		base.Spawn();
 		gameMode = new Slayer();
 		gameMode.game = this;
-		gameMode.isTeamGame = ConsoleSystem.GetValue( "gm_teamgame" ).ToBool();
-		Log.Info( ConsoleSystem.GetValue( "gm_maxpoints" ) );
+
 
 
 

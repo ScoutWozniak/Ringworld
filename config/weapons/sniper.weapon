@@ -1,5 +1,6 @@
 {
   "weaponName": "Sniper",
+  "engineClassName": "rw_weapon_sniper",
   "clipSize": 4,
   "maxReserveAmmo": 8,
   "reloadLength": 2,

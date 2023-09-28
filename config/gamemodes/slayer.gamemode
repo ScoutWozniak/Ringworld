@@ -1,0 +1,26 @@
+{
+  "modeName": "Slayer",
+  "engineClassName": "rw_gamemode_slayer",
+  "convarNames": [
+    {
+      "conVarName": "gm_teamgame",
+      "conVarType": "cBool",
+      "readableName": "Is Team Game"
+    },
+    {
+      "conVarName": "gm_maxpoints",
+      "readableName": "Max Frags",
+      "maxVal": 50,
+      "minVal": 1
+    },
+    {
+      "conVarName": "gm_startingweapon",
+      "conVarType": "cString",
+      "readableName": "Starting Weapon",
+      "options": [
+        "rifle",
+        "pistol"
+      ]
+    }
+  ]
+}

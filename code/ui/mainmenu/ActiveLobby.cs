@@ -58,12 +58,12 @@ public partial class ActiveLobby : Panel
 	protected override void OnAfterTreeRender( bool firstTime )
 	{
 		FetchPackage();
-		Lobby.SetData( "convar.gm_maxpoints", maxFrags.ToString() );
 	}
 
 	protected override void OnParametersSet()
 	{
 		MaxPlayersSupported = Sandbox.Game.Menu.Package.GetMeta<int>( "MaxPlayers", 1 );
+		Lobby.SetData( "convar.gm_maxpoints", maxFrags.ToString() );
 	}
 
 	public void buttonClicked()

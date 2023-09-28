@@ -1,6 +1,8 @@
 @using Sandbox;
 @using System;
 @using System.Linq;
+@using System.Collections;
+@using System.Collections.Generic;
 @using System.Threading.Tasks;
 @using Sandbox.Menu;
 @using Sandbox.UI;
@@ -53,6 +55,7 @@
                 </div>
             </div>
 
+
            @if ( Lobby.Owner.IsMe )
             {
                 <div class="span">
@@ -72,24 +75,33 @@
                             <SlimPackageCard OnLaunch=@OnMapClicked Package=@MapPackage />
                         </Control>
                     </FormGroup>
-
-                    <FormGroup class="form-group">
-                        <Label>Team Game</Label>
-                        <Control>
-                            <button onclick=@buttonClicked>@IsTeamGame</button>
-                        </Control>
-                    </FormGroup>
-
-                    <FormGroup class="form-group">
-                            <Label>Max Frags</Label>
-                            <Control>
-                                <SliderControl ShowRange=@true Min=@(1f) Max=@(50f) Value:bind=@maxFrags/>
-                            </Control>
-                        </FormGroup>
                 </div>
 
+                <div class="span">
+                    <label>Gamemode Settings:</label>
+                </div>
 
-            }
+                <div class="span">
+                @foreach(var convar in getGamemodeConvars()) {
+                <label>@convar.readableName</label>
+                        @if ((int)convar.conVarType == 1)
+                        {
+                            <label></label>                            
+                            <ConvarButton cvarName=@convar.conVarName/>
+                        }
+                            @if ((int)convar.conVarType == 0)
+                            {
+                                <ConvarSlider max=@convar.maxVal min=@convar.minVal cvarName=@convar.conVarName/>
+                            }
+                            @if ((int)convar.conVarType == 2)
+                            {
+                                <ConvarSelect cvarsettings=@(replication(convar.options)) cvarName=@convar.conVarName/>
+                                
+                            }
+                }
+                </div>
+
+        }
 
            <div class="spacer"/>
 
@@ -104,5 +116,39 @@
 
 @code
 {
-    
+    public List<string> replication(List<string> test)
+    {
+        Log.Info("Value in the lobby");
+        Log.Info(test);
+        return test;
+    }
+
+    public List<Option> choicesToOptions(List<string> choices)
+    {
+
+        var options = new List<Option>();
+
+        foreach (var value in choices)
+        {
+            Option newoption = new Option();
+            newoption.Value = value;
+            newoption.Title = value;
+            options.Add(newoption);
+        }
+        return options;
+    }
+
+    public List<ConvarDefinition> getGamemodeConvars()
+    {
+        var gamemode = ResourceLibrary.Get<GamemodeData>("config/gamemodes/slayer.gamemode");
+        if (gamemode == null)
+            return null;
+
+        foreach (var cvar in gamemode.convarNames)
+        {
+            Log.Info(cvar.options);
+        }
+
+        return gamemode.convarNames;
+    }
 }

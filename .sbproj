@@ -338,6 +338,32 @@
         "Group": "",
         "Minimum": 1,
         "Maximum": 500
+      },
+      {
+        "DisplayType": "Choice",
+        "Choices": [
+          {
+            "Value": "pistol",
+            "Name": "Pistol"
+          },
+          {
+            "Value": "rifle",
+            "Name": "SMG"
+          },
+          {
+            "Value": "sniper",
+            "Name": "Sniper"
+          },
+          {
+            "Value": "shotgun",
+            "Name": "Shotgun"
+          }
+        ],
+        "ConVarName": "gm_startingweapon",
+        "DisplayName": "Starting Weapon",
+        "DefaultValue": "pistol",
+        "Description": "Engine name of the primary starting weapon",
+        "Group": ""
       }
     ]
   }

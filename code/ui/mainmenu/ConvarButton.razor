@@ -1,0 +1,23 @@
+﻿@using Sandbox;
+
+@namespace Ringworld
+
+<root class="ConvarButton">
+	<button onclick=@OnButtonClick>@value</button>
+</root>
+
+@code {
+	public string cvarName { get; set; }
+
+	public bool value = true;
+
+	public void OnButtonClick()
+	{
+		value = !value;
+		Game.Menu.Lobby.SetData("convar." + cvarName, value.ToString());
+		foreach (var cvar in Game.Menu.Lobby.ConVars)
+		{
+			Log.Info(cvar);
+		}
+	}
+}

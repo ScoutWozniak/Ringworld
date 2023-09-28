@@ -5,11 +5,17 @@ using System.Threading;
 
 namespace Ringworld;
 
+
+[Library( "rw_gamemode_slayer", Title = "Slayer" )]
 public class Slayer : BaseGamemode
 {
+
+	[ConVar.Replicated( "gm_startingweapon" )] public static string startingWeapon { get; set; }
+
 	public Slayer()
 	{
 		gameModeName = "Slayer";
+		isTeamGame = ConsoleSystem.GetValue( "gm_teamgame" ).ToBool();
 	}
 
 
@@ -27,7 +33,10 @@ public class Slayer : BaseGamemode
 
 	public override void PlayerRespawn( Pawn pawn ) {
 		base.PlayerRespawn( pawn );
-		var weapon = Weapon.LoadWeaponInfo( "rifle" ).CreateInstance();
+		string startingWeapon = ConsoleSystem.GetValue( "gm_startingweapon" );
+		Log.Info( startingWeapon );
+
+		var weapon = Weapon.LoadWeaponInfo( startingWeapon ).CreateInstance();
 		pawn.weapon1 = weapon;
 		pawn.SetActiveWeapon( pawn.weapon1 );
 		pawn.Health = 10;

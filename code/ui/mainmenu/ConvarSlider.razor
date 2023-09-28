@@ -1,0 +1,22 @@
+﻿@using Sandbox;
+@using Sandbox.UI;
+@using System;
+
+@namespace Ringworld
+
+<root class="ConvarSlider">
+	<SliderControl ShowRange=@true Min=@min Max=@max Value:bind=@value OnValueChanged=@( (float f ) => SliderValueChanged((int)f)) />
+</root>
+
+@code {
+	public string cvarName { get; set; }
+	public int max { get; set; } = 0;
+	public int min { get; set; } = 50;
+
+	public int value { get; set; } = 1;
+
+	void SliderValueChanged(int i)
+	{
+		Game.Menu.Lobby.SetData("convar." + cvarName, value.ToString());
+	}
+}
