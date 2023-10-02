@@ -87,13 +87,15 @@
                 </div>
 
                 <div class="span">
-                @foreach(var convar in getGamemodeConvars()) {
-                <label>@convar.readableName</label>
-                        @if ((int)convar.conVarType == 1)
+                    @if (getGamemodeConvars() != null)
+                    {
+                        @foreach (var convar in getGamemodeConvars())
                         {
-                            <label></label>                            
-                            <ConvarButton cvarName=@convar.conVarName/>
-                        }
+                            <label>@convar.readableName</label>
+                            @if ((int)convar.conVarType == 1)
+                            {
+                                <label></label>                                             <ConvarButton cvarName=@convar.conVarName/>
+                            }
                             @if ((int)convar.conVarType == 0)
                             {
                                 <ConvarSlider max=@convar.maxVal min=@convar.minVal cvarName=@convar.conVarName/>
@@ -101,9 +103,10 @@
                             @if ((int)convar.conVarType == 2)
                             {
                                 <ConvarSelect cvarsettings=@(replication(convar.options)) cvarName=@convar.conVarName/>
-                                
+
                             }
-                }
+                        }
+                    }
                 </div>
 
         }
@@ -146,6 +149,7 @@
     public List<ConvarDefinition> getGamemodeConvars()
     {
         var gamemode = ResourceLibrary.Get<GamemodeData>("config/gamemodes/slayer.gamemode");
+        Log.Info(gamemode);
         if (gamemode == null)
             return null;
 

@@ -52,7 +52,8 @@ public partial class ActiveLobby : Panel
 
 	async void FetchPackage()
 	{
-		MapPackage = await Package.FetchAsync( Sandbox.Game.Menu.Lobby?.Map ?? "facepunch.square", true );
+		if (Game.Menu.Lobby == null)
+		MapPackage = await Package.FetchAsync( Game.Menu.Lobby?.Map ?? "facepunch.square", true );
 	}
 
 	protected override void OnAfterTreeRender( bool firstTime )
@@ -64,11 +65,5 @@ public partial class ActiveLobby : Panel
 	{
 		MaxPlayersSupported = Sandbox.Game.Menu.Package.GetMeta<int>( "MaxPlayers", 1 );
 		Lobby.SetData( "convar.gm_maxpoints", maxFrags.ToString() );
-	}
-
-	public void buttonClicked()
-	{
-		IsTeamGame = !IsTeamGame;
-		Lobby.SetData( "convar.gm_teamgame", IsTeamGame.ToString() );
 	}
 }
