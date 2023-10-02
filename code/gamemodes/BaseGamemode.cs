@@ -8,7 +8,7 @@ namespace Ringworld;
 
 public partial class BaseGamemode : BaseNetworkable
 {
-
+	
 	[ConVar.Replicated( "gm_teamgame" )] public static bool teamGame { get; set; }
 	[ConVar.Replicated( "gm_maxpoints" )] public static int maxPoints { get; set; }
 

@@ -5,6 +5,12 @@
 
 @namespace Ringworld
 
+<style>
+	.DropDown {
+		text-align: center;
+	}
+</style>
+
 <root class="ConvarSelect">
 	<DropDown icon="" Options=@(GetOptions()) ValueChanged=@((string s) => OnValueChange(s))></DropDown>
 </root>
@@ -21,8 +27,6 @@
 
 	public List<Option> GetOptions()
 	{
-		Log.Info("Value in the settings");
-		Log.Info(cvarsettings);
 
 		// MEGA HACK WTF
 

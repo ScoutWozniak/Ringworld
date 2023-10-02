@@ -1,12 +1,12 @@
 {
   "UI": false,
-  "Volume": "0.82,0.82,0",
+  "Volume": "0.34,0.34,0",
   "Pitch": "0.83,0.83,0",
-  "Decibels": 140,
+  "Decibels": 40,
   "SelectionMode": "Random",
   "Sounds": [
     "sounds/9mm single.vsnd"
   ],
-  "MaximumDistance": 4479.734,
-  "MinimumDistance": 223.9867
+  "MaximumDistance": 395.08035,
+  "MinimumDistance": 19.754019
 }
