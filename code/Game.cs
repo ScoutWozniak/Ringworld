@@ -47,7 +47,7 @@ public partial class MyGame : Sandbox.GameManager
 		}
 
 		base.Spawn();
-		gameMode = new koth();
+		gameMode = new Slayer();
 		gameMode.game = this;
 
 
