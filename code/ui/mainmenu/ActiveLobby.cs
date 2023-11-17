@@ -19,14 +19,17 @@ public partial class ActiveLobby : Panel
 
 	void OnMapClicked()
 	{
-		Sandbox.Game.Overlay.ShowPackageSelector( "type:map sort:popular", OnMapSelected );
+		Game.Overlay.ShowPackageSelector( "type:map sort:popular", OnMapSelected );
 		StateHasChanged();
 	}
 
 	void OnMapSelected( Package map )
 	{
+		//Package testMap = Package.Fetch( "droppod.wizard", true ).Result;
 		MapPackage = map;
-		Sandbox.Game.Menu.Lobby.Map = map.FullIdent;
+		//MapPackage = testMap;
+		Game.Menu.Lobby.Map = map.FullIdent;
+		//Game.Menu.Lobby.Map = testMap.FullIdent;
 		Log.Info( IsTeamGame );
 
 		StateHasChanged();
