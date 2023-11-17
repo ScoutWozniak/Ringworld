@@ -75,7 +75,8 @@ MainMenu {
         border-radius: 5px; 
         backdrop-filter: blur( 100px );
         border: 5px solid black;
-        font-family: PixelOpperator;
+        font-family: PixelOperator;
+        font-size: 32px;
             
         a, .button {
             //font-family: Roboto;
@@ -115,10 +116,7 @@ MainMenu {
 
     .navigator-body {
         position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        top: 0;
+        height: 110%;
         flex-direction: column;
         justify-content: center;
         transition: opacity 0.15s ease-out;

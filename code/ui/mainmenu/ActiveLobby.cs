@@ -17,20 +17,6 @@ public partial class ActiveLobby : Panel
 
 	private int maxFrags { get; set; } = 25;
 
-	void OnMapClicked()
-	{
-		Game.Overlay.ShowPackageSelector( "type:map sort:popular", OnMapSelected );
-		StateHasChanged();
-	}
-
-	void OnMapSelected( Package map )
-	{
-		MapPackage = map;
-		Game.Menu.Lobby.Map = map.FullIdent;
-
-		StateHasChanged();
-	}
-
 	public void LeaveLobby()
 	{
 		Lobby?.Leave();
