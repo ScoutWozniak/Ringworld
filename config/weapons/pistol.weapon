@@ -9,7 +9,7 @@
   "primaryFireRate": 10,
   "canZoom": true,
   "zoomMult": 2,
-  "ViewModel": "models/weapons/v_pistol/v_pistol.vmdl",
+  "ViewModel": "models/weapons/sbox_pistol_usp/v_usp.vmdl",
   "WorldModel": "models/weapons/sbox_pistol_usp/w_usp.vmdl",
   "spread": 0.05,
   "fireMode": "SemiAuto",

@@ -33,9 +33,6 @@
 </style>
 
 <root>
-    <label class="game-title">
-        @Sandbox.Game.Menu.Package.Title
-    </label>
 
     @if ( Lobby == null ) 
     {
@@ -47,7 +44,7 @@
     }
     else
     {
-
+        
         <div class="controls">
             <div class="col">
                 <label>Members (@Lobby.MemberCount/@Lobby.MaxMembers)</label>
@@ -59,10 +56,11 @@
                     }
                 </div>
             </div>
-
+            
 
            @if ( Lobby.Owner.IsMe )
             {
+                <OfficialMaps></OfficialMaps>
                 <div class="span">
                     @if ( MaxPlayersSupported > 1 )
                     {
@@ -75,9 +73,8 @@
                     }
 
                     <FormGroup class="form-group">
-                        <Label>Map</Label>
                         <Control>
-                            <SlimPackageCard OnLaunch=@OnMapClicked Package=@MapPackage />
+                            <label>Map: @(Package.Fetch(Game.Menu.Lobby.Map, true).Result.Title)</label>
                         </Control>
                     </FormGroup>
                 </div>
@@ -87,13 +84,15 @@
                 </div>
 
                 <div class="span">
-                @foreach(var convar in getGamemodeConvars()) {
-                <label>@convar.readableName</label>
-                        @if ((int)convar.conVarType == 1)
+                    @if (getGamemodeConvars() != null)
+                    {
+                        @foreach (var convar in getGamemodeConvars())
                         {
-                            <label></label>                            
-                            <ConvarButton cvarName=@convar.conVarName/>
-                        }
+                            <label>@convar.readableName</label>
+                            @if ((int)convar.conVarType == 1)
+                            {
+                                <ConvarButton cvarName=@convar.conVarName/>
+                            }
                             @if ((int)convar.conVarType == 0)
                             {
                                 <ConvarSlider max=@convar.maxVal min=@convar.minVal cvarName=@convar.conVarName/>
@@ -101,20 +100,20 @@
                             @if ((int)convar.conVarType == 2)
                             {
                                 <ConvarSelect cvarsettings=@(replication(convar.options)) cvarName=@convar.conVarName/>
-                                
+
                             }
-                }
+                        }
+                    }
                 </div>
 
         }
 
            <div class="spacer"/>
 
+
+            @if (Lobby.Owner.IsMe)
+            {<a class="button" @onclick=@StartGame>Start</a> }
             <a class="button" @onclick=@LeaveLobby>Leave Lobby</a>
-
-            <a class="button" @onclick=@StartGame>Start</a>
-
-            <a class="button" href="/lobby/list">Return</a>
         </div>
     }
 </root>
@@ -123,8 +122,6 @@
 {
     public List<string> replication(List<string> test)
     {
-        Log.Info("Value in the lobby");
-        Log.Info(test);
         return test;
     }
 
@@ -151,7 +148,6 @@
 
         foreach (var cvar in gamemode.convarNames)
         {
-            Log.Info(cvar.options);
         }
 
         return gamemode.convarNames;

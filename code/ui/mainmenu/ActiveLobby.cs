@@ -17,21 +17,6 @@ public partial class ActiveLobby : Panel
 
 	private int maxFrags { get; set; } = 25;
 
-	void OnMapClicked()
-	{
-		Sandbox.Game.Overlay.ShowPackageSelector( "type:map sort:popular", OnMapSelected );
-		StateHasChanged();
-	}
-
-	void OnMapSelected( Package map )
-	{
-		MapPackage = map;
-		Sandbox.Game.Menu.Lobby.Map = map.FullIdent;
-		Log.Info( IsTeamGame );
-
-		StateHasChanged();
-	}
-
 	public void LeaveLobby()
 	{
 		Lobby?.Leave();
@@ -52,7 +37,8 @@ public partial class ActiveLobby : Panel
 
 	async void FetchPackage()
 	{
-		MapPackage = await Package.FetchAsync( Sandbox.Game.Menu.Lobby?.Map ?? "facepunch.square", true );
+		if (Game.Menu.Lobby == null)
+		MapPackage = await Package.FetchAsync( Game.Menu.Lobby?.Map ?? "facepunch.square", true );
 	}
 
 	protected override void OnAfterTreeRender( bool firstTime )
@@ -64,11 +50,5 @@ public partial class ActiveLobby : Panel
 	{
 		MaxPlayersSupported = Sandbox.Game.Menu.Package.GetMeta<int>( "MaxPlayers", 1 );
 		Lobby.SetData( "convar.gm_maxpoints", maxFrags.ToString() );
-	}
-
-	public void buttonClicked()
-	{
-		IsTeamGame = !IsTeamGame;
-		Lobby.SetData( "convar.gm_teamgame", IsTeamGame.ToString() );
 	}
 }

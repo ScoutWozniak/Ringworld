@@ -7,8 +7,8 @@
   "Schema": 1,
   "HasAssets": true,
   "AssetsPath": "",
-  "Resources": "",
-  "MenuResources": "images/*\nui/*\nui/mainmenu/*",
+  "Resources": "\nfonts/PixelOperator.ttf\nfonts/*",
+  "MenuResources": "images/*\nui/*\nui/mainmenu/*\nconfig/gamemodes/*\nfonts/*",
   "HasCode": true,
   "CodePath": "/code/",
   "PackageReferences": [],
@@ -82,6 +82,16 @@
         "Addons": "",
         "PreLaunchCommand": "",
         "PostLaunchCommand": "gm_teamgame \u0022False\u0022;"
+      },
+      {
+        "Name": "Neon",
+        "GameIdent": "droppod.ringworld#local",
+        "MapName": "neonblockout.vmap",
+        "MaxPlayers": 8,
+        "GameSettings": {},
+        "Addons": "",
+        "PreLaunchCommand": "",
+        "PostLaunchCommand": ""
       }
     ],
     "Collision": {

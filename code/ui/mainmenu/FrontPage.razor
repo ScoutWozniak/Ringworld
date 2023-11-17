@@ -10,7 +10,7 @@
         Ringworld
     </div>
 
-    <div class="controls">
+    <div class="controls" style ="width:75%;">
         @if (Game.InGame)
         {
             <a class="button" onclick=@LeaveGame>Leave</a>
@@ -27,6 +27,14 @@
         }
 
         <a class="button" @onclick=@Game.Menu.Close>Quit</a>
+
+        <label style="font-size:40px;">Notice</label>
+
+        <label>Ringworld as we know it is dead.  Behind the scenes we're beginning to port over Ringworld to the brand new scene system!  It's going to take a while,
+            but when it releases this game will be 10000x more polished than ever before (because I regret releasing in this state).  Stay tuned as we will be launching
+            a discord server soon for updates on this and other projects.  See you all very soon!
+        </label>
+        
     </div>
 </root>
 
