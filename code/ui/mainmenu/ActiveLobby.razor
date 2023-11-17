@@ -47,7 +47,7 @@
     }
     else
     {
-
+        <OfficialMaps></OfficialMaps>
         <div class="controls">
             <div class="col">
                 <label>Members (@Lobby.MemberCount/@Lobby.MaxMembers)</label>
@@ -126,8 +126,6 @@
 {
     public List<string> replication(List<string> test)
     {
-        Log.Info("Value in the lobby");
-        Log.Info(test);
         return test;
     }
 
@@ -149,13 +147,11 @@
     public List<ConvarDefinition> getGamemodeConvars()
     {
         var gamemode = ResourceLibrary.Get<GamemodeData>("config/gamemodes/slayer.gamemode");
-        Log.Info(gamemode);
         if (gamemode == null)
             return null;
 
         foreach (var cvar in gamemode.convarNames)
         {
-            Log.Info(cvar.options);
         }
 
         return gamemode.convarNames;

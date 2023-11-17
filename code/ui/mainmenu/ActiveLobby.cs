@@ -25,12 +25,8 @@ public partial class ActiveLobby : Panel
 
 	void OnMapSelected( Package map )
 	{
-		//Package testMap = Package.Fetch( "droppod.wizard", true ).Result;
 		MapPackage = map;
-		//MapPackage = testMap;
 		Game.Menu.Lobby.Map = map.FullIdent;
-		//Game.Menu.Lobby.Map = testMap.FullIdent;
-		Log.Info( IsTeamGame );
 
 		StateHasChanged();
 	}

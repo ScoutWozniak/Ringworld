@@ -65,16 +65,17 @@ MainMenu {
         gap: 16px;
     }
 
-    .controls {
+    .controls { 
         flex-direction: column;
         gap: 10px;
         align-items: flex-start;
         text-transform: uppercase;
         background-color: rgba(dimgrey, 0.5);
         padding: 10px;
-        border-radius: 5px;
+        border-radius: 5px; 
         backdrop-filter: blur( 100px );
         border: 5px solid black;
+        font-family: PixelOpperator;
             
         a, .button {
             //font-family: Roboto;
