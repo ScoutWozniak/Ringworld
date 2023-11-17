@@ -110,11 +110,10 @@
 
            <div class="spacer"/>
 
-            <a class="button" @onclick=@LeaveLobby>Leave Lobby</a>
 
-            @if (Lobby.Owner.IsMe){
-                <a class="button" @onclick=@StartGame>Start</a>
-            }
+            @if (Lobby.Owner.IsMe)
+            {<a class="button" @onclick=@StartGame>Start</a> }
+            <a class="button" @onclick=@LeaveLobby>Leave Lobby</a>
         </div>
     }
 </root>
