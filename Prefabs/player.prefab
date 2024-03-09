@@ -1,0 +1,179 @@
+{
+  "RootObject": {
+    "Id": "ee86ba94-970c-4408-b7e9-0fbe27fa5b93",
+    "Name": "player",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "CharacterController",
+        "Acceleration": 5,
+        "Bounciness": 0.3,
+        "GroundAngle": 45,
+        "Height": 72,
+        "IgnoreLayers": "",
+        "Radius": 16,
+        "StepHeight": 18
+      },
+      {
+        "__type": "PlayerController",
+        "AnimationHelper": {
+          "_type": "component",
+          "go": "ee86ba94-970c-4408-b7e9-0fbe27fa5b93",
+          "component_type": "CitizenAnimationHelper"
+        },
+        "Body": {
+          "_type": "gameobject",
+          "go": "cd264bfb-e0af-4876-afb8-3f509819e952"
+        },
+        "Gravity": "0,0,800"
+      },
+      {
+        "__type": "CitizenAnimationHelper",
+        "BodyWeight": 1,
+        "EyeSource": null,
+        "EyesWeight": 1,
+        "HeadWeight": 1,
+        "Height": 1,
+        "IkLeftFoot": null,
+        "IkLeftHand": null,
+        "IkRightFoot": null,
+        "IkRightHand": null,
+        "LookAt": null,
+        "LookAtEnabled": false,
+        "Target": {
+          "_type": "component",
+          "go": "cd264bfb-e0af-4876-afb8-3f509819e952",
+          "component_type": "SkinnedModelRenderer"
+        }
+      }
+    ],
+    "Children": [
+      {
+        "Id": "cd264bfb-e0af-4876-afb8-3f509819e952",
+        "Name": "TempBody",
+        "Enabled": true,
+        "Components": [
+          {
+            "__type": "SkinnedModelRenderer",
+            "AnimationGraph": null,
+            "BodyGroups": 341,
+            "BoneMergeTarget": null,
+            "CreateBoneObjects": false,
+            "MaterialGroup": null,
+            "MaterialOverride": null,
+            "Model": "models/citizen/citizen.vmdl",
+            "RenderType": "On",
+            "Tint": "1,1,1,1"
+          }
+        ]
+      },
+      {
+        "Id": "41d1ccfc-cd81-4cf7-881b-d4b173831b62",
+        "Name": "VMCam",
+        "Position": "0,0,62.34354",
+        "Tags": "maincamera",
+        "Enabled": true,
+        "Components": [
+          {
+            "__type": "CameraComponent",
+            "BackgroundColor": "0.33333,0.46196,0.52157,0",
+            "ClearFlags": "Depth, Stencil",
+            "FieldOfView": 80,
+            "IsMainCamera": false,
+            "Orthographic": false,
+            "OrthographicHeight": 1204,
+            "Priority": 2,
+            "RenderExcludeTags": "",
+            "RenderTags": "light,viewmodel",
+            "TargetEye": "None",
+            "Viewport": "0,0,1,1",
+            "ZFar": 10000,
+            "ZNear": 1
+          }
+        ]
+      },
+      {
+        "Id": "24255022-9555-4499-a59b-a45a915d3cb3",
+        "Name": "WeaponManager",
+        "Enabled": true,
+        "Children": [
+          {
+            "Id": "66a81cce-e54d-40fe-85b1-7dbdc53fb557",
+            "Name": "Pistol",
+            "Enabled": true,
+            "Children": [
+              {
+                "Id": "3697c5cb-19f3-49ae-9f27-63a13b4ed5ad",
+                "Name": "Viewmodel",
+                "Position": "0,0,64",
+                "Tags": "viewmodel",
+                "Enabled": true,
+                "Components": [
+                  {
+                    "__type": "ViewmodelComponent",
+                    "Camera": {
+                      "_type": "gameobject",
+                      "go": "41d1ccfc-cd81-4cf7-881b-d4b173831b62"
+                    }
+                  }
+                ],
+                "Children": [
+                  {
+                    "Id": "d47a8a49-fc38-48fa-bf0e-3f6d84932776",
+                    "Name": "Arms",
+                    "Position": "0,0,0",
+                    "Enabled": true,
+                    "Components": [
+                      {
+                        "__type": "SkinnedModelRenderer",
+                        "AnimationGraph": null,
+                        "BodyGroups": 21,
+                        "BoneMergeTarget": {
+                          "_type": "component",
+                          "go": "46cfc98b-030e-490d-b5d4-10414c79a764",
+                          "component_type": "SkinnedModelRenderer"
+                        },
+                        "CreateBoneObjects": false,
+                        "MaterialGroup": null,
+                        "MaterialOverride": null,
+                        "Model": "models/first_person/first_person_arms.vmdl",
+                        "RenderType": "On",
+                        "Tint": "1,1,1,1"
+                      }
+                    ]
+                  },
+                  {
+                    "Id": "46cfc98b-030e-490d-b5d4-10414c79a764",
+                    "Name": "Model",
+                    "Position": "0,0,0",
+                    "Enabled": true,
+                    "Components": [
+                      {
+                        "__type": "SkinnedModelRenderer",
+                        "AnimationGraph": null,
+                        "BodyGroups": 18725,
+                        "BoneMergeTarget": null,
+                        "CreateBoneObjects": false,
+                        "MaterialGroup": null,
+                        "MaterialOverride": null,
+                        "Model": "models/weapons/sbox_pistol_usp/v_usp.vmdl",
+                        "RenderType": "On",
+                        "Tint": "1,1,1,1"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "__references": [
+    "facepunch.v_usp"
+  ]
+}

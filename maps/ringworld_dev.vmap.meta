@@ -1,0 +1,31 @@
+{
+  "publish": {
+    "Allowed": true,
+    "Enabled": false,
+    "ProjectConfig": {
+      "Title": "ringworld_dev",
+      "Type": "map",
+      "Org": "local",
+      "Ident": "ringworld_dev",
+      "Tags": null,
+      "Schema": 0,
+      "HasAssets": false,
+      "AssetsPath": null,
+      "Resources": null,
+      "MenuResources": "*",
+      "HasCode": false,
+      "CodePath": null,
+      "PackageReferences": [],
+      "EditorReferences": [
+        "fishum.dev_grey2grid#25860",
+        "fishum.dev_purplegrid#25871",
+        "fishum.dev_grey3grid#25852",
+        "quack.devgen01b#11249",
+        "quack.devgen01#11247"
+      ],
+      "Metadata": {
+        "SingleAssetSource": "maps/ringworld_dev.vmap"
+      }
+    }
+  }
+}

@@ -7,7 +7,7 @@
   "Schema": 1,
   "HasAssets": true,
   "AssetsPath": "",
-  "Resources": "\nfonts/PixelOperator.ttf\nfonts/*",
+  "Resources": "*",
   "MenuResources": "images/*\nui/*\nui/mainmenu/*\nconfig/gamemodes/*\nfonts/*",
   "HasCode": true,
   "CodePath": "/code/",
@@ -375,6 +375,9 @@
         "Description": "Engine name of the primary starting weapon",
         "Group": ""
       }
-    ]
+    ],
+    "StartupScene": "scenes/mp.scene",
+    "MapStartupScene": null,
+    "LaunchMode": "Normal"
   }
 }
