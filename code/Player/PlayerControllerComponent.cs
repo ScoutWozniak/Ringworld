@@ -45,12 +45,15 @@ public class PlayerController : Component
 
 	protected override void OnUpdate()
 	{
-		Body.Enabled = IsProxy;
+		if ( IsProxy )
+			Body.Components.Get<SkinnedModelRenderer>().RenderType = ModelRenderer.ShadowRenderType.On;
+		else
+			Body.Components.Get<SkinnedModelRenderer>().RenderType = ModelRenderer.ShadowRenderType.ShadowsOnly;
 
 		// Eye input
 		if ( !IsProxy )
 		{
-			Body.Enabled = false;
+			//Body.Enabled = false;
 			var ee = EyeAngles;
 			ee += Input.AnalogLook * 0.5f;
 			ee.roll = 0;

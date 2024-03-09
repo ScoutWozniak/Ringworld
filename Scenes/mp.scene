@@ -63,7 +63,7 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "NetworkHelper",
+          "__type": "RWNetworkHelper",
           "PlayerPrefab": {
             "_type": "gameobject",
             "prefab": "prefabs/player.prefab"
@@ -84,6 +84,82 @@
           "__type": "SkyBox2D",
           "SkyMaterial": "materials/skybox/light_test_sky_sunny02.vmat",
           "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "Id": "2cf9a86f-3139-4b1d-9557-3eda078c06cc",
+      "Name": "HealthTest",
+      "Position": "0,304,0",
+      "Rotation": "0,0,-0.7071067,0.7071068",
+      "Scale": "0.6601614,0.6601614,0.6601614",
+      "Networked": true,
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "BodyGroups": 18446744073709551615,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Model": "models/terry_skibid.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "HealthComponent",
+          "MaxHealth": 100,
+          "MinHealth": 0
+        },
+        {
+          "__type": "ModelCollider",
+          "IsTrigger": false,
+          "Model": "models/terry_skibid.vmdl",
+          "Static": false,
+          "Surface": null
+        }
+      ],
+      "Children": [
+        {
+          "Id": "684e851b-fbbe-48ab-ab75-1164a0d45af9",
+          "Name": "Text",
+          "Position": "0.00009245489,-0.00000000001102148,110.7326",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "TextRenderer",
+              "Color": "0.45103,0.47149,0.5297,1",
+              "FontFamily": "Poppins",
+              "FontSize": 64,
+              "Scale": 0.3,
+              "Text": "Hello! \u2764"
+            },
+            {
+              "__type": "HealthDebugTextComponent",
+              "healthComponent": {
+                "_type": "component",
+                "go": "2cf9a86f-3139-4b1d-9557-3eda078c06cc",
+                "component_type": "HealthComponent"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "eabb8bb0-7238-4a42-8d35-59b632727e61",
+      "Name": "Point Light",
+      "Position": "-144,403.7505,80",
+      "Tags": "light_point,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "PointLight",
+          "Attenuation": 1,
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.91373,0.98039,1,1",
+          "Radius": 400,
+          "Shadows": true
         }
       ]
     }
@@ -111,6 +187,8 @@
   },
   "Title": "mp",
   "Description": "",
-  "LastSaved": "2024-03-09T13:51:07.1165697\u002B10:00",
-  "__references": []
+  "LastSaved": "2024-03-09T14:30:36.3577946\u002B10:00",
+  "__references": [
+    "turd.terry_skibidi"
+  ]
 }
