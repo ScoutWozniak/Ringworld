@@ -1,0 +1,44 @@
+{
+  "RootObject": {
+    "__guid": "32972524-92bd-4a07-8e99-54802eab961f",
+    "Name": "pistol_projectile",
+    "Enabled": true,
+    "NetworkMode": 1,
+    "Components": [
+      {
+        "__type": "ProjectileComponent",
+        "__guid": "b03ffbdb-f377-49fc-8eb8-ebc46be8dd47",
+        "Damage": 10,
+        "Radius": 8,
+        "Speed": 400
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "16678561-daf0-4c9a-a39f-3cca3dfc3cea",
+        "Name": "Model",
+        "Rotation": "0,0,0.7071067,0.7071068",
+        "Scale": "0.05,0.1,0.05",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "Components": [
+          {
+            "__type": "ModelRenderer",
+            "__guid": "af954556-1f46-4832-a06c-0039f5fc1d44",
+            "BodyGroups": 18446744073709551615,
+            "MaterialOverride": "materials/dev/primary_white_emissive.vmat",
+            "Model": "models/dev/sphere.vmdl",
+            "RenderType": "On",
+            "Tint": "0.98605,0.50609,0.24766,1"
+          }
+        ]
+      }
+    ]
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "ResourceVersion": 1,
+  "__version": 1,
+  "__references": []
+}

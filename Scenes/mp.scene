@@ -1,13 +1,15 @@
 {
-  "Id": "0fcaf8fc-b896-4a9b-ab20-2efada7bf8ae",
+  "__guid": "0fcaf8fc-b896-4a9b-ab20-2efada7bf8ae",
   "GameObjects": [
     {
-      "Id": "9fcc2791-b5b3-4607-93ee-b179eca95835",
+      "__guid": "9fcc2791-b5b3-4607-93ee-b179eca95835",
       "Name": "Main Camera",
       "Enabled": true,
+      "NetworkMode": 2,
       "Components": [
         {
           "__type": "CameraComponent",
+          "__guid": "1de80059-2cd1-44f5-adf8-560d54aadfa4",
           "BackgroundColor": "0.33333,0.46275,0.52157,1",
           "ClearFlags": "All",
           "FieldOfView": 90,
@@ -21,122 +23,142 @@
           "Viewport": "0,0,1,1",
           "ZFar": 10000,
           "ZNear": 1
+        },
+        {
+          "__type": "AudioListener",
+          "__guid": "97dc5cbc-bee0-4936-9e6a-ff496dd2f602",
+          "UseCameraDirection": true
         }
       ]
     },
     {
-      "Id": "a98cb5f4-e562-4b6e-a207-6ed26db1832d",
+      "__guid": "a98cb5f4-e562-4b6e-a207-6ed26db1832d",
       "Name": "Map",
       "Enabled": true,
+      "NetworkMode": 2,
       "Components": [
         {
           "__type": "MapInstance",
+          "__guid": "7939d616-09dd-4123-9fda-499ec5f4c8ee",
           "MapName": "maps/ringworld_dev.vmap",
-          "OnMapLoaded": null,
-          "OnMapUnloaded": null,
           "UseMapFromLaunch": false
         }
       ],
       "Children": []
     },
     {
-      "Id": "a737d4ec-7335-4002-9683-fbe9a0c72da3",
+      "__guid": "a737d4ec-7335-4002-9683-fbe9a0c72da3",
       "Name": "Sun",
       "Position": "89.14999,-206.0225,467.9799",
-      "Rotation": "-0.4923475,0.2275952,0.4700875,0.6962848",
+      "Rotation": "-0.5034776,0.3855469,0.4845926,0.6025236",
       "Tags": "light_directional,light",
       "Enabled": true,
+      "NetworkMode": 2,
       "Components": [
         {
           "__type": "DirectionalLight",
+          "__guid": "535687e1-3ca8-4653-b40d-b85f19c9c35e",
           "FogMode": "Enabled",
           "FogStrength": 1,
-          "LightColor": "0.9814,0.69382,0.40625,1",
+          "LightColor": "1,0.63101,0.36744,1",
           "Shadows": true,
-          "SkyColor": "0.21209,0.21916,0.35349,1"
+          "SkyColor": "0.52569,0.67761,0.69767,1"
         }
       ]
     },
     {
-      "Id": "f478ba65-755a-497a-a841-c1593d84a0c2",
+      "__guid": "f478ba65-755a-497a-a841-c1593d84a0c2",
       "Name": "Network",
       "Enabled": true,
+      "NetworkMode": 2,
       "Components": [
         {
           "__type": "RWNetworkHelper",
+          "__guid": "037e29c8-7507-4cf0-88af-ba7eb94809e9",
           "PlayerPrefab": {
             "_type": "gameobject",
             "prefab": "prefabs/player.prefab"
           },
-          "SpawnPoints": [],
           "StartServer": true
         }
       ]
     },
     {
-      "Id": "67b22861-dac8-4c94-a737-7d191a24bbcb",
-      "Name": "Object",
-      "Position": "96,-384,512",
+      "__guid": "67b22861-dac8-4c94-a737-7d191a24bbcb",
+      "Name": "Sky",
+      "Position": "96,64,280",
       "Tags": "skybox",
       "Enabled": true,
+      "NetworkMode": 2,
       "Components": [
         {
           "__type": "SkyBox2D",
-          "SkyMaterial": "materials/skybox/light_test_sky_sunny02.vmat",
+          "__guid": "da8cd825-f5fd-44aa-a5dd-f444ee161a38",
+          "SkyMaterial": "materials/skybox/skybox_workshop.vmat",
           "Tint": "1,1,1,1"
         }
       ]
     },
     {
-      "Id": "2cf9a86f-3139-4b1d-9557-3eda078c06cc",
+      "__guid": "2cf9a86f-3139-4b1d-9557-3eda078c06cc",
       "Name": "HealthTest",
       "Position": "0,304,0",
       "Rotation": "0,0,-0.7071067,0.7071068",
       "Scale": "0.6601614,0.6601614,0.6601614",
-      "Networked": true,
       "Enabled": true,
+      "NetworkMode": 1,
       "Components": [
         {
           "__type": "ModelRenderer",
+          "__guid": "1b6d2584-b308-4510-a730-0a64f5bea8d6",
           "BodyGroups": 18446744073709551615,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
           "Model": "models/terry_skibid.vmdl",
           "RenderType": "On",
           "Tint": "1,1,1,1"
         },
         {
           "__type": "HealthComponent",
-          "MaxHealth": 100,
-          "MinHealth": 0
+          "__guid": "19f7fab3-ddbd-4481-9963-294698712cc4",
+          "CanKillBind": false,
+          "HasShields": true,
+          "MaxHealth": 45,
+          "MaxShields": 75,
+          "MinHealth": 0,
+          "MinShields": 0,
+          "RechargeRate": 0.5,
+          "RechargeTime": 5
         },
         {
           "__type": "ModelCollider",
+          "__guid": "2fa6b35c-87e2-4e26-8147-87979968fc3a",
           "IsTrigger": false,
           "Model": "models/terry_skibid.vmdl",
-          "Static": false,
-          "Surface": null
+          "Static": false
         }
       ],
       "Children": [
         {
-          "Id": "684e851b-fbbe-48ab-ab75-1164a0d45af9",
+          "__guid": "684e851b-fbbe-48ab-ab75-1164a0d45af9",
           "Name": "Text",
           "Position": "0.00009245489,-0.00000000001102148,110.7326",
           "Enabled": true,
+          "NetworkMode": 2,
           "Components": [
             {
               "__type": "TextRenderer",
+              "__guid": "98fcd347-0c88-46f6-ba34-5a9d90558438",
               "Color": "0.45103,0.47149,0.5297,1",
               "FontFamily": "Poppins",
               "FontSize": 64,
               "Scale": 0.3,
-              "Text": "Hello! \u2764"
+              "Text": "Health: 100\nShields: 100"
             },
             {
               "__type": "HealthDebugTextComponent",
+              "__guid": "b5b7ca58-b8fd-469e-ae28-0a8a04513f38",
               "healthComponent": {
                 "_type": "component",
+                "component_id": "19f7fab3-ddbd-4481-9963-294698712cc4",
                 "go": "2cf9a86f-3139-4b1d-9557-3eda078c06cc",
                 "component_type": "HealthComponent"
               }
@@ -146,20 +168,516 @@
       ]
     },
     {
-      "Id": "eabb8bb0-7238-4a42-8d35-59b632727e61",
+      "__guid": "eabb8bb0-7238-4a42-8d35-59b632727e61",
       "Name": "Point Light",
-      "Position": "-144,403.7505,80",
+      "Position": "73.10742,252.9914,80.00014",
       "Tags": "light_point,light",
       "Enabled": true,
+      "NetworkMode": 2,
       "Components": [
         {
           "__type": "PointLight",
+          "__guid": "48a00524-036c-4bb8-bc33-00aa052ba344",
           "Attenuation": 1,
           "FogMode": "Enabled",
           "FogStrength": 1,
           "LightColor": "0.91373,0.98039,1,1",
           "Radius": 400,
           "Shadows": true
+        }
+      ]
+    },
+    {
+      "__guid": "7192fefc-b44d-44aa-8a8a-b3d14b8c2b99",
+      "Name": "Flag",
+      "Position": "-172,244,36",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "MeshComponent",
+          "__guid": "6c4efe61-55f1-4173-8f51-b32d06678bed",
+          "Collision": "Mesh",
+          "Color": "1,1,1,1",
+          "IsTrigger": false,
+          "Mesh": {
+            "Topology": "H4sIAAAAAAAACk2VBVMjQRCFA4Q7LEeABAIESA49dxfO3d3d3d3d3X7u9Vf1bVVS9YrHm\u002B1\u002Bs7PdPSOpVOpfYChQDlQHBgJjAm2B\u002BkA\u002BkAnMCCwPdAd6A9MCswJzAvMC2wMLA4sDSwPHAxsCmwJbAtcDBwKHAkcCzwMXApcCVwLfAw8CjwJPAl8DPwO/A38DKfc1PlAVqA20yJsDq9x/TSAnr/Pd0NKBDnm975vyuVbXydVg7rRnUKvepD/x7XL0cYGxPpeXV\u002BmdNn9WHc7flM9nzFftO/B8usKTtUa9Eq1WPYlL\u002Bz517n2m/xNTkpNjtustfscG32mu68QPypPvXWf8sJycyQ\u002B9zz2hd6pxHisq3nuNXsl51Mh79Er2yl74TdSfmOlyfpPN3WjdwflN9eyarEU4vxG1jPXZZM6C/hlruF59ghr5u9Tgk/QivqgGn6JXxn7IWkc7PGNilsmpo12uE7NSTp3ucZ341fK8/ZQ1fq2cnP3uGX3U80dfoNbs2Sc1tUivrL3dIF\u002BiV4s9nbOuT\u002BhPzDY5fXPKdWJ2yjnLM64Tv1veaf/njN8rJ\u002Bd8/dG36o\u002B\u002BXq3NOdIq36hXztnSJt\u002BsV955U/C73dCfmGNy3u\u002BW68SclPM977hO/Gl5j/OqYPxZOTnX6Y9\u002BVH/0/Wodzr12\u002BUG9Cs7CDvlhvTqdj0Xr6IX\u002BxFyT02evXCfmppz\u002BfuM68bflZedr0fi7cnLu0x/9qv7o59W6ndNd8ot6FZ3d3fLLevU4z0vO5h/6E/NMTs3\u002Bcp2Yl3Lq8Y/rxL\u002BWD3oflIx/KyfnOf3Rn\u002BqPfl\u002Btz3ulV/5Qr5J3TZ/8sV5l758BZ/MH/Yn5Jkf/5F3S7700pP7F\u002BTjgXTWs/k6NeO4vODnv6Y/OHYc/\u002Bns18nMPosE/6kU8dyMa/LNexHBfMu\u002BYa/R8cscxG/BiLzzH88zUynubGcU8YvYwZ\u002Bh5\u002Bptepm/pIfqF3qAPqEnqj1qjrvjGfE\u002B\u002BHd\u002BJM6u8t/8DXwtvbGQIAAA=",
+            "TextureOrigin": "-172,244,36",
+            "Positions": [
+              "-4,-4,36",
+              "4,-4,36",
+              "4,4,36",
+              "-4,4,36",
+              "-4,4,-36",
+              "4,4,-36",
+              "4,-4,-36",
+              "-4,-4,-36",
+              "-4,-4,52",
+              "4,-4,52",
+              "4,4,52",
+              "-4,4,52",
+              "-4,-4,53.96548",
+              "4,-4,53.96548",
+              "4,4,53.96548",
+              "-4,4,53.96548",
+              "4,-2.486786,50.7329",
+              "4,-2.486786,37.2671",
+              "4,2.486786,37.2671",
+              "4,2.486786,50.7329",
+              "8.595505,-2.486786,50.7329",
+              "8.595505,-2.486786,37.2671",
+              "8.595505,2.486786,37.2671",
+              "8.595505,2.486786,50.7329",
+              "13.01161,-3.615143,50.7329",
+              "13.01161,-3.615143,37.2671",
+              "13.01161,1.358429,37.2671",
+              "13.01161,1.358429,50.7329",
+              "17.37321,-3.615143,50.7329",
+              "17.37321,-3.615143,37.2671",
+              "17.37321,1.358429,37.2671",
+              "17.37321,1.358429,50.7329",
+              "21.59091,-0.6058655,50.73294",
+              "21.59091,-0.6058655,37.26714",
+              "21.59091,4.367706,37.26714",
+              "21.59091,4.367706,50.73294",
+              "28.04872,-2.998291,50.73293",
+              "28.04872,-2.998291,37.26713",
+              "28.04872,1.975281,37.26713",
+              "28.04872,1.975281,50.73293"
+            ],
+            "TextureUAxis": [
+              "1,0,0",
+              "1,0,0",
+              "0,-1,0",
+              "0,1,0",
+              "-1,0,0",
+              "1,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0"
+            ],
+            "TextureVAxis": [
+              "0,-1,0",
+              "0,-1,0",
+              "0,0,-1",
+              "0,0,-1",
+              "0,0,-1",
+              "0,0,-1",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0",
+              "0,0,0"
+            ],
+            "TextureScale": [
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25",
+              "0.25,0.25"
+            ],
+            "TextureAngle": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "MaterialIndex": [
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1
+            ]
+          },
+          "Static": true
+        }
+      ]
+    },
+    {
+      "__guid": "c3bbaf84-1c49-46c8-959d-bb6c00868478",
+      "Name": "magnum",
+      "Position": "-88.00005,359.9999,60.39446",
+      "Rotation": "0,0,-0.7071067,0.7071068",
+      "Scale": "4.840023,4.840023,4.840023",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "__guid": "fdceb7f6-8f8f-4a24-b3d3-e4da231e9f57",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/weapons/magnum/magnum.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "2f296e7b-8f73-44d6-b02c-dd363f185b26",
+      "Name": "v_rifle",
+      "Position": "33.36208,405.4873,25.67186",
+      "Rotation": "0,0,-0.7071067,0.7071068",
+      "Scale": "5.098155,5.098155,5.098155",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "__guid": "7f67d664-e04c-481e-bbdf-59efdb35b272",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/weapons/rifle/v_rifle.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "eb8fc44d-4918-4432-b977-d7602438d398",
+      "Name": "Object",
+      "Position": "112,184,0.000006446377",
+      "Enabled": true,
+      "NetworkMode": 1,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "__guid": "75a98417-9208-483c-9eaf-d2a7eb2e8173",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ModelCollider",
+          "__guid": "60391d4f-5131-4e7b-8364-458068a0d68d",
+          "IsTrigger": false,
+          "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
+          "Static": false,
+          "Surface": "surfaces/wood.surface"
+        },
+        {
+          "__type": "Rigidbody",
+          "__guid": "9c22e166-a05d-4c83-8073-ae2196f708f3",
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "MassOverride": 0,
+          "MotionEnabled": true,
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
+        }
+      ]
+    },
+    {
+      "__guid": "fbb71b01-2986-4c49-a83c-43c4d310e3dd",
+      "Name": "Object (1)",
+      "Position": "48,184,0.000006446377",
+      "Enabled": true,
+      "NetworkMode": 1,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "__guid": "1cf5a853-3a6b-4cd0-b8f2-6ee5935ff146",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/citizen_props/roadcone01.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ModelCollider",
+          "__guid": "1957a419-dbb9-4219-b737-609cfcf826da",
+          "IsTrigger": false,
+          "Model": "models/citizen_props/roadcone01.vmdl",
+          "Static": false,
+          "Surface": "surfaces/wood.surface"
+        },
+        {
+          "__type": "Rigidbody",
+          "__guid": "c41297d1-85a0-4000-af4b-aab1d6b2f7bc",
+          "AngularDamping": 0,
+          "Gravity": true,
+          "LinearDamping": 0,
+          "Locking": {},
+          "MassOverride": 0,
+          "MotionEnabled": true,
+          "RigidbodyFlags": 0,
+          "StartAsleep": false
+        }
+      ]
+    },
+    {
+      "__guid": "13afd3aa-ae36-47b5-9b24-d1bf4f5584fc",
+      "Name": "GameMode",
+      "Enabled": true,
+      "NetworkMode": 2
+    },
+    {
+      "__guid": "caf86460-749a-4a6d-b5c4-56022ab738ea",
+      "Name": "Cube",
+      "Position": "-256,256,24",
+      "Scale": "5.604911,1,1",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "__guid": "009e177a-9eb0-409d-b265-8498d5b05111",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/dev/box.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "BoxCollider",
+          "__guid": "2dfabb90-66e8-42b1-8354-af4e6511eae5",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false
+        }
+      ]
+    },
+    {
+      "__guid": "845c8765-4d6e-4d86-abff-25104e43e810",
+      "Name": "Cube (1)",
+      "Position": "-255.9999,231.1428,13.37052",
+      "Rotation": "0.3826834,0,0,0.9238796",
+      "Scale": "5.604911,1,1",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "__guid": "978d8fba-8ca3-4982-854e-2a36b3a20ee8",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/dev/box.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "BoxCollider",
+          "__guid": "2aebd026-2dc7-4b08-9bd3-28ad7e69ba98",
+          "Center": "0,0,0",
+          "IsTrigger": false,
+          "Scale": "50,50,50",
+          "Static": false
+        }
+      ]
+    },
+    {
+      "__guid": "711ec0e3-c7ff-4301-96b0-e80909a3a648",
+      "Name": "Object",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "SkinnedModelRenderer",
+          "__guid": "1a8fce44-71db-4ba0-8013-678f27621d03",
+          "BodyGroups": 341,
+          "CreateBoneObjects": false,
+          "Model": "models/citizen/citizen.vmdl",
+          "RenderType": "On",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "ModelHitboxes",
+          "__guid": "4663dbd0-c420-4851-8e69-7f3698344c18",
+          "Renderer": {
+            "_type": "component",
+            "component_id": "1a8fce44-71db-4ba0-8013-678f27621d03",
+            "go": "711ec0e3-c7ff-4301-96b0-e80909a3a648",
+            "component_type": "SkinnedModelRenderer"
+          }
+        },
+        {
+          "__type": "HealthComponent",
+          "__guid": "099d852d-37ca-4b64-b9a6-1503882f2020",
+          "CanKillBind": false,
+          "HasShields": false,
+          "MaxHealth": 100,
+          "MaxShields": 100,
+          "MinHealth": 0,
+          "MinShields": 0,
+          "RechargeRate": 0.1,
+          "RechargeTime": 5
+        }
+      ]
+    },
+    {
+      "__guid": "a15fd149-db06-4a69-aa5e-6e7073422061",
+      "Name": "GameManager",
+      "Position": "0,56,176",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "RingworldManager",
+          "__guid": "77fb1710-3576-4625-8986-972735df5b00",
+          "CanRespawn": true,
+          "PlayerPrefab": {
+            "_type": "gameobject",
+            "prefab": "prefabs/player.prefab"
+          },
+          "PlayerState": "ALIVE",
+          "RespawnTime": 5,
+          "SpawnPoints": []
         }
       ]
     }
@@ -187,8 +705,11 @@
   },
   "Title": "mp",
   "Description": "",
-  "LastSaved": "2024-03-09T14:30:36.3577946\u002B10:00",
+  "LastSaved": "2024-03-21T22:03:03.7915417\u002B10:00",
+  "ResourceVersion": 1,
+  "__version": 1,
   "__references": [
+    "facepunch.wooden_crate",
     "turd.terry_skibidi"
   ]
 }

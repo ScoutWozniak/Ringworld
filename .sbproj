@@ -8,7 +8,6 @@
   "HasAssets": true,
   "AssetsPath": "",
   "Resources": "*",
-  "MenuResources": "images/*\nui/*\nui/mainmenu/*\nconfig/gamemodes/*\nfonts/*",
   "HasCode": true,
   "CodePath": "/code/",
   "PackageReferences": [],
@@ -94,64 +93,6 @@
         "PostLaunchCommand": ""
       }
     ],
-    "Collision": {
-      "Defaults": {
-        "solid": "Collide",
-        "trigger": "Trigger",
-        "ladder": "Ignore",
-        "water": "Trigger",
-        "player": "Collide",
-        "weapon": "Collide",
-        "grenade": "Collide"
-      },
-      "Pairs": [
-        {
-          "a": "solid",
-          "b": "solid",
-          "r": "Collide"
-        },
-        {
-          "a": "trigger",
-          "b": "playerclip",
-          "r": "Ignore"
-        },
-        {
-          "a": "trigger",
-          "b": "solid",
-          "r": "Trigger"
-        },
-        {
-          "a": "solid",
-          "b": "trigger",
-          "r": "Collide"
-        },
-        {
-          "a": "playerclip",
-          "b": "solid",
-          "r": "Collide"
-        },
-        {
-          "a": "player",
-          "b": "weapon",
-          "r": "Trigger"
-        },
-        {
-          "a": "player",
-          "b": "player",
-          "r": "Collide"
-        },
-        {
-          "a": "grenade",
-          "b": "grenade",
-          "r": "Ignore"
-        },
-        {
-          "a": "player",
-          "b": "grenade",
-          "r": "Ignore"
-        }
-      ]
-    },
     "ControlModes": {},
     "InputSettings": {
       "Actions": [
@@ -325,8 +266,14 @@
           "KeyboardCode": "f",
           "GamepadCode": "LeftTrigger",
           "GroupName": "Actions"
+        },
+        {
+          "Name": "KillBind",
+          "KeyboardCode": "K",
+          "GroupName": "Other"
         }
-      ]
+      ],
+      "__guid": "2e7ecee9-3f7d-4935-ad47-4487d2135117"
     },
     "PackageSettings": [
       {

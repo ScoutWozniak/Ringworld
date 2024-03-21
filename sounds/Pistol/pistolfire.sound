@@ -1,6 +1,6 @@
 {
   "UI": false,
-  "Volume": "0.55,0.55,0",
+  "Volume": "0.25,0.55,0",
   "Pitch": "1.00,1.00,0",
   "Decibels": 70,
   "SelectionMode": "Random",
@@ -10,6 +10,13 @@
     "sounds/pistol/magnum_stereo2.vsnd",
     "sounds/pistol/magnum_stereo1.vsnd"
   ],
-  "MaximumDistance": 1143.9335,
-  "MinimumDistance": 57.196674
+  "Occlusion": true,
+  "Reflections": true,
+  "AirAbsorption": true,
+  "Transmission": true,
+  "OcclusionRadius": 64,
+  "DistanceAttenuation": true,
+  "ResourceVersion": 0,
+  "__version": 0,
+  "__references": []
 }

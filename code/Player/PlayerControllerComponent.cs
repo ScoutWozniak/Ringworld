@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class PlayerController : Component
+public class PlayerController : Component, IRespawnReset
 {
 	[Property] public Vector3 Gravity { get; set; } = new Vector3( 0, 0, 800 );
 
@@ -20,6 +20,13 @@ public class PlayerController : Component
 	public bool IsRunning { get; set; }
 
 	[Sync] bool IsDucking { get; set; }
+
+	TimeSince SinceLastGrounded { get; set; }
+	bool LastGroundState { get; set; }
+
+	[Property] float MaxCyoteTime { get; set; } = 1.0f;
+
+	public static PlayerController Instance { get; set; }
 
 	protected override void OnEnabled()
 	{
@@ -40,7 +47,9 @@ public class PlayerController : Component
 	protected override void OnStart()
 	{
 		base.OnStart();
-		
+		Tags.Add( GameObject.Name );
+		var cc = Components.Get<CharacterController>();
+		cc.IgnoreLayers.Add(GameObject.Name);
 	}
 
 	protected override void OnUpdate()
@@ -82,19 +91,8 @@ public class PlayerController : Component
 		{
 			var targetAngle = new Angles( 0, EyeAngles.yaw, 0 ).ToRotation();
 
-			var v = cc.Velocity.WithZ( 0 );
+			Body.Transform.Rotation = Rotation.Lerp( Body.Transform.Rotation, targetAngle, Time.Delta * 10.0f );
 
-			if ( v.Length > 10.0f )
-			{
-				targetAngle = Rotation.LookAt( v, Vector3.Up );
-			}
-
-			rotateDifference = Body.Transform.Rotation.Distance( targetAngle );
-
-			if ( rotateDifference > 50.0f || cc.Velocity.Length > 10.0f )
-			{
-				Body.Transform.Rotation = Rotation.Lerp( Body.Transform.Rotation, targetAngle, Time.Delta * 2.0f );
-			}
 		}
 
 
@@ -123,21 +121,25 @@ public class PlayerController : Component
 		if ( IsProxy )
 			return;
 
+		Instance = this;
+
 		BuildWishVelocity();
 
 		var cc = GameObject.Components.Get<CharacterController>();
 
 		cc.Height = GetDuckHeight() + 8.0f;
 
-		if ( cc.IsOnGround && Input.Pressed( "Jump" ) )
+		if ( (cc.IsOnGround || SinceLastGrounded < MaxCyoteTime) && Input.Pressed( "Jump" ) && fJumps == 0 )
 		{
 			float flGroundFactor = 1.0f;
 			float flMul = 268.3281572999747f * 1.5f;
 			//if ( Duck.IsActive )
 			//	flMul *= 0.8f;
 
-			cc.Punch( Vector3.Up * flMul * flGroundFactor );
-			//	cc.IsOnGround = false;
+			//cc.Velocity += ( Vector3.Up * flMul * flGroundFactor );
+			//cc.GroundObject = null;
+			cc.Velocity = cc.Velocity.WithZ(flMul * flGroundFactor);
+			cc.IsOnGround = false;
 
 			OnJump();
 
@@ -163,11 +165,15 @@ public class PlayerController : Component
 		if ( !cc.IsOnGround )
 		{
 			cc.Velocity -= Gravity * Time.Delta * 0.5f;
+			if ( LastGroundState == true )
+				SinceLastGrounded = 0;
 		}
 		else
 		{
 			cc.Velocity = cc.Velocity.WithZ( 0 );
+			fJumps = 0.0f;
 		}
+		LastGroundState = cc.IsOnGround;
 	}
 
 	public void BuildWishVelocity()
@@ -195,5 +201,12 @@ public class PlayerController : Component
 		if ( IsDucking ) return 120.0f;
 		if ( IsRunning ) return 200.0f;
 		return 285.0f;
+	}
+
+	public void RespawnReset()
+	{
+		Log.Info( "test" );
+		var cc = Components.Get<CharacterController>();
+		cc.Velocity = Vector3.Zero;
 	}
 }

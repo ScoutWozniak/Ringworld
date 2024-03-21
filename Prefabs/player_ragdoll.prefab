@@ -1,0 +1,40 @@
+{
+  "RootObject": {
+    "__guid": "57233a84-2b20-43ce-8852-106ec1b325f4",
+    "Name": "player_ragdoll",
+    "Tags": "ragdoll",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "Components": [
+      {
+        "__type": "SkinnedModelRenderer",
+        "__guid": "b12fdac8-56ef-4f0c-9004-59bb8208e9f9",
+        "BodyGroups": 341,
+        "CreateBoneObjects": false,
+        "Model": "models/citizen/citizen.vmdl",
+        "RenderType": "On",
+        "Tint": "1,1,1,1"
+      },
+      {
+        "__type": "ModelPhysics",
+        "__guid": "fc9e9e29-d479-4a1a-b099-7c3fcd14775a",
+        "Locking": {},
+        "Model": "models/citizen/citizen.vmdl",
+        "Renderer": {
+          "_type": "component",
+          "component_id": "b12fdac8-56ef-4f0c-9004-59bb8208e9f9",
+          "go": "57233a84-2b20-43ce-8852-106ec1b325f4",
+          "component_type": "SkinnedModelRenderer"
+        },
+        "RigidbodyFlags": 0
+      }
+    ],
+    "Children": []
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "ResourceVersion": 1,
+  "__version": 1,
+  "__references": []
+}

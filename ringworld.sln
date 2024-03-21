@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Action Graph", "C:\Program 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ringworld", "code\ringworld.csproj", "{2C3DA39F-2E72-4D50-D200-6239D07410D2}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ringworld.editor", "code\Editor\ringworld.editor.csproj", "{77A4E83B-3169-2D00-1A6B-A8C1A00717E8}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{7E84B5F6-56F9-A3B2-F215-7A71616B85A2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{91C47821-78DC-6EB2-D97E-14E2D5EF1C9F}"
@@ -44,6 +46,10 @@ Global
 		{2C3DA39F-2E72-4D50-D200-6239D07410D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C3DA39F-2E72-4D50-D200-6239D07410D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C3DA39F-2E72-4D50-D200-6239D07410D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77A4E83B-3169-2D00-1A6B-A8C1A00717E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77A4E83B-3169-2D00-1A6B-A8C1A00717E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77A4E83B-3169-2D00-1A6B-A8C1A00717E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77A4E83B-3169-2D00-1A6B-A8C1A00717E8}.Release|Any CPU.Build.0 = Release|Any CPU
 
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution

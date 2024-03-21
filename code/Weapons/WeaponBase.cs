@@ -19,10 +19,17 @@ public sealed class WeaponBase : Component
 
 	SoundHandle fireSoundHandle { get;set; }
 
+	[Property] GameObject WeaponProjectile { get; set; }
+
+	[Property] float FireRate { get; set; } = 0.1f;
+
+	// Set it to a large value imediately so we're good to fire at the start
+	TimeSince LastFire = 999.0f;
+
 	protected override void OnUpdate()
 	{
 		if ( fireSoundHandle != null )
-		{
+		{ 
 			if ( !fireSoundHandle.IsStopped )
 				fireSoundHandle.Position = MuzzlePoint.Transform.Position;
 			else
@@ -31,20 +38,14 @@ public sealed class WeaponBase : Component
 
 		if ( IsProxy )
 			return;
-
-		if (GetInputFire())
+		 
+		if (CanFire())
 		{
 			FireEffects();
-			var startPos = Scene.Camera.Transform.Position;
-			var endPos = startPos + Scene.Camera.Transform.Rotation.Forward * 1000.0f;
-			var tr = Scene.Trace.Ray( startPos, endPos ).IgnoreGameObjectHierarchy(GameObject.Root).UseHitboxes().UsePhysicsWorld().Run();
-			if (tr.Hit)
-			{
-				if (tr.GameObject.Components.TryGet<HealthComponent>(out var health))
-				{
-					health.TakeDamage( 10.0f );
-				}
-			}
+			var proj = WeaponProjectile.Clone( MuzzlePoint.Transform.Position + Scene.Camera.Transform.Rotation.Forward * 8.0f, Scene.Camera.Transform.Rotation );
+			proj.Components.Get<ProjectileComponent>().OwnerIgnore = GameObject.Root;
+			proj.NetworkSpawn();
+			LastFire = 0;
 		}
 	}
 
@@ -54,9 +55,14 @@ public sealed class WeaponBase : Component
 			case FireTypes.SemiAuto:
 				return Input.Pressed( "attack1" );
 			case FireTypes.FullAuto:
-				return Input.Pressed( "down" );
+				return Input.Down( "attack1" );
 		}
 		return false;
+	}
+
+	bool CanFire()
+	{
+		return GetInputFire() && LastFire > FireRate;
 	}
 
 	[Broadcast]
@@ -71,6 +77,12 @@ public sealed class WeaponBase : Component
 			// Fire effects from first person
 			ViewModel.Set( "b_attack", true );
 		}
+		if (fireSoundHandle != null && fireSoundHandle.IsValid)
+		{
+			fireSoundHandle.Stop(1f);
+		}
 		fireSoundHandle = Sound.Play( "pistolfire", MuzzlePoint.Transform.Position );
 	}
+
+	
 }

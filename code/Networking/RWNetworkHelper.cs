@@ -25,7 +25,7 @@ public sealed class RWNetworkHelper : Component, Component.INetworkListener
 	/// A list of points to choose from randomly to spawn the player in. If not set, we'll spawn at the
 	/// location of the NetworkHelper object.
 	/// </summary>
-	[Property] public List<GameObject> SpawnPoints { get; set; }
+	
 
 	protected override async Task OnLoad()
 	{
@@ -47,44 +47,8 @@ public sealed class RWNetworkHelper : Component, Component.INetworkListener
 	{
 		Log.Info( $"Player '{channel.DisplayName}' has joined the game" );
 
-		if ( PlayerPrefab is null )
-			return;
-
-		//
-		// Find a spawn location for this player
-		//
-		var startLocation = FindSpawnLocation().WithScale( 1 );
-
-		// Spawn this object and make the client the owner
-		var player = PlayerPrefab.Clone( startLocation, name: $"Player - {channel.DisplayName}" );
-		player.NetworkSpawn( channel );
+		/*RingworldManager.Instance.RespawnPlayer(channel);*/
 	}
 
-	/// <summary>
-	/// Find the most appropriate place to respawn
-	/// </summary>
-	Transform FindSpawnLocation()
-	{
-		//
-		// If they have spawn point set then use those
-		//
-		if ( SpawnPoints is not null && SpawnPoints.Count > 0 )
-		{
-			return Random.Shared.FromList( SpawnPoints, default ).Transform.World;
-		}
-
-		//
-		// If we have any SpawnPoint components in the scene, then use those
-		//
-		var spawnPoints = Scene.GetAllComponents<SpawnPoint>().ToArray();
-		if ( spawnPoints.Length > 0 )
-		{
-			return Random.Shared.FromArray( spawnPoints ).Transform.World;
-		}
-
-		//
-		// Failing that, spawn where we are
-		//
-		return Transform.World;
-	}
+	
 }
