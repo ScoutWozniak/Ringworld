@@ -48,6 +48,7 @@ public sealed class RWNetworkHelper : Component, Component.INetworkListener
 		Log.Info( $"Player '{channel.DisplayName}' has joined the game" );
 
 		/*RingworldManager.Instance.RespawnPlayer(channel);*/
+		channel.CanRefreshObjects = true;
 	}
 
 	

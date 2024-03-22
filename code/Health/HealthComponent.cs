@@ -118,6 +118,11 @@ public sealed class HealthComponent : Component
 			comp.OnDamage();
 		}
 	}
+
+	public float GetShieldPercentage()
+	{
+		return Shields / MaxShields;
+	}
 }
 
 public interface IHealthEventListener

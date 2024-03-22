@@ -1,0 +1,34 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+
+<root>
+	<div class="shieldBar">
+		<div class="shieldOut"></div>
+		<div class="shieldIn">
+			<div class="shieldRect" style="width:@(PlayerHealth.GetShieldPercentage()* 100)%;">
+
+			</div>
+
+		</div>
+	</div>
+</root>
+
+@code
+{
+	[Property] HealthComponent PlayerHealth { get; set; }
+	[Property, TextArea] public string MyStringValue { get; set; } = "Hello World!";
+
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine(MyStringValue, PlayerHealth.GetShieldPercentage());
+
+	protected override void OnUpdate()
+	{
+		base.OnUpdate();
+		if (IsProxy)
+			GameObject.Enabled = false;
+	}
+
+}

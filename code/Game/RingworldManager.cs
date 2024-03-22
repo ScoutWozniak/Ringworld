@@ -65,7 +65,7 @@ public sealed class RingworldManager : Component
 				reset.RespawnReset();
 			}
 
-			ChangePlayerEnabled( PlayerController.Instance.GameObject, true );
+			PlayerController.Instance.GameObject.Network.Refresh();
 		}
 		PlayerState = PlayerStates.ALIVE;
 	}
@@ -75,7 +75,7 @@ public sealed class RingworldManager : Component
 		PlayerState = PlayerStates.DEAD;
 		Log.Info( "rippp" );
 		PlayerController.Instance.GameObject.Enabled = false;
-		ChangePlayerEnabled( PlayerController.Instance.GameObject, false );
+		PlayerController.Instance.GameObject.Network.Refresh();
 		SinceDeath = 0;
 	}
 	/// <summary>
