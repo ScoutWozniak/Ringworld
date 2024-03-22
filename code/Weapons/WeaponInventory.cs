@@ -15,15 +15,41 @@ public sealed class WeaponInventory : Component
 			return;
 		if (Input.Pressed("Slot1"))
 		{
-			ActiveWeapon.Enabled = false;
+			UnequipCurrent();
 			ActiveWeaponIndex++;
 			if ( ActiveWeaponIndex > StoredWeapons.Count - 1 ) ActiveWeaponIndex = 0;
-			ActiveWeapon.Enabled = true;
+			EquipCurrent();
 		}
 	}
 
-	void SwitchWeapons()
+	void EquipCurrent()
 	{
-		
+		ActiveWeapon.Components.Get<WeaponStateComponent>().EquipWeapon();
+	}
+
+	void UnequipCurrent()
+	{
+		if(StoredWeapons.Count == 0)
+			return;
+		ActiveWeapon.Components.Get<WeaponStateComponent>().UnequipWeapon();
+	}
+
+	public void AddWeapon(GameObject weapon)
+	{
+		UnequipCurrent();
+		var newIndex = StoredWeapons.Count;
+		StoredWeapons.Add(weapon);
+		ActiveWeaponIndex = newIndex;
+		var stateManager = weapon.Components.Get<WeaponStateComponent>();
+
+		stateManager.AddWeaponToInventory();
+		stateManager.EquipWeapon();
+	}
+
+	public bool CanAddWeapon()
+	{
+		if ( StoredWeapons.Count < 2 )
+			return true;
+		return false;
 	}
 }

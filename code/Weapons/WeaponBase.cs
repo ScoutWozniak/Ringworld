@@ -42,13 +42,16 @@ public sealed class WeaponBase : Component
 		if (CanFire())
 		{
 			FireEffects();
-			var proj = WeaponProjectile.Clone( MuzzlePoint.Transform.Position + Scene.Camera.Transform.Rotation.Forward * 8.0f, Scene.Camera.Transform.Rotation );
-			proj.Components.Get<ProjectileComponent>().OwnerIgnore = GameObject.Root;
-			proj.NetworkSpawn();
+			/*			var proj = WeaponProjectile.Clone( MuzzlePoint.Transform.Position + Scene.Camera.Transform.Rotation.Forward * 8.0f, Scene.Camera.Transform.Rotation );
+						proj.Components.Get<ProjectileComponent>().OwnerIgnore = GameObject.Root;
+						proj.NetworkSpawn();*/
+			Log.Info( MuzzlePoint.Transform.Position + Scene.Camera.Transform.Rotation.Forward * 8.0f );
+			BulletManager.Instance?.SpawnBullet( new( MuzzlePoint.Transform.Position + Scene.Camera.Transform.Rotation.Forward * 8.0f, 
+				Scene.Camera.Transform.Rotation.Forward, 100.0f, 10.0f, PlayerController.Instance.GameObject ) );
 			LastFire = 0;
 		}
 	}
-
+	 
 	bool GetInputFire()
 	{
 		switch ( FireType ) {
