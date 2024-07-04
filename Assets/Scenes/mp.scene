@@ -8,7 +8,7 @@
       "NetworkMode": 2,
       "Components": [
         {
-          "__type": "CameraComponent",
+          "__type": "Sandbox.CameraComponent",
           "__guid": "1de80059-2cd1-44f5-adf8-560d54aadfa4",
           "BackgroundColor": "0.33333,0.46275,0.52157,1",
           "ClearFlags": "All",
@@ -25,7 +25,7 @@
           "ZNear": 1
         },
         {
-          "__type": "AudioListener",
+          "__type": "Sandbox.AudioListener",
           "__guid": "97dc5cbc-bee0-4936-9e6a-ff496dd2f602",
           "UseCameraDirection": true
         }
@@ -38,7 +38,7 @@
       "NetworkMode": 2,
       "Components": [
         {
-          "__type": "MapInstance",
+          "__type": "Sandbox.MapInstance",
           "__guid": "7939d616-09dd-4123-9fda-499ec5f4c8ee",
           "MapName": "maps/ctf_test.vpk",
           "UseMapFromLaunch": false
@@ -56,7 +56,7 @@
       "NetworkMode": 2,
       "Components": [
         {
-          "__type": "DirectionalLight",
+          "__type": "Sandbox.DirectionalLight",
           "__guid": "535687e1-3ca8-4653-b40d-b85f19c9c35e",
           "FogMode": "Enabled",
           "FogStrength": 1,
@@ -92,9 +92,9 @@
       "NetworkMode": 2,
       "Components": [
         {
-          "__type": "SkyBox2D",
+          "__type": "Sandbox.SkyBox2D",
           "__guid": "da8cd825-f5fd-44aa-a5dd-f444ee161a38",
-          "SkyMaterial": "materials/skybox/light_test_sky_sunset.vmat",
+          "SkyMaterial": "materials/skybox/skybox_sunrise_01.vmat",
           "Tint": "1,1,1,1"
         }
       ]
@@ -109,7 +109,7 @@
       "NetworkMode": 1,
       "Components": [
         {
-          "__type": "ModelRenderer",
+          "__type": "Sandbox.ModelRenderer",
           "__guid": "1b6d2584-b308-4510-a730-0a64f5bea8d6",
           "BodyGroups": 18446744073709551615,
           "Model": "models/terry_skibid.vmdl",
@@ -129,7 +129,7 @@
           "RechargeTime": 5
         },
         {
-          "__type": "ModelCollider",
+          "__type": "Sandbox.ModelCollider",
           "__guid": "2fa6b35c-87e2-4e26-8147-87979968fc3a",
           "IsTrigger": false,
           "Model": "models/terry_skibid.vmdl",
@@ -145,7 +145,7 @@
           "NetworkMode": 2,
           "Components": [
             {
-              "__type": "TextRenderer",
+              "__type": "Sandbox.TextRenderer",
               "__guid": "98fcd347-0c88-46f6-ba34-5a9d90558438",
               "Color": "0.45103,0.47149,0.5297,1",
               "FontFamily": "Poppins",
@@ -176,7 +176,7 @@
       "NetworkMode": 2,
       "Components": [
         {
-          "__type": "PointLight",
+          "__type": "Sandbox.PointLight",
           "__guid": "48a00524-036c-4bb8-bc33-00aa052ba344",
           "Attenuation": 1,
           "FogMode": "Enabled",
@@ -195,7 +195,7 @@
       "NetworkMode": 1,
       "Components": [
         {
-          "__type": "ModelRenderer",
+          "__type": "Sandbox.ModelRenderer",
           "__guid": "75a98417-9208-483c-9eaf-d2a7eb2e8173",
           "BodyGroups": 18446744073709551615,
           "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
@@ -203,7 +203,7 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ModelCollider",
+          "__type": "Sandbox.ModelCollider",
           "__guid": "60391d4f-5131-4e7b-8364-458068a0d68d",
           "IsTrigger": false,
           "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
@@ -211,7 +211,7 @@
           "Surface": "surfaces/wood.surface"
         },
         {
-          "__type": "Rigidbody",
+          "__type": "Sandbox.Rigidbody",
           "__guid": "9c22e166-a05d-4c83-8073-ae2196f708f3",
           "AngularDamping": 0,
           "Gravity": true,
@@ -232,7 +232,7 @@
       "NetworkMode": 1,
       "Components": [
         {
-          "__type": "ModelRenderer",
+          "__type": "Sandbox.ModelRenderer",
           "__guid": "1cf5a853-3a6b-4cd0-b8f2-6ee5935ff146",
           "BodyGroups": 18446744073709551615,
           "Model": "models/citizen_props/roadcone01.vmdl",
@@ -240,7 +240,7 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ModelCollider",
+          "__type": "Sandbox.ModelCollider",
           "__guid": "1957a419-dbb9-4219-b737-609cfcf826da",
           "IsTrigger": false,
           "Model": "models/citizen_props/roadcone01.vmdl",
@@ -248,7 +248,7 @@
           "Surface": "surfaces/wood.surface"
         },
         {
-          "__type": "Rigidbody",
+          "__type": "Sandbox.Rigidbody",
           "__guid": "c41297d1-85a0-4000-af4b-aab1d6b2f7bc",
           "AngularDamping": 0,
           "Gravity": true,
@@ -275,7 +275,7 @@
       "NetworkMode": 2,
       "Components": [
         {
-          "__type": "SkinnedModelRenderer",
+          "__type": "Sandbox.SkinnedModelRenderer",
           "__guid": "1a8fce44-71db-4ba0-8013-678f27621d03",
           "BodyGroups": 341,
           "CreateBoneObjects": false,
@@ -284,7 +284,7 @@
           "Tint": "1,1,1,1"
         },
         {
-          "__type": "ModelHitboxes",
+          "__type": "Sandbox.ModelHitboxes",
           "__guid": "4663dbd0-c420-4851-8e69-7f3698344c18",
           "Renderer": {
             "_type": "component",
@@ -385,7 +385,7 @@
   },
   "Title": "mp",
   "Description": "",
-  "LastSaved": "2024-03-22T20:36:13.4232041\u002B10:00",
+  "LastSaved": "2024-04-24T19:16:16.6965788\u002B10:00",
   "ResourceVersion": 1,
   "__version": 1,
   "__references": [

@@ -47,7 +47,7 @@ public sealed class WeaponBase : Component
 						proj.NetworkSpawn();*/
 			Log.Info( MuzzlePoint.Transform.Position + Scene.Camera.Transform.Rotation.Forward * 8.0f );
 			BulletManager.Instance?.SpawnBullet( new( MuzzlePoint.Transform.Position + Scene.Camera.Transform.Rotation.Forward * 8.0f, 
-				Scene.Camera.Transform.Rotation.Forward, 100.0f, 10.0f, PlayerController.Instance.GameObject ) );
+				Scene.Camera.Transform.Rotation.Forward, 100.0f, 10.0f, PlayerController.Instance.GameObject.Id ) );
 			LastFire = 0;
 		}
 	}

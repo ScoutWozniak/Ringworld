@@ -1,4 +1,5 @@
 using Sandbox;
+using System;
 using System.Collections.Generic;
 
 public sealed class BulletManager : Component
@@ -26,7 +27,7 @@ public sealed class BulletManager : Component
 		
 			var startPos = Bullets[i].Position;
 			var endPos = startPos + Bullets[i].Forward * Bullets[i].Speed;
-			var tr = Scene.Trace.Ray( startPos, endPos ).Radius( 1.0f ).IgnoreGameObjectHierarchy( Bullets[i].Owner ).WithoutTags( "playercol", "ragdoll" ).UseHitboxes().UsePhysicsWorld().Run();
+			var tr = Scene.Trace.Ray( startPos, endPos ).Radius( 1.0f ).IgnoreGameObjectHierarchy( Scene.Directory.FindByGuid( Bullets[i].Owner ) ).WithoutTags( "playercol", "ragdoll" ).UseHitboxes().UsePhysicsWorld().Run();
 			if ( tr.Hit )
 			{
 				if ( tr.GameObject.Components.TryGet<HealthComponent>( out var health ) )
@@ -90,13 +91,13 @@ public sealed class BulletManager : Component
 
 public struct BulletProjectile
 {
-	public BulletProjectile(Vector3 pos, Vector3 forward, float speed, float damage, GameObject owner)
+	public BulletProjectile(Vector3 pos, Vector3 forward, float speed, float damage, Guid id)
 	{
 		Position = pos;
 		Forward = forward;
 		Speed = speed;
 		Damage = damage;
-		Owner = owner;
+		Owner = id;
 	}
 
 	public Vector3 Position { get; set; }
@@ -105,5 +106,7 @@ public struct BulletProjectile
 
 	public float Damage { get; set; }
 
-	public GameObject Owner { get; set; }
+	public Guid Owner { get; set; }
+
+
 }

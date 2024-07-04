@@ -29,11 +29,13 @@ public sealed class WeaponStateComponent : Component
 
 	public void DropWeapon()
 	{
-
+		Network.Refresh();
 	}
 
 	public void AddWeaponToInventory()
 	{
 		DroppedObject.Enabled = false;
+		Network.Refresh();
+		Log.Info( "test" );
 	}
 }
