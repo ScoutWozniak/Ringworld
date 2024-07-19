@@ -21,24 +21,16 @@ namespace Sandbox.Events;
 [Title( "State Machine" ), Category( "State Machines" )]
 public sealed class StateMachineComponent : Component
 {
-	private StateComponent? _currentState;
+	private Guid _currentStateGuid;
 
-	/// <summary>
-	/// How many instant state transitions in a row until we throw an error?
-	/// </summary>
-	public const int MaxInstantTransitions = 16;
-
-	/// <summary>
-	/// Which state is currently active?
-	/// </summary>
-	[Property, HostSync]
-	public StateComponent? CurrentState
+	[HostSync]
+	private Guid CurrentStateGuid
 	{
-		get => _currentState;
+		get => _currentStateGuid;
 		set
 		{
-			if ( _currentState == value ) return;
-			_currentState = value;
+			if ( _currentStateGuid == value ) return;
+			_currentStateGuid = value;
 
 			if ( !Networking.IsHost )
 			{
@@ -47,17 +39,33 @@ public sealed class StateMachineComponent : Component
 		}
 	}
 
-	/// <summary>
-	/// Which state will we transition to next, at <see cref="NextStateTime"/>?
-	/// </summary>
 	[HostSync]
-	public StateComponent? NextState { get; set; }
+	private Guid NextStateGuid { get; set; }
 
 	/// <summary>
 	/// What time will we transition to <see cref="NextState"/>?
 	/// </summary>
 	[HostSync]
 	public float NextStateTime { get; set; }
+
+	/// <summary>
+	/// Which state is currently active?
+	/// </summary>
+	[Property]
+	public StateComponent? CurrentState
+	{
+		get => Scene.Directory.FindComponentByGuid( CurrentStateGuid ) as StateComponent;
+		set => CurrentStateGuid = value?.Id ?? Guid.Empty;
+	}
+
+	/// <summary>
+	/// Which state will we transition to next, at <see cref="NextStateTime"/>?
+	/// </summary>
+	public StateComponent? NextState
+	{
+		get => Scene.Directory.FindComponentByGuid( NextStateGuid ) as StateComponent;
+		private set => NextStateGuid = value?.Id ?? Guid.Empty;
+	}
 
 	/// <summary>
 	/// All states found on descendant objects.
@@ -124,28 +132,23 @@ public sealed class StateMachineComponent : Component
 
 		current.Update();
 
-		var transitions = 0;
-
-		while ( transitions++ < MaxInstantTransitions )
+		if ( NextState is not { } next || !(Time.Now >= NextStateTime) )
 		{
-			if ( NextState is not { } next || !(Time.Now >= NextStateTime) )
-			{
-				return;
-			}
-
-			if ( next.DefaultNextState is not null )
-			{
-				Transition( next.DefaultNextState, next.DefaultDuration );
-			}
-			else
-			{
-				ClearTransition();
-			}
-
-			CurrentState = next;
-
-			EnableActiveStates( true );
+			return;
 		}
+
+		if ( next.DefaultNextState is not null )
+		{
+			Transition( next.DefaultNextState, next.DefaultDuration );
+		}
+		else
+		{
+			ClearTransition();
+		}
+
+		CurrentState = next;
+
+		EnableActiveStates( true );
 	}
 
 	/// <summary>

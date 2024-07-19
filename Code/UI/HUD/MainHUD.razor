@@ -1,0 +1,67 @@
+@namespace Facepunch.UI
+@inherits PanelComponent
+
+@if (!IsHudEnabled)
+    return;
+
+@if ( !PlayerState.Viewer.IsValid() || !PlayerState.Viewer.Pawn.IsValid() )
+    return;
+
+<root>
+    <ScreenProtectionOverlay />
+    <DamageOverlay />
+
+    <canvas>
+        <Crosshair />
+
+        <div class="hud with-deadzone top-left flex column">
+            <Minimap />
+            <MapCallouts />
+            <Balance />
+        </div>
+
+        <Toast />
+        <EquipmentOverlay />
+        <PlayerInfo />
+        <Spectating />
+
+        <RoundStateDisplay />
+        <DefuseKitDisplay />
+        <DamageIndicator />
+        <KillFeed @ref="KillFeed" />
+
+        <div class="right">
+            <div class="flex-grow" />
+            <Voices />
+            <WeaponInfoComponent />
+        </div>
+
+        <Radio />
+    </canvas>
+    
+    <!-- Full-screen overlays -->
+    <BuyMenu />
+    <MarkerSystem />
+    <Scoreboard />
+
+    <PlayAreaOverlay />
+</root>
+
+@code 
+{
+    [ConVar( "cl_drawhud" )]
+    public static bool IsHudEnabled { get; set; } = true;
+
+    [DeveloperCommand( "Toggle HUD", "Visuals" )]
+    private static void Command_ToggleHUD()
+    {
+        IsHudEnabled = !IsHudEnabled;
+    }
+
+    public KillFeed KillFeed { get; set; }
+
+    protected override int BuildHash()
+    {
+        return HashCode.Combine( IsHudEnabled, PlayerState.Viewer.IsValid(), PlayerState.Viewer.Pawn.IsValid() );
+    }
+}

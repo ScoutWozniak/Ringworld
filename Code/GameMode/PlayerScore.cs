@@ -1,0 +1,197 @@
+﻿using Sandbox.Events;
+
+namespace Facepunch.UI;
+
+/// <summary>
+/// Handles all the player score values.
+/// </summary>
+public sealed class PlayerScore : Component,
+	IGameEventHandler<KillEvent>,
+	IGameEventHandler<BombDefusedEvent>,
+	IGameEventHandler<BombDetonatedEvent>,
+	IGameEventHandler<BombPlantedEvent>,
+	IGameEventHandler<RoundCounterIncrementedEvent>,
+	IGameEventHandler<RoundCounterResetEvent>,
+	IGameEventHandler<ResetScoresEvent>
+{
+	[Property] public PlayerState PlayerState { get; set; }
+
+	[HostSync, Property, ReadOnly] 
+	public int Kills { get; set; } = 0;
+
+	[HostSync, Property, ReadOnly] 
+	public int Deaths { get; set; } = 0;
+
+	[HostSync, Property, ReadOnly] 
+	public int Score { get; set; } = 0;
+
+	[HostSync]
+	public NetList<int> ScoreHistory { get; private set; } = new();
+
+	[HostSync]
+	public bool WasBombPlanter { get; private set; }
+
+	private const int KillScore = 2;
+	private const int AssistScore = 1;
+	private const int TeamKillScore = -1;
+	private const int SuicideScore = -1;
+
+	// Planting the C4 explosive
+	private const int PlantScore = 2;
+
+	// Bomb planter alive when the bomb explodes
+	private const int BombExplodePlanterAliveScore = 2;
+
+	// Bomb planter dead when the bomb explodes
+	private const int BombExplodePlanterDeadScore = 1;
+
+	// Other Ts alive when the bomb explodes
+	private const int BombExplodeTeamAliveScore = 1;
+
+	// Defusing bomb
+	private const int DefuserScore = 2;
+
+	// Other CTs alive when the bomb is defused
+	private const int DefuseTeamAliveScore = 1;
+
+	void IGameEventHandler<KillEvent>.OnGameEvent( KillEvent eventArgs )
+	{
+		var damageInfo = eventArgs.DamageInfo;
+
+		if ( !damageInfo.Attacker.IsValid() ) return;
+		if ( !damageInfo.Victim.IsValid() ) return;
+
+		var thisPlayer = PlayerState?.PlayerPawn;
+		if ( !thisPlayer.IsValid() ) return;
+
+		var killerPlayer = GameUtils.GetPlayerFromComponent( damageInfo.Attacker );
+		var victimPlayer = GameUtils.GetPlayerFromComponent( damageInfo.Victim );
+		
+		if ( !victimPlayer.IsValid() ) return;
+
+		if ( !killerPlayer.IsValid() )
+		{
+			if ( victimPlayer == thisPlayer )
+				Deaths++;
+			
+			return;
+		}
+
+		var isFriendly = killerPlayer.Team == victimPlayer.Team;
+		var isSuicide = killerPlayer == victimPlayer;
+
+		if ( killerPlayer == thisPlayer )
+		{
+			if ( isFriendly )
+			{
+				// Killed by friendly/teammate
+				Kills--;
+				Score += TeamKillScore;
+			}
+			else if ( isSuicide )
+			{
+				// Killed by suicide
+				Kills--;
+				Score += SuicideScore;
+			}
+			else
+			{
+				// Valid kill, add score
+				Kills++;
+				Score += KillScore;
+			}
+		}
+		else if ( victimPlayer == thisPlayer )
+		{
+			// Only count as death if this wasn't a team kill
+			if ( !isFriendly )
+			{
+				Deaths++;
+			}
+		}
+	}
+
+	void IGameEventHandler<BombPlantedEvent>.OnGameEvent( BombPlantedEvent eventArgs )
+	{
+		var thisPlayer = PlayerState?.PlayerPawn;
+		var planterPlayer = eventArgs.Planter;
+
+		if ( planterPlayer == thisPlayer )
+		{
+			// Planter is the current player
+			Score += PlantScore;
+			WasBombPlanter = true;
+		}
+		else
+		{
+			WasBombPlanter = false;
+		}
+	}
+
+	void IGameEventHandler<BombDefusedEvent>.OnGameEvent( BombDefusedEvent eventArgs )
+	{
+		var thisPlayer = PlayerState?.PlayerPawn;
+		var defuserPlayer = eventArgs.Defuser;
+
+		if ( defuserPlayer == thisPlayer )
+		{
+			// Defuser is the current player
+			Score += DefuserScore;
+		}
+		else if ( thisPlayer is not null )
+		{
+			// Defuser is a teammate
+			if ( defuserPlayer.Team == thisPlayer.Team && thisPlayer.HealthComponent.State == LifeState.Alive )
+			{
+				Score += DefuseTeamAliveScore;
+			}
+		}
+	}
+
+	void IGameEventHandler<BombDetonatedEvent>.OnGameEvent( BombDetonatedEvent eventArgs )
+	{
+		var thisPlayer = PlayerState?.PlayerPawn;
+		var planterPlayer = GameUtils.PlayerPawns
+			.FirstOrDefault( x => x.PlayerState.Components.Get<PlayerScore>() is { WasBombPlanter: true } );
+
+		if ( planterPlayer == thisPlayer )
+		{
+			if ( planterPlayer?.HealthComponent.State == LifeState.Alive )
+			{
+				// Planter is alive when the bomb explodes
+				Score += BombExplodePlanterAliveScore;
+			}
+			else
+			{
+				// Planter is dead when the bomb explodes
+				Score += BombExplodePlanterDeadScore;
+			}
+		}
+		else if ( planterPlayer?.Team == thisPlayer?.Team && thisPlayer.HealthComponent.State == LifeState.Alive )
+		{
+			// Teammate is alive when the bomb explodes
+			Score += BombExplodeTeamAliveScore;
+		}
+	}
+
+	void IGameEventHandler<ResetScoresEvent>.OnGameEvent( ResetScoresEvent eventArgs )
+	{
+		Kills = 0;
+		Deaths = 0;
+		Score = 0;
+
+		ScoreHistory.Clear();
+
+		WasBombPlanter = false;
+	}
+
+	void IGameEventHandler<RoundCounterIncrementedEvent>.OnGameEvent( RoundCounterIncrementedEvent eventArgs )
+	{
+		ScoreHistory.Add( Score - ScoreHistory.LastOrDefault() );
+	}
+
+	void IGameEventHandler<RoundCounterResetEvent>.OnGameEvent( RoundCounterResetEvent eventArgs )
+	{
+		ScoreHistory.Clear();
+	}
+}

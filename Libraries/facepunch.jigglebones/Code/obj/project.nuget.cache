@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "hejIuOJi/SnM58kV0xh9iRbDctw/z7YsilSjIsipDWQkW1M0Of9UwAMZE2ChWYfZ2+L8D8to0trTOPp0Xp8QYA==",
+  "success": true,
+  "projectFilePath": "D:\\Games\\SBOX\\sbox-hc1-main\\Libraries\\facepunch.jigglebones\\Code\\jigglebones.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\harry\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.18\\microsoft.windowsdesktop.app.ref.7.0.18.nupkg.sha512",
+    "C:\\Users\\harry\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.18\\microsoft.netcore.app.ref.7.0.18.nupkg.sha512",
+    "C:\\Users\\harry\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.18\\microsoft.aspnetcore.app.ref.7.0.18.nupkg.sha512"
+  ],
+  "logs": []
+}

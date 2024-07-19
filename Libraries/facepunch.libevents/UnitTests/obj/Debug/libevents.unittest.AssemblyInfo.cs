@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("libevents.unittest")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9c1e9ac23c403ccbb12a49a572742cd8a9f0d548")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("libevents.unittest")]
 [assembly: System.Reflection.AssemblyTitleAttribute("libevents.unittest")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,0 +1,184 @@
+@namespace Facepunch.UI
+@inherits Panel
+
+@if ( CustomPanel is not null )
+    return;
+
+@if ( IsBehind )
+    return;
+
+<root>
+    @if ( !string.IsNullOrEmpty( Object.MarkerIcon ) )
+    {
+        <Icon File="@Object.MarkerIcon" size="@Object.IconSize" style="@Object.MarkerStyles" />
+    }
+
+    @if ( !string.IsNullOrEmpty( Object.DisplayText ) )
+    {
+        <label>
+            @Object.DisplayText
+        </label>
+    }
+
+    @if ( Object.ShowChevron && IsOffScreen )
+    {
+        <label class="chevron" style="transform: rotateZ(@(ChevronAngle)deg);">></label>
+    }
+
+    @if ( !string.IsNullOrEmpty( Object.InputHint ) )
+    {
+        <InputHint Action="@Object.InputHint" />
+    }
+</root>
+
+@code
+{
+    public IMarkerObject Object { get; set; }
+
+    BaseMarkerPanel CustomPanel { get; set; }
+
+
+    private float ChevronAngle => Scene.Camera.PointToScreenNormal( Object.MarkerPosition ).Angle( new( 0.5f, 0.5f ) ) - 180f; 
+
+
+    public bool ClampToScreen { get; set; } = false;
+
+    /// <summary>
+    /// Are we off screen?
+    /// </summary>
+    public bool IsOffScreen;
+
+    /// <summary>
+    /// Is this marker entirely behind the screen?
+    /// </summary>
+    public bool IsBehind;
+
+    public override void Tick()
+    {
+        if ( Object.MarkerPanelTypeOverride is null ) return;
+        if ( CustomPanel.IsValid() ) return;
+
+        TryCreateCustomPanel();
+    }
+
+    protected override void OnAfterTreeRender( bool firstTime )
+    {
+        if ( firstTime ) TryCreateCustomPanel();
+    }
+
+    private void TryCreateCustomPanel()
+    {
+        CustomPanel?.Delete( true );
+
+        if ( Object.MarkerPanelTypeOverride is null ) return;
+
+        Log.Info( $"MarkerPanelTypeOverride: {Object.MarkerPanelTypeOverride}" );
+
+        var desc = TypeLibrary.GetType( Object.MarkerPanelTypeOverride );
+        if ( desc is null ) return;
+
+        var inst = desc.Create<BaseMarkerPanel>();
+        inst.Marker = this;
+
+        CustomPanel = inst;
+        CustomPanel.Parent = this;
+
+        Log.Info( $"MarkerPanelTypeOverride: Custom marker was created {inst}" );
+
+        StateHasChanged();
+    }
+
+    private static Vector2 ScreenSafezone = new( 0.05f, 0.95f );
+
+    public Vector2 DistanceFromCenter( Vector2 screenPos )
+    {
+        var xDistance = MathF.Abs( screenPos.x - 0.5f ) * 2f;
+        var yDistance = MathF.Abs( screenPos.y - 0.5f ) * 2f;
+        return new( xDistance, yDistance );
+    }
+
+    public Vector2 CenterDistance { get; set; }
+
+    // Tries to reposition the marker on the screen
+    public void Reposition()
+    {
+        if ( !Object.IsValid() ) 
+            return;
+
+        if ( !Scene.IsValid() ) 
+            return;
+
+        PlayerPawn pawn = null;
+        if ( PlayerState.Viewer.IsValid() && PlayerState.Viewer.PlayerPawn.IsValid() )
+        {
+            pawn = PlayerState.Viewer.PlayerPawn;
+        }
+
+        var camera = pawn.IsValid() ? pawn.CameraController.Camera : Scene.Camera;
+        if ( !camera.IsValid() )
+            return;
+
+        var toScreen = camera.PointToScreenNormal( Object.MarkerPosition, out IsBehind );
+
+        if ( Object.MarkerMaxDistance != 0f && camera.Transform.Position.Distance( Object.MarkerPosition ) > Object.MarkerMaxDistance )
+            IsBehind = true;
+
+        bool wasOffScreen = IsOffScreen;
+        bool wasBehind = IsBehind;
+
+        SetClass( "is-behind", IsBehind );
+
+        if ( IsBehind && !ClampToScreen )
+            return;
+
+        CenterDistance = DistanceFromCenter( toScreen );
+
+        // Are we off the screen?
+        IsOffScreen = toScreen.x > 1.0f || toScreen.x < 0.0f || toScreen.y > 1.0f || toScreen.y < 0.0f;
+
+        if ( ClampToScreen )
+            toScreen = new( toScreen.x.Clamp( ScreenSafezone.x, ScreenSafezone.y ),  toScreen.y.Clamp( ScreenSafezone.x, ScreenSafezone.y ) );
+
+        Style.Left = Length.Fraction( toScreen.x );
+        Style.Top = Length.Fraction( toScreen.y );
+        Style.Opacity = CalculateOpacity();
+
+        if ( wasOffScreen != IsOffScreen )
+            StateHasChanged();
+
+        if ( wasBehind != IsBehind )
+            StateHasChanged();
+    }
+
+    private PlayerPawn Player
+    {
+        get 
+        {
+            if ( PlayerState.Viewer.IsValid() && PlayerState.Viewer.PlayerPawn.IsValid() ) 
+            {
+                return PlayerState.Viewer.PlayerPawn;
+            }
+            return null;
+        }
+    }
+
+    private float CalculateOpacity()
+    {
+        var opacity = 1f;
+
+        if ( !Object.LookOpacity ) return opacity;
+
+        var equipment = Player.IsValid() && Player.CurrentEquipment.IsValid() ? Player.CurrentEquipment : null;
+        bool isAiming = equipment?.Tags.Has("aiming") ?? false;
+
+        if ( !isAiming ) return 1f;
+
+        var dist = MathF.Max( CenterDistance.x, CenterDistance.y );
+        return opacity - ( 1 - dist * 2f );
+    }
+
+    public override string ToString()
+    {
+        return $"Marker: {Object.GameObject}";
+    }
+}

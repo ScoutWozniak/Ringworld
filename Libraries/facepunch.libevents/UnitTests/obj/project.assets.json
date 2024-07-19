@@ -1054,11 +1054,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Games\\SBOX\\JohnHalo\\Libraries\\facepunch.libevents\\UnitTests\\libevents.unittest.csproj",
+      "projectUniqueName": "D:\\Games\\SBOX\\sbox-hc1-main\\Libraries\\facepunch.libevents\\UnitTests\\libevents.unittest.csproj",
       "projectName": "libevents.unittest",
-      "projectPath": "D:\\Games\\SBOX\\JohnHalo\\Libraries\\facepunch.libevents\\UnitTests\\libevents.unittest.csproj",
+      "projectPath": "D:\\Games\\SBOX\\sbox-hc1-main\\Libraries\\facepunch.libevents\\UnitTests\\libevents.unittest.csproj",
       "packagesPath": "C:\\Users\\harry\\.nuget\\packages\\",
-      "outputPath": "D:\\Games\\SBOX\\JohnHalo\\Libraries\\facepunch.libevents\\UnitTests\\obj\\",
+      "outputPath": "D:\\Games\\SBOX\\sbox-hc1-main\\Libraries\\facepunch.libevents\\UnitTests\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Users\\harry\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder",
@@ -1084,8 +1084,8 @@
             "C:\\Program Files (x86)\\Steam\\steamapps\\common\\sbox\\addons\\tools\\Code\\Base Editor Library.csproj": {
               "projectPath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\sbox\\addons\\tools\\Code\\Base Editor Library.csproj"
             },
-            "D:\\Games\\SBOX\\JohnHalo\\Libraries\\facepunch.libevents\\Code\\libevents.csproj": {
-              "projectPath": "D:\\Games\\SBOX\\JohnHalo\\Libraries\\facepunch.libevents\\Code\\libevents.csproj"
+            "D:\\Games\\SBOX\\sbox-hc1-main\\Libraries\\facepunch.libevents\\Code\\libevents.csproj": {
+              "projectPath": "D:\\Games\\SBOX\\sbox-hc1-main\\Libraries\\facepunch.libevents\\Code\\libevents.csproj"
             }
           }
         }

@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Games\\SBOX\\JohnHalo\\Libraries\\facepunch.libevents\\Code\\libevents.csproj": {}
+    "D:\\Games\\SBOX\\sbox-hc1-main\\Libraries\\facepunch.libevents\\Code\\libevents.csproj": {}
   },
   "projects": {
     "C:\\Program Files (x86)\\Steam\\steamapps\\common\\sbox\\addons\\base\\Code\\Base Library.csproj": {
@@ -79,14 +79,14 @@
         }
       }
     },
-    "D:\\Games\\SBOX\\JohnHalo\\Libraries\\facepunch.libevents\\Code\\libevents.csproj": {
+    "D:\\Games\\SBOX\\sbox-hc1-main\\Libraries\\facepunch.libevents\\Code\\libevents.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Games\\SBOX\\JohnHalo\\Libraries\\facepunch.libevents\\Code\\libevents.csproj",
+        "projectUniqueName": "D:\\Games\\SBOX\\sbox-hc1-main\\Libraries\\facepunch.libevents\\Code\\libevents.csproj",
         "projectName": "libevents",
-        "projectPath": "D:\\Games\\SBOX\\JohnHalo\\Libraries\\facepunch.libevents\\Code\\libevents.csproj",
+        "projectPath": "D:\\Games\\SBOX\\sbox-hc1-main\\Libraries\\facepunch.libevents\\Code\\libevents.csproj",
         "packagesPath": "C:\\Users\\harry\\.nuget\\packages\\",
-        "outputPath": "D:\\Games\\SBOX\\JohnHalo\\Libraries\\facepunch.libevents\\Code\\obj\\",
+        "outputPath": "D:\\Games\\SBOX\\sbox-hc1-main\\Libraries\\facepunch.libevents\\Code\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Users\\harry\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder",

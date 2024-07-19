@@ -1,0 +1,106 @@
+@namespace Facepunch.UI
+@inherits Panel
+@attribute [StyleSheet]
+
+<root class="hud with-deadzone top-middle flex justify-center row">
+    @if (MyTeamPlayers is not null && MyTeamPlayers.Count() > 0)
+    {
+        <RoundStateTeam Score="@MyTeamScore" Team="@MyTeam" Players="@MyTeamPlayers" iconPosition="Right" />
+    }
+    else
+    {
+        <div class="grow"></div>        
+    }
+
+    <div class="flex column with-background with-padding h-full align-center justify-center" style="min-width: 195px; height: 60px;">
+        @if ( GameMode.Instance?.Get<ShowStatusIcon>() is { IconPath: { } path } )
+        {
+            <Icon File="@path" size="64" />
+        }
+        else
+        {
+            <label class="uppercase small slight">@Status</label>
+            @if (Time.HasValue)
+            {
+                <label class="emphasis uppercase">@(Time?.ToString(@"m\:ss"))</label>
+            }
+        }
+    </div>
+
+    @if (EnemyTeamPlayers is not null && EnemyTeamPlayers.Count() > 0)
+    {
+        <RoundStateTeam Score="@EnemyTeamScore" Team="@EnemyTeam" Players="@EnemyTeamPlayers" iconPosition="Left" />
+    }
+    else
+    {
+        <div class="grow"></div>
+    }
+</root>
+
+@code
+{
+    private Team MyTeam => PlayerState.Local.Team;
+    private Team EnemyTeam => MyTeam.GetOpponents();
+
+    private string MyTeamScore { get; set; } = "0";
+    private string EnemyTeamScore { get; set; } = "0";
+
+    private IEnumerable<PlayerState> MyTeamPlayers { get; set; }
+    private IEnumerable<PlayerState> EnemyTeamPlayers { get; set; }
+
+    public string Status => GameMode.Instance?.DisplayedStatus;
+    public TimeSpan? Time => GameMode.Instance?.DisplayedTime;
+
+    private void OnSecondElapsed()
+    {
+        // TODO: hook this up to a place where we can conditionally activate the beeping
+        // if ( storedTime <= 5 )
+        // {
+        //     var snd = Sound.Play( storedTime == 0 ? "countdown_activate" : "countdown_beep" );
+        //     snd.TargetMixer = Sandbox.Audio.Mixer.FindMixerByName( "UI" );
+        // }
+    }
+
+    private int storedTime;
+    public override void Tick()
+    {
+        if ( Time.HasValue )
+        {
+            var timeInSeconds = (int)Time.Value.TotalSeconds;
+            if ( storedTime != timeInSeconds )
+            {
+                storedTime = timeInSeconds;
+                OnSecondElapsed();
+            }
+        }
+
+        if ( MyTeam == Team.Unassigned || EnemyTeam == Team.Unassigned )
+        {
+            MyTeamPlayers = null;
+            EnemyTeamPlayers = null;
+            return;
+        }
+
+        if ( GameMode.Instance?.Get<TeamScoring>() is { } teamScoring )
+        {
+            MyTeamScore = teamScoring.MyTeamScoreFormatted;
+            EnemyTeamScore = teamScoring.OpposingTeamScoreFormatted;
+        }
+        else
+        {
+            MyTeamScore = null;
+            EnemyTeamScore = null;
+        }
+
+        MyTeamPlayers = GameUtils.GetPlayers(MyTeam);
+        EnemyTeamPlayers = GameUtils.GetPlayers(EnemyTeam);
+    }
+
+    protected override int BuildHash()
+    {
+        var a = HashCode.Combine(MyTeamPlayers, EnemyTeamPlayers, MyTeam, EnemyTeam);
+        var b = HashCode.Combine(Status, Time.HasValue, Time?.Seconds, Time?.Minutes);
+
+        return HashCode.Combine(a, b);
+    }
+}

@@ -1,0 +1,64 @@
+@namespace Facepunch.UI
+@inherits Panel
+
+@attribute [StyleSheet]
+
+@{
+    var pawn = Player.PlayerPawn;
+}
+
+<root class="@AvatarClasses">
+    <div class="avatar" style="@(IsFriendly && Player.PlayerPawn.IsValid() ? $"border: 0.5px solid {PlayerColor.Hex}" : "")">
+        <img class="image" src="avatar:@Player.SteamId" />
+    </div>
+
+    @if ( !pawn.IsValid() ) return;
+
+    @if (ShowBomb && pawn.Inventory.HasBomb && IsFriendly)
+    {
+        <Icon File="/ui/bomb.png" size="24" class="bomb-indicator"></Icon>
+    }
+
+    @if ( IsDead )
+    {
+        <div style="background-image: url( ui/dead.png )" class="overlay" />
+    }
+
+    @if (ShowHealth && pawn.HealthComponent.State == LifeState.Alive && IsFriendly)
+    {
+        <div class="health">
+            <div class="health-inner" style="width:@(Player.PlayerPawn.HealthComponent.Health)%" />
+        </div>
+    }
+</root>
+
+@code
+{
+    public PlayerState Player { get; set; }
+    public bool IsFriendly => PlayerState.Local.IsFriendly( Player );
+    public Color PlayerColor => Player.PlayerPawn.IsValid() ? Player.PlayerColor : Color.White;
+
+    public bool ShowBomb { get; set; } = true;
+    public bool ShowHealth { get; set; } = true;
+    private bool IsDead => Player.PlayerPawn?.HealthComponent.State != LifeState.Alive;
+
+    private string AvatarClasses
+    {
+        get
+        {
+            if ( IsDead ) return "dead";
+            return "";
+        }
+    }
+
+    protected override int BuildHash()
+    {
+        var hash = HashCode.Combine( Player, IsFriendly );
+        var pawn = Player.PlayerPawn;
+
+        if ( pawn.IsValid() )
+            hash = HashCode.Combine( hash, pawn.HealthComponent.Health, pawn.HealthComponent.State, Player.PlayerColor );
+        
+        return hash;
+    }
+}
