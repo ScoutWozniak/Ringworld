@@ -3,9 +3,11 @@
   "GameObjects": [
     {
       "__guid": "46faaed7-cb16-47c2-8c87-12f1ec4bfc61",
+      "Flags": 0,
       "Name": "Main Camera",
       "Enabled": true,
       "NetworkMode": 2,
+      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.CameraComponent",
@@ -33,14 +35,18 @@
     },
     {
       "__guid": "6bb2cadc-21a5-41f9-bec9-fd02e35ab1da",
+      "Flags": 0,
       "Name": "Map",
       "Enabled": true,
       "NetworkMode": 2,
+      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.MapInstance",
           "__guid": "638ee099-7f0c-4d97-b64f-e5b198b4e8c9",
+          "__version": 1,
           "MapName": "maps/wizard/wizard.vpk",
+          "NoOrigin": true,
           "UseMapFromLaunch": false
         }
       ],
@@ -48,10 +54,12 @@
     },
     {
       "__guid": "f8656f8b-2c1b-452d-80fc-22eae6c05972",
+      "Flags": 0,
       "Name": "BulletManager",
       "Position": "192,-344,160",
       "Enabled": true,
       "NetworkMode": 1,
+      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "BulletManager",
@@ -65,10 +73,12 @@
     },
     {
       "__guid": "48f285ad-9724-4bd4-8ad4-1fda13ed473a",
+      "Flags": 0,
       "Name": "GameManager",
       "Position": "0,56,176",
       "Enabled": true,
       "NetworkMode": 2,
+      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "RingworldManager",
@@ -86,16 +96,20 @@
     },
     {
       "__guid": "0b8198a6-7bb1-4353-bc25-b3ab186002c9",
+      "Flags": 0,
       "Name": "GameMode",
       "Enabled": true,
-      "NetworkMode": 2
+      "NetworkMode": 2,
+      "NetworkInterpolation": true
     },
     {
       "__guid": "e94882ca-ec18-4a86-ad66-85d623ee4abc",
+      "Flags": 0,
       "Name": "Object",
       "Tags": "skybox",
       "Enabled": true,
       "NetworkMode": 2,
+      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.SkyBox2D",
@@ -107,18 +121,21 @@
     },
     {
       "__guid": "f9433946-f74e-4f77-bdc2-56a465ddff52",
+      "Flags": 0,
       "Name": "pistol",
       "Position": "464,-216,184",
       "Enabled": true,
       "NetworkMode": 1,
-      "__Prefab": "prefabs/weapons/pistol/pistol.prefab"
+      "NetworkInterpolation": true,
+      "__Prefab": "prefabs/weapons/pistol/pistol.prefab",
+      "__PrefabVariables": {}
     }
   ],
   "SceneProperties": {
     "FixedUpdateFrequency": 50,
-    "Lerping": true,
     "MaxFixedUpdates": 5,
     "NetworkFrequency": 30,
+    "NetworkInterpolation": true,
     "ThreadedAnimation": true,
     "TimeScale": 1,
     "UseFixedUpdate": true,
@@ -137,8 +154,7 @@
   },
   "Title": "wizard",
   "Description": "",
-  "LastSaved": "2024-04-24T20:12:18.9814025\u002B10:00",
   "ResourceVersion": 1,
-  "__version": 1,
-  "__references": []
+  "__references": [],
+  "__version": 1
 }

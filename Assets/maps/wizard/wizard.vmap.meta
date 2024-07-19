@@ -1,6 +1,5 @@
 {
   "publish": {
-    "Allowed": true,
     "Enabled": false,
     "ProjectConfig": {
       "Title": "Mage",
@@ -9,6 +8,7 @@
       "Ident": "wizard",
       "Tags": null,
       "Schema": 0,
+      "IncludeSourceFiles": false,
       "Resources": null,
       "PackageReferences": [],
       "EditorReferences": [

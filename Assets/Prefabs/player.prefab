@@ -1,13 +1,15 @@
 {
   "RootObject": {
     "__guid": "8166166e-aa35-4775-bb7b-8470fd08da7f",
+    "Flags": 0,
     "Name": "player",
     "Tags": "playercol",
     "Enabled": true,
     "NetworkMode": 2,
+    "NetworkInterpolation": true,
     "Components": [
       {
-        "__type": "CharacterController",
+        "__type": "Sandbox.CharacterController",
         "__guid": "34474140-af57-4a74-bbdb-745e05b59cba",
         "Acceleration": 5,
         "Bounciness": 0.3,
@@ -15,10 +17,11 @@
         "Height": 72,
         "IgnoreLayers": "",
         "Radius": 16,
-        "StepHeight": 18
+        "StepHeight": 18,
+        "UseCollisionRules": false
       },
       {
-        "__type": "CitizenAnimationHelper",
+        "__type": "Sandbox.Citizen.CitizenAnimationHelper",
         "__guid": "b3e0a9d3-013f-401b-912e-03bef525eca7",
         "BodyWeight": 1,
         "EyesWeight": 1,
@@ -49,7 +52,7 @@
         "__guid": "dcdde56f-1a7f-446b-b57c-6c787ed9bb0b"
       },
       {
-        "__type": "ModelHitboxes",
+        "__type": "Sandbox.ModelHitboxes",
         "__guid": "328093cf-e3d6-4321-a8de-268d8d920177",
         "Renderer": {
           "_type": "component",
@@ -75,7 +78,7 @@
         "MaxCyoteTime": 1
       },
       {
-        "__type": "Voice",
+        "__type": "Sandbox.Voice",
         "__guid": "9ffd8203-4117-48b1-b3a0-45c1212d7297",
         "Loopback": false,
         "Mode": "AlwaysOn",
@@ -96,7 +99,7 @@
         "__guid": "6949c147-88fe-41e7-8384-8039f7b68562"
       },
       {
-        "__type": "BoxCollider",
+        "__type": "Sandbox.BoxCollider",
         "__guid": "4665df41-2b88-4a5d-b005-5ef8537b7f01",
         "Center": "0,0,36",
         "IsTrigger": false,
@@ -107,18 +110,21 @@
     "Children": [
       {
         "__guid": "3204f5f6-f80f-4835-b710-9b87f6404dc4",
+        "Flags": 0,
         "Name": "TempBody",
         "Enabled": true,
         "NetworkMode": 2,
+        "NetworkInterpolation": true,
         "Components": [
           {
-            "__type": "SkinnedModelRenderer",
+            "__type": "Sandbox.SkinnedModelRenderer",
             "__guid": "1e2a0a3e-14eb-463c-b3cb-7f77e3ff54e8",
             "BodyGroups": 341,
             "CreateBoneObjects": false,
             "Model": "models/citizen/citizen.vmdl",
             "RenderType": "On",
-            "Tint": "1,1,1,1"
+            "Tint": "1,1,1,1",
+            "UseAnimGraph": true
           },
           {
             "__type": "PlayerFootsteps",
@@ -134,14 +140,16 @@
       },
       {
         "__guid": "79d64fbd-537d-4d1c-841e-a896d743c665",
+        "Flags": 0,
         "Name": "VMCam",
         "Position": "0,0,62.34354",
         "Tags": "vmcam",
         "Enabled": true,
         "NetworkMode": 2,
+        "NetworkInterpolation": true,
         "Components": [
           {
-            "__type": "CameraComponent",
+            "__type": "Sandbox.CameraComponent",
             "__guid": "de0460b6-9d88-4108-8186-593acb60261c",
             "BackgroundColor": "0.33333,0.46196,0.52157,0",
             "ClearFlags": "Depth, Stencil",
@@ -158,7 +166,7 @@
             "ZNear": 1
           },
           {
-            "__type": "Bloom",
+            "__type": "Sandbox.Bloom",
             "__guid": "ab2d3765-3d00-4104-9e75-4a9c390f6d52",
             "BloomColor": {
               "color": [
@@ -194,9 +202,11 @@
       },
       {
         "__guid": "fc1b46f2-ad82-4381-9206-ac864b718fbf",
+        "Flags": 0,
         "Name": "WeaponManager",
         "Enabled": true,
         "NetworkMode": 2,
+        "NetworkInterpolation": true,
         "Components": [
           {
             "__type": "WeaponInventory",
@@ -208,13 +218,15 @@
       },
       {
         "__guid": "047e8b7f-9077-4274-87af-a7379902bf5a",
+        "Flags": 0,
         "Name": "Chat",
         "Position": "143.2196,403.7505,23.25946",
         "Enabled": true,
         "NetworkMode": 2,
+        "NetworkInterpolation": true,
         "Components": [
           {
-            "__type": "ScreenPanel",
+            "__type": "Sandbox.ScreenPanel",
             "__guid": "f4c6501c-6bff-4ae8-942a-b8fe3e74234e",
             "AutoScreenScale": true,
             "Opacity": 1,
@@ -229,12 +241,14 @@
       },
       {
         "__guid": "cdfa7781-859c-4360-bfb5-d0d3f2374d09",
+        "Flags": 0,
         "Name": "HUD",
         "Enabled": true,
         "NetworkMode": 2,
+        "NetworkInterpolation": true,
         "Components": [
           {
-            "__type": "ScreenPanel",
+            "__type": "Sandbox.ScreenPanel",
             "__guid": "d2a19013-e4dc-4154-a0f6-54ad26b9299b",
             "AutoScreenScale": true,
             "Opacity": 1,
@@ -254,12 +268,13 @@
           }
         ]
       }
-    ]
+    ],
+    "__variables": []
   },
   "ShowInMenu": false,
   "MenuPath": null,
   "MenuIcon": null,
   "ResourceVersion": 1,
-  "__version": 1,
-  "__references": []
+  "__references": [],
+  "__version": 1
 }

@@ -3,9 +3,11 @@
   "GameObjects": [
     {
       "__guid": "9fcc2791-b5b3-4607-93ee-b179eca95835",
+      "Flags": 0,
       "Name": "Main Camera",
       "Enabled": true,
       "NetworkMode": 2,
+      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.CameraComponent",
@@ -33,14 +35,18 @@
     },
     {
       "__guid": "a98cb5f4-e562-4b6e-a207-6ed26db1832d",
+      "Flags": 0,
       "Name": "Map",
       "Enabled": true,
       "NetworkMode": 2,
+      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.MapInstance",
           "__guid": "7939d616-09dd-4123-9fda-499ec5f4c8ee",
+          "__version": 1,
           "MapName": "maps/ctf_test.vpk",
+          "NoOrigin": true,
           "UseMapFromLaunch": false
         }
       ],
@@ -48,12 +54,14 @@
     },
     {
       "__guid": "a737d4ec-7335-4002-9683-fbe9a0c72da3",
+      "Flags": 0,
       "Name": "Sun",
       "Position": "89.14999,-206.0225,467.9799",
       "Rotation": "-0.5861089,0.2421002,0.312136,0.7074149",
       "Tags": "light_directional,light",
       "Enabled": true,
       "NetworkMode": 2,
+      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.DirectionalLight",
@@ -68,9 +76,11 @@
     },
     {
       "__guid": "f478ba65-755a-497a-a841-c1593d84a0c2",
+      "Flags": 0,
       "Name": "Network",
       "Enabled": true,
       "NetworkMode": 2,
+      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "RWNetworkHelper",
@@ -85,11 +95,13 @@
     },
     {
       "__guid": "67b22861-dac8-4c94-a737-7d191a24bbcb",
+      "Flags": 0,
       "Name": "Sky",
       "Position": "96,64,280",
       "Tags": "skybox",
       "Enabled": true,
       "NetworkMode": 2,
+      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.SkyBox2D",
@@ -101,12 +113,14 @@
     },
     {
       "__guid": "2cf9a86f-3139-4b1d-9557-3eda078c06cc",
+      "Flags": 0,
       "Name": "HealthTest",
       "Position": "163.4473,-234.9077,64",
       "Rotation": "0,0,-0.7071067,0.7071068",
       "Scale": "0.6601614,0.6601614,0.6601614",
       "Enabled": true,
       "NetworkMode": 1,
+      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -139,10 +153,12 @@
       "Children": [
         {
           "__guid": "684e851b-fbbe-48ab-ab75-1164a0d45af9",
+          "Flags": 0,
           "Name": "Text",
           "Position": "0.00009245489,-0.00000000001102148,110.7326",
           "Enabled": true,
           "NetworkMode": 2,
+          "NetworkInterpolation": true,
           "Components": [
             {
               "__type": "Sandbox.TextRenderer",
@@ -150,8 +166,10 @@
               "Color": "0.45103,0.47149,0.5297,1",
               "FontFamily": "Poppins",
               "FontSize": 64,
+              "FontWeight": 800,
               "Scale": 0.3,
-              "Text": "Health: 100\nShields: 100"
+              "Text": "Health: 100\nShields: 100",
+              "TextAlignment": "Center"
             },
             {
               "__type": "HealthDebugTextComponent",
@@ -169,11 +187,13 @@
     },
     {
       "__guid": "eabb8bb0-7238-4a42-8d35-59b632727e61",
+      "Flags": 0,
       "Name": "Point Light",
       "Position": "16,-472,136",
       "Tags": "light_point,light",
       "Enabled": true,
       "NetworkMode": 2,
+      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.PointLight",
@@ -188,91 +208,21 @@
       ]
     },
     {
-      "__guid": "eb8fc44d-4918-4432-b977-d7602438d398",
-      "Name": "Object",
-      "Position": "144,-384,64",
-      "Enabled": true,
-      "NetworkMode": 1,
-      "Components": [
-        {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "75a98417-9208-483c-9eaf-d2a7eb2e8173",
-          "BodyGroups": 18446744073709551615,
-          "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "Sandbox.ModelCollider",
-          "__guid": "60391d4f-5131-4e7b-8364-458068a0d68d",
-          "IsTrigger": false,
-          "Model": "models/sbox_props/wooden_crate/wooden_crate.vmdl",
-          "Static": false,
-          "Surface": "surfaces/wood.surface"
-        },
-        {
-          "__type": "Sandbox.Rigidbody",
-          "__guid": "9c22e166-a05d-4c83-8073-ae2196f708f3",
-          "AngularDamping": 0,
-          "Gravity": true,
-          "LinearDamping": 0,
-          "Locking": {},
-          "MassOverride": 0,
-          "MotionEnabled": true,
-          "RigidbodyFlags": 0,
-          "StartAsleep": false
-        }
-      ]
-    },
-    {
-      "__guid": "fbb71b01-2986-4c49-a83c-43c4d310e3dd",
-      "Name": "Object (1)",
-      "Position": "176,-336,64",
-      "Enabled": true,
-      "NetworkMode": 1,
-      "Components": [
-        {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "1cf5a853-3a6b-4cd0-b8f2-6ee5935ff146",
-          "BodyGroups": 18446744073709551615,
-          "Model": "models/citizen_props/roadcone01.vmdl",
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "Sandbox.ModelCollider",
-          "__guid": "1957a419-dbb9-4219-b737-609cfcf826da",
-          "IsTrigger": false,
-          "Model": "models/citizen_props/roadcone01.vmdl",
-          "Static": false,
-          "Surface": "surfaces/wood.surface"
-        },
-        {
-          "__type": "Sandbox.Rigidbody",
-          "__guid": "c41297d1-85a0-4000-af4b-aab1d6b2f7bc",
-          "AngularDamping": 0,
-          "Gravity": true,
-          "LinearDamping": 0,
-          "Locking": {},
-          "MassOverride": 0,
-          "MotionEnabled": true,
-          "RigidbodyFlags": 0,
-          "StartAsleep": false
-        }
-      ]
-    },
-    {
       "__guid": "13afd3aa-ae36-47b5-9b24-d1bf4f5584fc",
+      "Flags": 0,
       "Name": "GameMode",
       "Enabled": true,
-      "NetworkMode": 2
+      "NetworkMode": 2,
+      "NetworkInterpolation": true
     },
     {
       "__guid": "711ec0e3-c7ff-4301-96b0-e80909a3a648",
+      "Flags": 0,
       "Name": "Object",
-      "Position": "16,0.00001371134,64",
+      "Position": "128,-32,64.00001",
       "Enabled": true,
       "NetworkMode": 2,
+      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.SkinnedModelRenderer",
@@ -281,7 +231,8 @@
           "CreateBoneObjects": false,
           "Model": "models/citizen/citizen.vmdl",
           "RenderType": "On",
-          "Tint": "1,1,1,1"
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": true
         },
         {
           "__type": "Sandbox.ModelHitboxes",
@@ -309,10 +260,12 @@
     },
     {
       "__guid": "a15fd149-db06-4a69-aa5e-6e7073422061",
+      "Flags": 0,
       "Name": "GameManager",
       "Position": "0,56,176",
       "Enabled": true,
       "NetworkMode": 2,
+      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "RingworldManager",
@@ -330,10 +283,12 @@
     },
     {
       "__guid": "b1d69014-9eec-44bd-8971-dc41a4d4e6d6",
+      "Flags": 0,
       "Name": "BulletManager",
       "Position": "192,-344,160",
       "Enabled": true,
       "NetworkMode": 1,
+      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "BulletManager",
@@ -347,26 +302,21 @@
     },
     {
       "__guid": "8619f5e2-b918-4429-8d01-dcb8d7277591",
+      "Flags": 0,
       "Name": "pistol",
       "Position": "72,-432,68",
       "Enabled": true,
       "NetworkMode": 1,
-      "__Prefab": "prefabs/weapons/pistol/pistol.prefab"
-    },
-    {
-      "__guid": "944fd4cb-dc62-4d29-bab4-7354e610b329",
-      "Name": "pistol (1)",
-      "Position": "72,-384,68",
-      "Enabled": true,
-      "NetworkMode": 1,
-      "__Prefab": "prefabs/weapons/pistol/pistol.prefab"
+      "NetworkInterpolation": true,
+      "__Prefab": "prefabs/weapons/pistol/pistol.prefab",
+      "__PrefabVariables": {}
     }
   ],
   "SceneProperties": {
     "FixedUpdateFrequency": 50,
-    "Lerping": true,
     "MaxFixedUpdates": 5,
     "NetworkFrequency": 30,
+    "NetworkInterpolation": true,
     "ThreadedAnimation": true,
     "TimeScale": 1,
     "UseFixedUpdate": true,
@@ -385,11 +335,9 @@
   },
   "Title": "mp",
   "Description": "",
-  "LastSaved": "2024-04-24T19:16:16.6965788\u002B10:00",
   "ResourceVersion": 1,
-  "__version": 1,
   "__references": [
-    "facepunch.wooden_crate",
     "turd.terry_skibidi"
-  ]
+  ],
+  "__version": 1
 }
