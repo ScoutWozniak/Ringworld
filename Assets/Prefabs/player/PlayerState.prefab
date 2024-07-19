@@ -1,0 +1,39 @@
+{
+  "RootObject": {
+    "__guid": "f1e9395e-84a5-4a37-9336-8dba02aadbb3",
+    "Flags": 0,
+    "Name": "playerstate",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "PlayerState",
+        "__guid": "559c2c0c-7d36-498c-ad2f-26c733c09d3d",
+        "TimeSinceRespawnStateChanged": {
+          "Relative": 289.78735
+        },
+        "PlayerPawnPrefab": {
+          "_type": "gameobject",
+          "prefab": "prefabs/player/player.prefab"
+        },
+        "SteamId": 0,
+        "Team": "Unassigned"
+      },
+      {
+        "__type": "PlayerId",
+        "__guid": "bee57092-e7e4-4854-a533-a00c7182241d"
+      },
+      {
+        "__type": "TeamComponent",
+        "__guid": "968242f4-4890-40e2-a0f0-80469e0beb18"
+      }
+    ],
+    "Children": [],
+    "__variables": []
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "ResourceVersion": 1,
+  "__references": [],
+  "__version": 1
+}

@@ -1,12 +1,17 @@
 using Sandbox;
 using System;
 
+public enum LifeState
+{
+	Alive,
+	Dead
+}
 public sealed class HealthComponent : Component
 {
 	[Sync] public float Health { get; set; }
 	[Sync] public float Shields { get; set; }
 
-	[Category("Health")][Property] float MaxHealth { get; set; } = 100;
+	[Category("Health")][Property] public float MaxHealth { get; set; } = 100;
 	[Category( "Health" )][Property] float MinHealth { get; set; }
 
 
@@ -22,11 +27,14 @@ public sealed class HealthComponent : Component
 
 	TimeSince LastDamageTime;
 
+	public LifeState State { get; set; }
+
 	protected override void OnStart()
 	{
 		base.OnStart();
 		Health = MaxHealth;
 		Shields = MaxShields;
+		State = LifeState.Alive;
 	}
 
 	protected override void OnUpdate()

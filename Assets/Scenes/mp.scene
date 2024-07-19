@@ -6,8 +6,6 @@
       "Flags": 0,
       "Name": "Main Camera",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.CameraComponent",
@@ -38,8 +36,6 @@
       "Flags": 0,
       "Name": "Map",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.MapInstance",
@@ -60,8 +56,6 @@
       "Rotation": "-0.5861089,0.2421002,0.312136,0.7074149",
       "Tags": "light_directional,light",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.DirectionalLight",
@@ -79,15 +73,13 @@
       "Flags": 0,
       "Name": "Network",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "RWNetworkHelper",
           "__guid": "037e29c8-7507-4cf0-88af-ba7eb94809e9",
           "PlayerPrefab": {
             "_type": "gameobject",
-            "prefab": "prefabs/player.prefab"
+            "prefab": "prefabs/player/playerstate.prefab"
           },
           "StartServer": true
         }
@@ -100,8 +92,6 @@
       "Position": "96,64,280",
       "Tags": "skybox",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.SkyBox2D",
@@ -120,7 +110,6 @@
       "Scale": "0.6601614,0.6601614,0.6601614",
       "Enabled": true,
       "NetworkMode": 1,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -157,8 +146,6 @@
           "Name": "Text",
           "Position": "0.00009245489,-0.00000000001102148,110.7326",
           "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkInterpolation": true,
           "Components": [
             {
               "__type": "Sandbox.TextRenderer",
@@ -192,8 +179,6 @@
       "Position": "16,-472,136",
       "Tags": "light_point,light",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.PointLight",
@@ -211,9 +196,7 @@
       "__guid": "13afd3aa-ae36-47b5-9b24-d1bf4f5584fc",
       "Flags": 0,
       "Name": "GameMode",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true
+      "Enabled": true
     },
     {
       "__guid": "711ec0e3-c7ff-4301-96b0-e80909a3a648",
@@ -221,8 +204,6 @@
       "Name": "Object",
       "Position": "128,-32,64.00001",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.SkinnedModelRenderer",
@@ -264,8 +245,6 @@
       "Name": "GameManager",
       "Position": "0,56,176",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "RingworldManager",
@@ -288,7 +267,6 @@
       "Position": "192,-344,160",
       "Enabled": true,
       "NetworkMode": 1,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "BulletManager",
@@ -307,7 +285,6 @@
       "Position": "72,-432,68",
       "Enabled": true,
       "NetworkMode": 1,
-      "NetworkInterpolation": true,
       "__Prefab": "prefabs/weapons/pistol/pistol.prefab",
       "__PrefabVariables": {}
     }

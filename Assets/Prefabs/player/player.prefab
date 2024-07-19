@@ -5,9 +5,40 @@
     "Name": "player",
     "Tags": "playercol",
     "Enabled": true,
-    "NetworkMode": 2,
-    "NetworkInterpolation": true,
     "Components": [
+      {
+        "__type": "PlayerPawn",
+        "__guid": "336f270e-3abd-4d7b-ba3d-6e1632c73e75",
+        "FallDamageScale": 0.2,
+        "Head": {
+          "_type": "gameobject",
+          "go": "5737091f-0722-4145-b29f-51e312e4a679"
+        },
+        "HealthComponent": {
+          "_type": "component",
+          "component_id": "2a577f3f-40ea-4c0b-8bcc-fadad0c96d37",
+          "go": "8166166e-aa35-4775-bb7b-8470fd08da7f",
+          "component_type": "HealthComponent"
+        },
+        "Height": 64,
+        "MinimumFallSoundVelocity": 300,
+        "MinimumFallVelocity": 500,
+        "NoclipSpeed": 1000,
+        "OutOfPlayAreaKillTime": 5,
+        "PlayerBoxCollider": {
+          "_type": "component",
+          "component_id": "4665df41-2b88-4a5d-b005-5ef8537b7f01",
+          "go": "8166166e-aa35-4775-bb7b-8470fd08da7f",
+          "component_type": "BoxCollider"
+        },
+        "SprintMovementDampening": 0.35,
+        "ViewModelCamera": {
+          "_type": "component",
+          "component_id": "de0460b6-9d88-4108-8186-593acb60261c",
+          "go": "79d64fbd-537d-4d1c-841e-a896d743c665",
+          "component_type": "CameraComponent"
+        }
+      },
       {
         "__type": "Sandbox.CharacterController",
         "__guid": "34474140-af57-4a74-bbdb-745e05b59cba",
@@ -62,49 +93,21 @@
         }
       },
       {
-        "__type": "PlayerController",
-        "__guid": "71f87319-6edf-4dda-94c7-06edb00b479c",
-        "AnimationHelper": {
-          "_type": "component",
-          "component_id": "b3e0a9d3-013f-401b-912e-03bef525eca7",
-          "go": "8166166e-aa35-4775-bb7b-8470fd08da7f",
-          "component_type": "CitizenAnimationHelper"
-        },
-        "Body": {
-          "_type": "gameobject",
-          "go": "3204f5f6-f80f-4835-b710-9b87f6404dc4"
-        },
-        "Gravity": "0,0,800",
-        "MaxCyoteTime": 1
-      },
-      {
-        "__type": "Sandbox.Voice",
-        "__guid": "9ffd8203-4117-48b1-b3a0-45c1212d7297",
-        "Loopback": false,
-        "Mode": "AlwaysOn",
-        "MorphScale": 3,
-        "MorphSmoothTime": 0.1,
-        "PushToTalkInput": "voice",
-        "Renderer": {
-          "_type": "component",
-          "component_id": "1e2a0a3e-14eb-463c-b3cb-7f77e3ff54e8",
-          "go": "3204f5f6-f80f-4835-b710-9b87f6404dc4",
-          "component_type": "SkinnedModelRenderer"
-        },
-        "Volume": 1,
-        "WorldspacePlayback": true
-      },
-      {
-        "__type": "PlayerHealthEvents",
-        "__guid": "6949c147-88fe-41e7-8384-8039f7b68562"
-      },
-      {
         "__type": "Sandbox.BoxCollider",
         "__guid": "4665df41-2b88-4a5d-b005-5ef8537b7f01",
         "Center": "0,0,36",
         "IsTrigger": false,
         "Scale": "33,33,72",
         "Static": false
+      },
+      {
+        "__type": "Sandbox.HighlightOutline",
+        "__guid": "7846be25-7e55-4888-8b91-c682c7c37fa2",
+        "Color": "1,1,1,1",
+        "InsideColor": "0,0,0,0",
+        "InsideObscuredColor": "0,0,0,0",
+        "ObscuredColor": "0,0,0,0.4",
+        "Width": 0.25
       }
     ],
     "Children": [
@@ -113,8 +116,6 @@
         "Flags": 0,
         "Name": "TempBody",
         "Enabled": true,
-        "NetworkMode": 2,
-        "NetworkInterpolation": true,
         "Components": [
           {
             "__type": "Sandbox.SkinnedModelRenderer",
@@ -145,8 +146,6 @@
         "Position": "0,0,62.34354",
         "Tags": "vmcam",
         "Enabled": true,
-        "NetworkMode": 2,
-        "NetworkInterpolation": true,
         "Components": [
           {
             "__type": "Sandbox.CameraComponent",
@@ -205,8 +204,6 @@
         "Flags": 0,
         "Name": "WeaponManager",
         "Enabled": true,
-        "NetworkMode": 2,
-        "NetworkInterpolation": true,
         "Components": [
           {
             "__type": "WeaponInventory",
@@ -222,8 +219,6 @@
         "Name": "Chat",
         "Position": "143.2196,403.7505,23.25946",
         "Enabled": true,
-        "NetworkMode": 2,
-        "NetworkInterpolation": true,
         "Components": [
           {
             "__type": "Sandbox.ScreenPanel",
@@ -244,8 +239,6 @@
         "Flags": 0,
         "Name": "HUD",
         "Enabled": true,
-        "NetworkMode": 2,
-        "NetworkInterpolation": true,
         "Components": [
           {
             "__type": "Sandbox.ScreenPanel",
@@ -267,6 +260,13 @@
             }
           }
         ]
+      },
+      {
+        "__guid": "5737091f-0722-4145-b29f-51e312e4a679",
+        "Flags": 0,
+        "Name": "Head",
+        "Position": "0,0,59.74459",
+        "Enabled": true
       }
     ],
     "__variables": []
